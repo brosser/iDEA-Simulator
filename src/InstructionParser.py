@@ -183,28 +183,17 @@ class InstructionParser(object):
 
     # Insert NOPs
     def insertNOPs(self, instructions):
-        #print self.nopInserts
         for k in range(0, len(self.nopInserts)):
             instructions.insert(self.nopInserts[k], Nop)
-            # WORK WORK! 
+            # Recalculate target values for branches and jumps
             for i in instructions:
                 targetval = 0
                 vstr = ''
                 if i.branch:
                     if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez']) :
-                        #if any(x in str(i.immed) for x in ['a','b','c','d','e','f','0x']):
-                        #    targetval = int(str(i.immed), 16)
-                        #else:
-                        #    targetval = int(i.immed)
-                        #targetval = int(str(i.immed), 16)
                         targetval = int(i.immed)
                         vstr = 'immed'
                     elif(i.op == 'j'):
-                        #if any(x in str(i.target) for x in ['a','b','c','d','e','f','0x']):
-                        #    targetval = int(str(i.target), 16)
-                        #else:
-                        #    targetval = int(i.target)
-                        #targetval = int(str(i.target), 16)
                         targetval = int(i.target)
                         vstr = 'target'
                     else:
@@ -212,7 +201,6 @@ class InstructionParser(object):
                 if(targetval >= (self.nopInserts[k])*4):
                     targetval += 4
                     i.values[vstr] = targetval
-                    #print "Recalculating targetval for ", i, ": ", targetval
                 
             for j in range(k+1, len(self.nopInserts)):
                 self.nopInserts[j] += 1
@@ -223,7 +211,6 @@ class InstructionParser(object):
             print hex(addr), ": ", i
             addr += 0x4
 
-        #print self.nopInserts
         return instructions
 
     def addDep(self, i, logstr):

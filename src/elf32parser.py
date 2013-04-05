@@ -32,23 +32,6 @@ class elf32parser:
 			if("0x" in line):
 				ishex = True
 
-			#if(self.doSimConv == True):
-				# Find initial stack pointer decrement
-				#if line is lines.
-				#match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+' + 'addiu' + '\s+' + 'sp,'+ '\s+' + 'sp,' + '\s+' + '(\([a-fA-F0-9_]+\))', line)
-				#if match:
-				#		operands = [x.strip() for x in match.group(4).split(',')]
-				#		print "OPERANDS", operands
-				#		# Negate sp decrement
-				#		operands[-1] = -1*operands[-1]
-				#		self.instructions.append(elf32instr('', match.group(1), match.group(2), match.group(3), len(operands), operands, match.group(7)))
-				#		continue
-				# Find jr ra
-				#match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+' + 'jr' + '\s+' + 'ra', line)
-				#if match:
-				#	 Discard jr ra
-				#	continue
-
 			# Find assembly instructions (ignoring whitespace lines, C-code and assembler directives)
 			# Normal instruction
 			if('.rodata:' in line):
@@ -105,7 +88,6 @@ class elf32parser:
 		sys.stdout = DataMemFile
 		
 		pprint(self.dataMemory)
-
 		return 
 
 	def getDataMem(self):

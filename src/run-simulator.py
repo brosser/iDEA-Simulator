@@ -23,15 +23,8 @@ def main() :
 					help="Print cycle by cycle debug information to simulation log file")
 	(options, args) = parser.parse_args()
 
-	#if len(args) != 1:
-	#	parser.error("Wrong number of arguments")
-
-	#for k, v in options.iteritems():
-	#	print "Run with Options"
-	#	print k, ": ", v
-	#print args
-
 	inputFile = None
+	
 	# Open the input file
 	try:
 		inputFile = open(args[0], "r");
@@ -39,10 +32,10 @@ def main() :
 		print "There was an error opening the input file."
 		sys.exit()
 
-	defaultSimASMFile = "simasm.sim"
-	defaultDataMemFile = "datamem.sim"
-	defaultPreProcLogFile = "preprocLog.sim"
-	defaultSimRunFile = "simrun.sim"
+	defaultSimASMFile = "../simasm.sim"
+	defaultDataMemFile = "../datamem.sim"
+	defaultPreProcLogFile = "../preprocLog.sim"
+	defaultSimRunFile = "../simrun.sim"
 
 	oldstdout = sys.stdout
 
@@ -94,7 +87,6 @@ def main() :
 	elapsedTime = (time.clock() - startTime)
 
 	oldstdout.write("\n> Simulation Completed in ")
-	#oldstdout.write("\n> Simulation Time: ")
 	oldstdout.write(str(elapsedTime))
 	oldstdout.write(" s")
 

@@ -79,9 +79,7 @@ class PipelineSimulator(object):
         #self.programCounter = 0x0
         self.programCounter = mainAddr
 
-        # set up the main memory construct, a list index starting at 0
-        # and continuing to 0xffc
-        # self.mainmemory = dict([(x*4, 0) for x in range(0xffc/4)])
+        # set up the data memory construct, a list index starting at 0 and continuing to 0xffc
 
         print "> Initializing Data Memory"
         self.dataMemory = dict([(x, 0) for x in range(self.dataMemoryWords)])
@@ -130,11 +128,6 @@ class PipelineSimulator(object):
         #call advance on each instruction in the pipeline
         for pi in self.pipeline:
                 pi.advance()
-        #self.pipeline[0].advance()
-        #self.pipeline[1].advance()
-        #self.pipeline[2].advance()
-        #self.pipeline[3].advance()
-        #self.pipeline[4].advance()
 
         #now that everything is done, remove the register from
         # the hazard list
@@ -154,20 +147,14 @@ class PipelineSimulator(object):
         self.__done = False
         if self.pipeline[1].instr.op == 'END':
             self.__done = True
-        #if self.pipeline[1].instr.op == 'jr' and self.pipeline[1].instr.s1 == "$r31":
-        #    self.__done = True
     
     def run(self):
         """ Run the simulator, call step until we are done """
         while not self.__done:
-            #self.debug_lite()
             self.step()
             self.printCycles()
             if(self.verbose):
                 self.debug_lite()
-        #for index, item in sorted(self.instructionMemory.iteritems()):
-        #    if item != 0:
-        #        print index, ": ", str(item)
         self.debug()
     
     def getForwardVal(self, regName):
@@ -247,7 +234,6 @@ class PipelineSimulator(object):
         for k,v in sorted(self.dataMemory.iteritems()):
             if k in self.accessedDataMem and k is not None and v != 0:
                 print hex(int(str(k), 10)), ":" , v
-                #print struct.unpack('!i', binascii.unhexlify(x))[0]
 
                 
     def printPipeline(self):
@@ -347,15 +333,8 @@ class ReadStage(PipelineStage):
                 #these instructions require special treatment
                 (self.instr.op not in ['lw', 'sw', 'bne', 'beq', 'beqz', 'bnez', 'blez', 
                     'bgtz', 'bltz', 'bgez'])):
-                #check to see if it is a hex value
-                #if "0x" in self.instr.immed:
-                #    self.instr.source2RegValue = int(self.instr.immed,16)
-                #else :
                 self.instr.source2RegValue = int(self.instr.immed)
             if(self.instr.op in ['srlv', 'sllv', 'srav']):
-                #if "0x" in self.instr.s2:
-                #    self.instr.source2RegValue = int(self.instr.s2,16)
-                #else :
                 self.instr.source2RegValue = int(self.instr.s2)
 
             elif self.instr.s2:
@@ -387,8 +366,6 @@ class ReadStage(PipelineStage):
             # Branch Delay Slot or Stall
             if(self.simulator.UseBranchDelaySlot == False):
                 self.simulator.pipeline[0] = FetchStage(Nop, self)
-            #if(self.simulator.UseBranchDelaySlot == True):
-                #self.simulator.pipeline[2] = ReadStage(Nop, self)
 
         elif self.instr.op == 'jalr':
             # Save return address in $ra = $r31
@@ -399,36 +376,7 @@ class ReadStage(PipelineStage):
             # Branch Delay slot or  or Stall
             if(self.simulator.UseBranchDelaySlot == False):
                 self.simulator.pipeline[0] = FetchStage(Nop, self)
-            #if(self.simulator.UseBranchDelaySlot == True):
-                #self.simulator.pipeline[2] = ReadStage(Nop, self) 
 
-        # Conditional Branch
-        """
-        elif(self.instr.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz']): 
-            
-            self.instr.source1RegValue = self.simulator.registers[self.instr.s1]
-            if self.instr.op in ['bne', 'beq']:
-                self.instr.source2RegValue = self.simulator.registers[self.instr.s2]
-            
-            if self.instr.s1 in self.simulator.hazardList and self.instr.s1 is not '$r0':
-                forwardVal = self.simulator.getForwardVal(self.instr.s1)
-                if forwardVal != "NOVAL":
-                    self.instr.source1RegValue = forwardVal
-                    print "Forwarding register to Branch", self.instr.s1, " = ", forwardVal
-            if self.instr.s2 in self.simulator.hazardList and self.instr.s2 is not '$r0':
-                forwardVal = self.simulator.getForwardVal(self.instr.s2)
-                if forwardVal != "NOVAL" :
-                    self.instr.source2RegValue = forwardVal
-                    print "Forwarding register to Branch", self.instr.s2, " = ", forwardVal
-
-            if self.instr.s1 == self.simulator.pipeline[3].instr.dest and (self.simulator.pipeline[3].instr.result is not None):
-                self.instr.source1RegValue = self.simulator.pipeline[3].instr.result
-                print "FORWARDING TO BRANCH FROM EX", self.instr.s1, "=", self.instr.source1RegValue
-            if self.instr.s2 == self.simulator.pipeline[3].instr.dest and (self.simulator.pipeline[3].instr.result is not None):
-                self.instr.source2RegValue = self.simulator.pipeline[3].instr.result
-                print "FORWARDING TO BRANCH FROM EX", self.instr.s2, "=", self.instr.source2RegValue
-        """
-        
     def __str__(self):
         return 'Read from Register'
     
@@ -462,45 +410,7 @@ class ExecStage(PipelineStage):
                 else :
                     self.simulator.stall = True
                     return
-            
-            """
-            # Update regnumbers
-            self.simulator.EXReg1 = self.simulator.IDReg1
-            self.simulator.EXReg2 = self.simulator.IDReg2
-            self.simulator.IDReg1 = self.instr.s1
-            self.simulator.IDReg2 = self.instr.s2
 
-            # Output for Dataforwarding
-            
-            print "MEM D: ", self.simulator.memStageDest 
-            print "EX S1: ", self.simulator.EXReg1
-            print "EX S2: ", self.simulator.EXReg2
-            print "ID S1: ", self.simulator.IDReg1
-            print "ID S2: ", self.simulator.IDReg2
-            print "IN S1: ", self.instr.s1
-            print "IN S2: ", self.instr.s2
-            """
-            #if(not self.instr.readMem and not self.instr.writeMem):
-            # Data forwarding from Memory Stage
-            """
-            if(self.simulator.memStageWBE and (self.simulator.memStageDest == self.simulator.EXReg1)
-                and self.instr.op is not 'lw'):
-                self.instr.source1RegValue = self.simulator.memStageFwd
-                print "FORWARDING FROM MEMSTAGE: ", self.simulator.EXReg1
-            elif(self.simulator.memStageWBE and (self.simulator.memStageDest == self.simulator.EXReg2)):
-                self.instr.source2RegValue = self.simulator.memStageFwd
-                print "FORWARDING FROM MEMSTAGE: ", self.simulator.EXReg2
-
-            # Data forwarding from Writeback Stage
-            elif(self.simulator.wbStageWBE and (self.simulator.wbStageDest == self.simulator.EXReg1)
-                and self.instr.op is not 'lw'):
-                self.instr.source1RegValue = self.simulator.wbStageFwd
-                print "FORWARDING FROM WB: ", self.simulator.EXReg1
-            elif(self.simulator.wbStageWBE and (self.simulator.wbStageDest == self.simulator.EXReg2)):
-                self.instr.source2RegValue = self.simulator.wbStageFwd
-                print "FORWARDING FROM WB: ", self.simulator.EXReg2
-            #elif self.instr.readMem:
-            """
             #append the destination register to the hazard list 
             if self.instr.regWrite :
                 self.simulator.hazardList.append(self.instr.dest)    
@@ -515,18 +425,9 @@ class ExecStage(PipelineStage):
             elif (self.instr.op == 'li'):
                 self.instr.result = int(self.instr.immed, 10)
             elif (self.instr.op == 'lui'):
-                #if("0x" in str(self.instr.immed)):
-                #    self.instr.result = int(self.instr.immed, 16) & 0xFFFF0000
-                #else:
                 self.instr.result = int(self.instr.immed, 10)  
-                #print "LUI RESULTS!", self.instr.result
-
             elif self.instr.op == 'abs':
                 self.simulator.result = abs(self.instr.source1RegValue)
-                # Set the other instructions currently in the pipeline to a Nop
-                # self.simulator.pipeline[0] = FetchStage(Nop, self)
-
-
             elif (self.instr.op == "addi"):
                 self.instr.result = int(self.instr.source1RegValue) + int(self.instr.immed)
             elif (self.instr.op == "addu"):
@@ -586,14 +487,6 @@ class ExecStage(PipelineStage):
                 elif (self.instr.op == 'nor'):
                     self.instr.result = ~(self.instr.source1RegValue | self.instr.source2RegValue)
                 else:
-                    #print "INSTRUCTION IS: " + self.instr.op
-                    #print 1+int(str(self.instr.source2RegValue))
-                    #self.instr.result = eval("%d %s %d" % (self.instr.source1RegValue, 
-                    #        self.simulator.alu_operations[self.instr.op], 
-                    #        self.instr.source2RegValue))
-                    #self.instr.result = eval("%d %s %d" % (int(str(self.instr.source1RegValue)), 
-                    #        self.simulator.alu_operations[self.instr.op], 
-                    #        int(str(self.instr.source2RegValue))))
                     self.instr.result = eval("%d %s %d" % (int((self.instr.source1RegValue)), 
                             self.simulator.alu_operations[self.instr.op], 
                             int((self.instr.source2RegValue))))
@@ -602,31 +495,15 @@ class ExecStage(PipelineStage):
             self.instr.result = self.instr.result & 0xFFFFFFFF
 
     def doBranch(self):
-        # Set the program counter to the target address
-        #targetval = 0
-        #if(self.instr.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz']) :
-            #if any(x in ["a","b","c","d","e","f"] for x in str(self.instr.immed)) :
-            #    targetval = int(self.instr.immed, 16)
-            #else :
         targetval = int(self.instr.immed)
         if(self.simulator.verbose):
             print "Branching to target ", hex(targetval)
-            # HEX ?
-            #targetval = int(str(self.instr.immed), 16)
-        #self.simulator.programCounter = self.simulator.programCounter + (targetval * 4) - 8
-        
-        # HARLEM SHAKE
         self.simulator.programCounter = targetval + 4
-
-        #self.simulator.branchAddr = targetval + 4
-        
         # Set the other instructions currently in the pipeline to Nops
         self.simulator.pipeline[0] = FetchStage(Nop, self)
         if(self.simulator.UseBranchDelaySlot == False):
             self.simulator.pipeline[2] = FetchStage(Nop, self)
         self.simulator.branched = True
-           # self.simulator.pipeline[2] = ReadStage(Nop, self)
-        #self.simulator.takeBranch = True
 
     def __str__(self):
         return 'Execute Stage\t'
@@ -684,6 +561,8 @@ class DataStage(PipelineStage):
             else:
                 writeValue = self.instr.source1RegValue    
 
+            if(self.simulator.verbose):
+                print "Storing ", writeValue, "to memory address", addr
             self.simulator.dataMemory[addr] = writeValue
 
             self.simulator.accessedDataMem.append(addr)
@@ -695,11 +574,6 @@ class DataStage(PipelineStage):
             self.simulator.accessedDataMem = checked
 
         elif self.instr.readMem:
-            #if(self.instr.source1RegValue%4 != 0):
-                #self.instr.source1RegValue = (self.instr.source1RegValue/4)*4
-
-
-            
             addr = self.instr.source1RegValue
             if(addr is None):
                 print "No s1: ", self.instr
@@ -736,14 +610,6 @@ class DataStage(PipelineStage):
                 else:
                     print "MEMORY ACCESS ERROR", self.instr
                     self.instr.result = self.simulator.dataMemory[addr] & (0xFF000000>>(byteoffset*2))
-            
-            #if(addr in self.simulator.dataMemory):
-            #    self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
-            #else:
-            #    print "MEMORY ACCESS ERROR", self.instr
-            #    self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
-            #    #sys.exit()
-            #    #self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
 
     def __str__(self):
         return 'Main Memory'
