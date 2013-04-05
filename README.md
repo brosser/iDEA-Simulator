@@ -1,15 +1,15 @@
-## Python Simulator written for iDEA
+## Python Simulator for iDEA
 by Fred and Hui Yan
 
 Original repo: https://github.com/maguire/MIPS-Simulator
 (credit to user 'maguire')
+Forked repo: https://github.com/brosser/MIPS-Simulator
+(Simulator for MIPS)
 
-### Major Additions and Modifications
-* Add support for more instructions
-* Read and convert from elf32-bigmips
-* Fixed bugs in existing implementation
-* Adding preprocessing and data dependency checking
-* Basic statistics collecting
+### Description
+
+iDEA-Simulator is a simulator for the iDEA processor architecture, written in Python. 
+The simulator runs a given assembly program and outputs simulation logfiles and statistics.
 
 ### Justification
 * An instruction set simulator to model and accurately predict the behavior of instructions' execution.
@@ -21,12 +21,11 @@ Original repo: https://github.com/maguire/MIPS-Simulator
 	- to analyse opportunity for composite instructions.
 * Cycle-accurate simulator is not needed for now. If the simulator doesn't fulfill the requirements above, then we will move on to a cycle-accurate one. 
 
-### Sections of the Simulator (May change. Not set in stone)
+### Sections of the Simulator
 * Assembler
-	* Pre-processing tasks: Reads the MIPs asm code generated and grabs the necessary values
-	* Analysis: Dependency checks and nop insertions
-	* Code optimization: Profiler that checks for opportunities for composite instructions
-	* Code generation: Generates the code for simulator, and for IM and DM.
+	* Pre-processing: Reads and parses the elf32-bigmips code
+	* Analysis: Dependency checks and resolving by nop insertions
+	* Code generation: Generates the code for simulator (Instruction Memory and Data Memory).
 * Simulator
 	* Accepts the asm code generated and emulates the execution of the code instructions.
 	* Dumps a log file of instruction pipelines.
@@ -46,6 +45,7 @@ The input file uses the format elf32-bigmips.
 - `--version` Show program's version number and exit.
 - `-h, --help` Show help message and exit.
 - `-v, --verbose` Print cycle by cycle debug information to simulaton log file.
+- `-q --quiet` Use only minimal logging.
  
 #### Output
 
