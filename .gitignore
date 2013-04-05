@@ -1,0 +1,7 @@
+*.txt
+.DS_*
+*.pyc
+*.o
+*.tmp
+*.exe
+*.sim
