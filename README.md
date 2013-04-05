@@ -47,6 +47,7 @@ The input file uses the format elf32-bigmips.
 - `-h, --help` Show help message and exit.
 - `-v, --verbose` Print cycle by cycle debug information to simulaton log file.
 - `-q --quiet` Use only minimal logging.
+- `--pipe <N>` Set number of pipeline stages [5-9, default 5]
  
 #### Output
 
