@@ -75,7 +75,7 @@ def main() :
 	if(options.wbcycles == -1):
 		options.wbcycles = 1
 	# Use maximum number of EX/MEM Cycles by default (ugly code...)
-	if(options.excycles == -1 and options.pipeline >= 5 and options.pipeline <= 9):
+	if(options.excycles == -1 and options.pipeline >= 5):
 		if(options.pipeline == 5):
 			options.excycles = 2
 		elif(options.pipeline == 6):
@@ -85,9 +85,6 @@ def main() :
 	# The rest of the instructions will be WB
 	if(options.ifcycles == -1):
 		remCycles = options.pipeline-options.idcycles-options.excycles-options.wbcycles
-		print options.idcycles
-		print options.wbcycles
-		print options.excycles
 		if(remCycles < 1):
 			pipelineConfigError = True
 		options.ifcycles = remCycles

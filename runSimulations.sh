@@ -9,6 +9,7 @@
 
 # Header
 echo -e "\n"
+echo -e "\t\t\t 5 Stage Pipeline"
 echo -e "Result \t\t\t Benchmark \t\t\t\t Cycles"
 echo -e "-----------------------------------------------------------------------"
 # Bubble Sort

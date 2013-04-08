@@ -157,7 +157,6 @@ class PipelineSimulator(object):
         """
 
         for i in range(self.nIFit+self.nIDit+self.nEXit+self.nWBit, self.nIFit+self.nIDit+self.nEXit, -1):
-            print self.nIFit+self.nIDit+self.nEXit+self.nWBit, " to ", self.nIFit+self.nIDit+self.nEXit
             self.pipeline[i-1] = WriteStage(self.pipeline[i-2].instr, self)  
         for i in range(self.nIFit+self.nIDit+self.nEXit, self.nIFit+self.nIDit, -1):
             self.pipeline[i-1] = ExecStage(self.pipeline[i-2].instr, self)  
@@ -187,7 +186,7 @@ class PipelineSimulator(object):
     def checkDone(self):
         """ Check if we are done and set __done variable """
         self.__done = False
-        if self.pipeline[1].instr.op == 'END':
+        if self.pipeline[self.nPipelineStages-1].instr.op == 'END':
             self.__done = True
     
     def run(self):
@@ -346,7 +345,6 @@ class FetchStage(PipelineStage):
         """ 
         Fetch the next instruction according to simulator program counter
         """
-        print "Fetching ", self.simulator.programCounter
         if self.simulator.programCounter < (len(self.simulator.instrCollection) * 4 + 0x0):
             self.instr = self.simulator.instructionMemory[self.simulator.programCounter]
             if(self.instr and self.instr.op != "nop" and self.instr.op != None):
