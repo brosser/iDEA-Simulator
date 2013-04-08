@@ -16,31 +16,66 @@ import sys
 
 def main() :
 
-	parser = OptionParser(usage="usage: run-simulator.py [-v] filename", version="1.0")
+	parser = OptionParser(usage="usage: run-simulator.py [-vqpfdew] filename", version="1.0")
 	parser.add_option("-v", "--verbose", 
 					action="store_true",
 					dest="verbose",
 					default=False,
-					help="Print cycle by cycle debug information to simulation log file")
+					help="log cycle by cycle debug information")
 	parser.add_option("-q", "--quiet", 
 					action="store_true",
 					dest="quiet",
 					default=False,
-					help="Supress terminal output")
-	(options, args) = parser.parse_args()
+					help="supress terminal output")
+	parser.add_option("-p",# "--pipeline",
+					dest="pipeline",
+					default=5,
+					help="set number of pipeline stages [default 5]")
+	parser.add_option("-f",# "--IFStages",
+					dest="ifcycles",
+					default=-1,
+					help="set number of Fetch (IF) Stage cycles")
+	parser.add_option("-d",# "--IDStages",
+					dest="idcycles",
+					default=-1,
+					help="set number of Decode (ID) Stage cycles")
+	parser.add_option("-e",# "--EXStages",
+					dest="excycles",
+					default=-2,
+					help="set number of Execution (EX) Stage cycles")
+	parser.add_option("-w",# "--WBStages",
+					dest="wbcycles",
+					default=-1,
+					help="set number of Writeback (WB) Stage cycles")
 
-	inputFile = None
+	(options, args) = parser.parse_args()
 
 	# For automated testing output
 	B = bcolors("mathstuff")
-	
+
+	pipelineConfigError = False
+
+	# Pipeline checking
+	if(options.pipeline < 1):
+		pipelineConfigError = True
+	if(options.pipeline == 5):
+		pipelineConfigError = True
+
+	pipelineSum = int(options.ifcycles) + int(options.idcycles) + int(options.excycles) + int(options.wbcycles)
+	if(pipelineSum != int(options.pipeline) or pipelineConfigError):
+		B.printError("Error: Incorrect pipeline configuration")
+		sys.exit()		
+
+	inputFile = None
+
 	# Open the input file
 	try:
 		inputFile = open(args[0], "r");
 	except IOError:
-		print "There was an error opening the input file: ", args[0]
+		B.printError("Error: Could not open input file\t" + args[0])
 		sys.exit()
 
+	# Default values
 	defaultSimASMFile = "simasm.sim"
 	defaultDataMemFile = "datamem.sim"
 	defaultPreProcLogFile = "preprocLog.sim"
@@ -77,8 +112,9 @@ def main() :
 
 	# Get line by line
 	lines = iparser.parseLines(lines)
+	pipelineInfo = [int(options.pipeline), int(options.ifcycles), int(options.idcycles), int(options.excycles), int(options.wbcycles)]
 
-	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose, options.quiet)
+	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose, options.quiet, pipelineInfo)
 	
 	if(not options.quiet):
 		print "> Starting Simulation..."

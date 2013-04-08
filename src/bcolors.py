@@ -30,3 +30,6 @@ class bcolors:
 
     def printFail(self, s, errorMsg):
 	   print self.FAIL + "Failed \t|\t " + s + "\t" + errorMsg + self.ENDC
+
+    def printError(self, errorMsg):
+       print self.FAIL + errorMsg + self.ENDC

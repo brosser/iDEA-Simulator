@@ -1,6 +1,8 @@
 from Instruction import Instruction
 from Instruction import Nop
 
+import networkx as nx
+
 class InstructionParser(object):
 
     def __init__(self):

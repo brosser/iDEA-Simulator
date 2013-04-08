@@ -11,7 +11,7 @@ class PipelineSimulator(object):
                     'sra':'>>', 'srav':'>>',
                     'div':'/',   'mul':'*',  'xor':'^',  'xori':'^'  }
                   
-    def __init__(self,instrCollection,dataMem,mainAddr,oldstdout,verbose,quiet):
+    def __init__(self,instrCollection,dataMem,mainAddr,oldstdout,verbose,quiet,pipelineData):
         sys.stdout = oldstdout
         self.oldstdout = oldstdout
         self.instrCount = 0
@@ -36,6 +36,13 @@ class PipelineSimulator(object):
         self.dataMemoryWords = 0xfffc
         self.instructionMemoryWords = 0xfffc
 
+        ## Pipeline stages
+        self.nPipelineStages = pipelineData[0]
+        self.nIFit = pipelineData[1]
+        self.nIDit = pipelineData[2]
+        self.nEXit = pipelineData[3]
+        self.nWBit = pipelineData[4]
+
         self.memStageFwd = 0
         self.wbStageFwd = 0
         self.memStageDest = None
@@ -56,15 +63,29 @@ class PipelineSimulator(object):
         #   3 = Execute 
         #   4 = Data Access
         if(not self.quiet):
-            print "> Initializing Pipeline"
-        self.pipeline = [None for x in range(0,5)]
+            print "> Initializing Pipeline with", self.nPipelineStages, "stages:"
+        self.pipeline = [None for x in range(0,self.nPipelineStages)]
 
-        self.pipeline[0] = FetchStage(Nop, self)
+        for i in range(0, self.nIFit):
+            self.pipeline[i] = FetchStage(Nop, self)
+            print "\t> Stage " + str(i+1) + "\tIF" + str(i+1), ": Instruction Fetch"
+        for i in range(self.nIFit, self.nIFit+self.nIDit):
+            self.pipeline[i] = ReadStage(Nop, self)
+            print "\t> Stage " + str(i+1) + "\tID" + str(i+1-self.nIFit), ": Instruction Decode"
+        for i in range(self.nIFit+self.nIDit, self.nIFit+self.nIDit+self.nEXit):
+            self.pipeline[i] = ExecStage(Nop, self)   
+            print "\t> Stage " + str(i+1) + "\tEX" + str(i+1-self.nIFit-self.nIDit), ": Execute/Memory"     
+        for i in range(self.nIFit+self.nIDit+self.nEXit, self.nIFit+self.nIDit+self.nEXit+self.nWBit):
+            self.pipeline[i] = WriteStage(Nop, self) 
+            print "\t> Stage " + str(i+1) + "\tWB" + str(i+1-self.nIFit-self.nIDit-self.nEXit), ": Writeback"          
+
+        """
         self.pipeline[1] = WriteStage(Nop, self)
         self.pipeline[2] = ReadStage(Nop, self)
-        self.pipeline[3] = ExecStage(Nop, self)
+        self.pipeline[3] = ExecStage(Nop, self) 
         self.pipeline[4] = DataStage(Nop, self)
-        
+        """
+
         if(not self.quiet):
             print "> Initializing Registers"
         # ex: {'$r0' : 0, '$r1' : 0 ... '$r31' : 0 }
@@ -123,6 +144,7 @@ class PipelineSimulator(object):
         #FetchStage.advance() does nothing
         
         #MUST KEEP THIS ORDER (writeback before read)
+        """
         self.pipeline[1] = WriteStage(self.pipeline[4].instr,self)
         if self.stall:
             self.pipeline[4] = DataStage(Nop,self)
@@ -132,7 +154,19 @@ class PipelineSimulator(object):
             self.pipeline[3] = ExecStage(self.pipeline[2].instr,self)
             self.pipeline[2] = ReadStage(self.pipeline[0].instr,self)
             self.pipeline[0] = FetchStage(Nop, self)
-         
+        """
+
+        for i in range(self.nIFit+self.nIDit+self.nEXit+self.nWBit, self.nIFit+self.nIDit+self.nEXit, -1):
+            print self.nIFit+self.nIDit+self.nEXit+self.nWBit, " to ", self.nIFit+self.nIDit+self.nEXit
+            self.pipeline[i-1] = WriteStage(self.pipeline[i-2].instr, self)  
+        for i in range(self.nIFit+self.nIDit+self.nEXit, self.nIFit+self.nIDit, -1):
+            self.pipeline[i-1] = ExecStage(self.pipeline[i-2].instr, self)  
+        for i in range(self.nIFit+self.nIDit, self.nIFit, -1):
+            self.pipeline[i-1] = ReadStage(self.pipeline[i-2].instr, self)  
+        for i in range(self.nIFit, 1, -1):
+            self.pipeline[i-1] = FetchStage(self.pipeline[i-2].instr, self)    
+        self.pipeline[0] = FetchStage(Nop,self)
+
         #call advance on each instruction in the pipeline
         for pi in self.pipeline:
                 pi.advance()
@@ -247,11 +281,8 @@ class PipelineSimulator(object):
                 
     def printPipeline(self):
         print "\n<Pipeline>"
-        print repr(self.pipeline[0]) 
-        print repr(self.pipeline[2]) 
-        print repr(self.pipeline[3]) 
-        print repr(self.pipeline[4]) 
-        print repr(self.pipeline[1]) 
+        for i in range(0, self.nPipelineStages):
+            print repr(self.pipeline[i])
 
     def printRegFile(self, compact):
         #"""
@@ -315,6 +346,7 @@ class FetchStage(PipelineStage):
         """ 
         Fetch the next instruction according to simulator program counter
         """
+        print "Fetching ", self.simulator.programCounter
         if self.simulator.programCounter < (len(self.simulator.instrCollection) * 4 + 0x0):
             self.instr = self.simulator.instructionMemory[self.simulator.programCounter]
             if(self.instr and self.instr.op != "nop" and self.instr.op != None):
@@ -400,6 +432,9 @@ class ExecStage(PipelineStage):
             #if we have a hazard in either s1 or s2, 
             # grab the value from the other instructions
             # in the pipeline
+
+            # No forwarding in iDEA
+            """
             if self.instr.s1 in self.simulator.hazardList and self.instr.s1 is not '$r0':
                 forwardVal = self.simulator.getForwardVal(self.instr.s1)
                 if forwardVal != "NOVAL":
@@ -419,6 +454,7 @@ class ExecStage(PipelineStage):
                 else :
                     self.simulator.stall = True
                     return
+            """
 
             #append the destination register to the hazard list 
             if self.instr.regWrite :
@@ -499,35 +535,6 @@ class ExecStage(PipelineStage):
                     self.instr.result = eval("%d %s %d" % (int((self.instr.source1RegValue)), 
                             self.simulator.alu_operations[self.instr.op], 
                             int((self.instr.source2RegValue))))
-
-        if(self.instr.result is not None):
-            self.instr.result = self.instr.result & 0xFFFFFFFF
-
-    def doBranch(self):
-        targetval = int(self.instr.immed)
-        if(self.simulator.verbose):
-            print "Branching to target ", hex(targetval)
-        self.simulator.programCounter = targetval + 4
-        # Set the other instructions currently in the pipeline to Nops
-        self.simulator.pipeline[0] = FetchStage(Nop, self)
-        if(self.simulator.UseBranchDelaySlot == False):
-            self.simulator.pipeline[2] = FetchStage(Nop, self)
-        self.simulator.branched = True
-
-    def __str__(self):
-        return 'Execute Stage\t'
-    
-class DataStage(PipelineStage):
-    def advance(self):
-        """
-        If we have to write to main memory, write it first
-        and then read from main memory second
-        """
-
-        # Data forwarding from memory stage
-        self.simulator.memStageWBE = self.instr.regWrite
-        self.simulator.memStageFwd = self.instr.result
-        self.simulator.memStageDest = self.instr.dest
 
         if(self.instr.op == "li"):
             self.simulator.dataMemory[self.instr.source1RegValue] = self.instr.immed
@@ -620,8 +627,22 @@ class DataStage(PipelineStage):
                     print "MEMORY ACCESS ERROR", self.instr
                     self.instr.result = self.simulator.dataMemory[addr] & (0xFF000000>>(byteoffset*2))
 
+        if(self.instr.result is not None):
+            self.instr.result = self.instr.result & 0xFFFFFFFF
+
+    def doBranch(self):
+        targetval = int(self.instr.immed)
+        if(self.simulator.verbose):
+            print "Branching to target ", hex(targetval)
+        self.simulator.programCounter = targetval + 4
+        # Set the other instructions currently in the pipeline to Nops
+        self.simulator.pipeline[0] = FetchStage(Nop, self)
+        if(self.simulator.UseBranchDelaySlot == False):
+            self.simulator.pipeline[2] = FetchStage(Nop, self)
+        self.simulator.branched = True
+
     def __str__(self):
-        return 'Main Memory'
+        return 'Execute Stage\t'
     
 class WriteStage(PipelineStage):
     def advance(self):
