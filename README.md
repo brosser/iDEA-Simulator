@@ -20,7 +20,8 @@ The simulator runs a given assembly program and outputs simulation logfiles and 
 	- to identify hazards / data dependencies.
 	- to ensure logical and functional correctness.
 	- to analyse opportunity for composite instructions.
-* Cycle-accurate simulator is not needed for now. If the simulator doesn't fulfill the requirements above, then we will move on to a cycle-accurate one. 
+* Cycle-accurate simulator is not needed for now. If the simulator doesn't fulfill the requirements above, 
+* then we will move on to a cycle-accurate one. 
 
 ### Sections of the Simulator
 * Assembler
@@ -51,13 +52,22 @@ The input file uses the format elf32-bigmips.
 - `-h, --help` Show help message and exit.
 - `-v, --verbose` Print cycle by cycle debug information to simulaton log file.
 - `-q, --quiet` Supress simulator output.
-- `--pipe <N>` Set number of pipeline stages [5-9, default 5]
- 
+- `-p <N>` Set number of pipeline stages [N >= 4, default 5]
+- `-f <N>` Set number of Instruction Fetch (IF) cycles [default 1]
+- `-d <N>` Set number of Instruction Decode (ID) cycles [default 1]
+- `-e <N>` Set number of Execute/Memory (EX/MEM) cycles [default 2]
+- `-w <N>` Set number of Writeback (WB) stages [default 1]
+
+The pipeline must contain at least 4 stages (IF-ID-EX-WB). If the pipeline is deeper than 4 stages,
+the EX/MEM stage will be allocated more cycles, up to a maximum of 4. After that, the pipeline will be padded with IF.
+
 #### Output
 
-- `<Simulation Run Log File>` Log file from simulation, showing final register file state, accessed data memory and run statistics
+- `<Simulation Run Log File>` Log file from simulation, showing final register file state, accessed data memory 
+and run statistics
 - `<Simulation Assembly File>` The processed Assembly code as input to the simulator
-- `<Preprocessing Log File>` Preprocessing logfile, specifying NOP-insertions, branch address recalculations and parse log
+- `<Preprocessing Log File>` Preprocessing logfile, specifying NOP-insertions, branch address recalculations and
+parse log
 - `<Data Memory Dump File>` Pre-simulation data memory dump
 
 #### Automated testing
