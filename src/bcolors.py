@@ -5,10 +5,9 @@ class bcolors:
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
-    Classname = ""
-
-    def __init__(self, classname):
-	self.Classname = classname
+    
+    def __init__(self):
+	   self.defaultErrorMsg = "Error"
 
     def disable(self):
         self.HEADER = ''

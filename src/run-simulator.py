@@ -28,22 +28,27 @@ def main() :
 					default=False,
 					help="supress terminal output")
 	parser.add_option("-p",# "--pipeline",
+					type="int",
 					dest="pipeline",
 					default=5,
 					help="set number of pipeline stages [default 5]")
 	parser.add_option("-f",# "--IFStages",
+					type="int",
 					dest="ifcycles",
 					default=-1,
 					help="set number of Fetch (IF) Stage cycles")
 	parser.add_option("-d",# "--IDStages",
+					type="int",
 					dest="idcycles",
 					default=-1,
 					help="set number of Decode (ID) Stage cycles")
 	parser.add_option("-e",# "--EXStages",
+					type="int",
 					dest="excycles",
-					default=-2,
+					default=-1,
 					help="set number of Execution (EX) Stage cycles")
 	parser.add_option("-w",# "--WBStages",
+					type="int",
 					dest="wbcycles",
 					default=-1,
 					help="set number of Writeback (WB) Stage cycles")
@@ -51,18 +56,47 @@ def main() :
 	(options, args) = parser.parse_args()
 
 	# For automated testing output
-	B = bcolors("mathstuff")
+	B = bcolors()
+	options.pipeline = int(options.pipeline)
+	options.ifcycles = int(options.ifcycles)
+	options.idcycles = int(options.idcycles)
+	options.excycles = int(options.excycles)
+	options.wbcycles = int(options.wbcycles)
 
 	pipelineConfigError = False
 
 	# Pipeline checking
-	if(options.pipeline < 1):
-		pipelineConfigError = True
-	if(options.pipeline == 5):
+	if(options.pipeline < 4):
 		pipelineConfigError = True
 
-	pipelineSum = int(options.ifcycles) + int(options.idcycles) + int(options.excycles) + int(options.wbcycles)
-	if(pipelineSum != int(options.pipeline) or pipelineConfigError):
+	# Use 1 ID and WB Cycle by default
+	if(options.idcycles == -1):
+		options.idcycles = 1
+	if(options.wbcycles == -1):
+		options.wbcycles = 1
+	# Use maximum number of EX/MEM Cycles by default (ugly code...)
+	if(options.excycles == -1 and options.pipeline >= 5 and options.pipeline <= 9):
+		if(options.pipeline == 5):
+			options.excycles = 2
+		elif(options.pipeline == 6):
+			options.excycles = 3
+		else:
+			options.excycles = 4
+	# The rest of the instructions will be WB
+	if(options.ifcycles == -1):
+		remCycles = options.pipeline-options.idcycles-options.excycles-options.wbcycles
+		print options.idcycles
+		print options.wbcycles
+		print options.excycles
+		if(remCycles < 1):
+			pipelineConfigError = True
+		options.ifcycles = remCycles
+
+	pipelineSum = options.ifcycles + options.idcycles + options.excycles + options.wbcycles
+	if(pipelineSum != options.pipeline):
+		pipelineConfigError = True
+
+	if(pipelineConfigError):
 		B.printError("Error: Incorrect pipeline configuration")
 		sys.exit()		
 
@@ -112,7 +146,7 @@ def main() :
 
 	# Get line by line
 	lines = iparser.parseLines(lines)
-	pipelineInfo = [int(options.pipeline), int(options.ifcycles), int(options.idcycles), int(options.excycles), int(options.wbcycles)]
+	pipelineInfo = [options.pipeline, options.ifcycles, options.idcycles, options.excycles, options.wbcycles]
 
 	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose, options.quiet, pipelineInfo)
 	
