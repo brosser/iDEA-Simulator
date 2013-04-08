@@ -14,8 +14,9 @@
 | motion	|||||
 | sha_driver   | P | P | P | F
 | **Toy** |||||
+| bubble    | P | P | P | P |
+| factorial    | P | P | P | P |
 | fib		| P | P | P | P |
 | fir		| P | P | P | P |
 | median | F | F | F | F |
-| bubble  	| P | P | P | P |
-| factorial  	| P | P | P | P |
+| mmult |||||

@@ -28,6 +28,9 @@ int main()
    8:	3c0c0000 	lui	t4,0x0
    c:	258c0000 	addiu	t4,t4,0
   10:	3c0b0000 	lui	t3,0x0
+
+  // 88: 88888888  nop
+
   14:	08000021 	j	84 <main+0x84>
   18:	256b0000 	addiu	t3,t3,0
 
@@ -61,7 +64,10 @@ int main()
         for (j = 0; j < 5; j++) {
   48:	24c60001 	addiu	a2,a2,1
   4c:	24020005 	addiu	v0,zero,5
-  50:	10c20008 	beq	a2,v0,74 <main+0x74>
+
+  // Manually
+  50:	10c20008 	beq	a2,v0,78 <main+0x74>
+
   54:	24e70004 	addiu	a3,a3,4
                             {31, 15, 31, 16, 32},
                             {51, 25, 51, 26, 52},
@@ -72,6 +78,10 @@ int main()
   58:	00e04021 	addu	t0,a3,zero
   5c:	01402021 	addu	a0,t2,zero
   60:	00061880 	sll	v1,a2,0x2
+
+    // Manually inserted by Fred Apr.5
+  12: 2442064  addiu v1,v1,0x64
+
   64:	01631821 	addu	v1,t3,v1
   68:	24020005 	addiu	v0,zero,5
   6c:	08000007 	j	1c <main+0x1c>
@@ -84,7 +94,7 @@ int main()
     for (i = 0; i < 5; i++) {
   74:	25290001 	addiu	t1,t1,1
   78:	24020005 	addiu	v0,zero,5
-  7c:	1122001a 	beq	t1,v0,e8 <main+0xe8>
+  7c:	1122001a 	beq	t1,v0,ec <main+0xe8>
   80:	00000000 	sll	zero,zero,0x0
                             {31, 15, 31, 16, 32},
                             {51, 25, 51, 26, 52},
@@ -99,6 +109,8 @@ int main()
   94:	00003021 	addu	a2,zero,zero
   98:	00095080 	sll	t2,t1,0x2
   9c:	01425021 	addu	t2,t2,v0
+
+  // MANUALLY
   a0:	08000016 	j	58 <main+0x58>
   a4:	018a5021 	addu	t2,t4,t2
         }
@@ -107,6 +119,7 @@ int main()
     for (x = 0; x < 5; x++){
         for (y = 0; y < 5; y++) {
             main_result += (output[x][y] != c[x][y]);
+
   a8:	8ca70000 	lw	a3,0(a1)
   ac:	8c860000 	lw	a2,0(a0)
   b0:	00000000 	sll	zero,zero,0x0
@@ -139,7 +152,7 @@ int main()
 
     return main_result;
 }
-  e0:	08000045 	j	114 <main+0x114>
+  e0:	08000045 	j	118 <main+0x114>
   e4:	27bd0068 	addiu	sp,sp,104
     int x, y;
     int sum = 0;
@@ -161,6 +174,10 @@ int main()
   fc:	00081900 	sll	v1,t0,0x4
  100:	00832021 	addu	a0,a0,v1
  104:	01242821 	addu	a1,t1,a0
+
+ // Manually
+ 106: 01242821  addiu  a1,a1,0xc8
+
  108:	03a42021 	addu	a0,sp,a0
  10c:	0800002a 	j	a8 <main+0xa8>
  110:	24030005 	addiu	v1,zero,5
@@ -216,7 +233,11 @@ Disassembly of section .rodata:
   8c:	00000001 	0x1
   90:	00000001 	0x1
   94:	00000001 	0x1
-	...
+	98: 00000000  0x0
+  9c: 00000000  0x0
+  a0: 00000000  0x0
+  a4: 00000000  0x0
+  a8: 00000000  0x0
   ac:	00000001 	0x1
   b0:	00000001 	0x1
   b4:	00000001 	0x1

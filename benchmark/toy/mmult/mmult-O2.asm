@@ -45,6 +45,9 @@ int main()
   40:	00002821 	addu	a1,zero,zero
   44:	00001021 	addu	v0,zero,zero
 
+  // Manually inserted by Fred Apr 6
+  46: 00000000  addiu v1,v1,0x64
+
     for (i = 0; i < 5; i++) {
         for (j = 0; j < 5; j++) {
             sum = 0;
@@ -77,7 +80,9 @@ int main()
         for (j = 0; j < 5; j++) {
             sum = 0;
             for (k = 0; k < 5 ; k++) {
-  64:	1446fff8 	bne	v0,a2,48 <main+0x48>
+
+  // Manually changed by Fred Apr 6
+  64:	1446fff8 	bne	v0,a2,4c <main+0x48>
   68:	00ad2821 	addu	a1,a1,t5
     int sum = 0;
 
@@ -123,12 +128,17 @@ int main()
                             {91, 45, 91, 46, 92}};
 
 int main()
+
   9c:	00091900 	sll	v1,t1,0x4
   a0:	00092080 	sll	a0,t1,0x2
   a4:	00832021 	addu	a0,a0,v1
   a8:	01442821 	addu	a1,t2,a0
   ac:	00001821 	addu	v1,zero,zero
   b0:	03a42021 	addu	a0,sp,a0
+
+    // Manually inserted by Fred Apr 6
+  910: 00000000  addiu a1,a1,0xc8
+
         }
     }
     
@@ -155,7 +165,10 @@ int main()
     for (x = 0; x < 5; x++){
         for (y = 0; y < 5; y++) {
   cc:	24a50004 	addiu	a1,a1,4
-  d0:	1468fff8 	bne	v1,t0,b4 <main+0xb4>
+
+    // Manually changed by Fred Apr 6
+  d0:	1468fff8 	bne	v1,t0,bc <main+0xb4>
+
   d4:	24840004 	addiu	a0,a0,4
                 c[i][j]=sum;
             }
@@ -164,7 +177,10 @@ int main()
     
     for (x = 0; x < 5; x++){
   d8:	25290001 	addiu	t1,t1,1
-  dc:	1523ffef 	bne	t1,v1,9c <main+0x9c>
+
+  // Manually changed by Fred Apr 6
+  dc:	1523ffef 	bne	t1,v1,a4 <main+0x9c>
+
   e0:	00000000 	sll	zero,zero,0x0
     }
 
@@ -218,7 +234,10 @@ Disassembly of section .rodata:
   8c:	00000001 	0x1
   90:	00000001 	0x1
   94:	00000001 	0x1
-	...
+	98: 00000000  0x0
+  a0: 00000000  0x0
+  a4: 00000000  0x0
+  a8: 00000000  0x0
   ac:	00000001 	0x1
   b0:	00000001 	0x1
   b4:	00000001 	0x1

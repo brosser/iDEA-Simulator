@@ -6,6 +6,7 @@ import Instruction
 import InstructionParser
 import Sourceline
 import Checker
+from bcolors import bcolors
 
 from optparse import OptionParser
 
@@ -21,21 +22,29 @@ def main() :
 					dest="verbose",
 					default=False,
 					help="Print cycle by cycle debug information to simulation log file")
+	parser.add_option("-q", "--quiet", 
+					action="store_true",
+					dest="quiet",
+					default=False,
+					help="Supress terminal output")
 	(options, args) = parser.parse_args()
 
 	inputFile = None
+
+	# For automated testing output
+	B = bcolors("mathstuff")
 	
 	# Open the input file
 	try:
 		inputFile = open(args[0], "r");
 	except IOError:
-		print "There was an error opening the input file."
+		print "There was an error opening the input file: ", args[0]
 		sys.exit()
 
-	defaultSimASMFile = "../simasm.sim"
-	defaultDataMemFile = "../datamem.sim"
-	defaultPreProcLogFile = "../preprocLog.sim"
-	defaultSimRunFile = "../simrun.sim"
+	defaultSimASMFile = "simasm.sim"
+	defaultDataMemFile = "datamem.sim"
+	defaultPreProcLogFile = "preprocLog.sim"
+	defaultSimRunFile = "simrun.sim"
 
 	oldstdout = sys.stdout
 
@@ -50,7 +59,8 @@ def main() :
 
 	DataMemFileName = args[4] if len(args) >= 5 else defaultDataMemFile
 
-	oldstdout.write("> Starting Parser...\n")
+	if(not options.quiet):
+		oldstdout.write("> Starting Parser...\n")
 
 	eparser.convertToSimASM(args[0], SimAsmFileName, DataMemFileName)
 	lines = eparser.getLines()
@@ -62,14 +72,16 @@ def main() :
 	PPLogFile = open(PPLogFileName, 'w')
 	sys.stdout = PPLogFile
 
-	oldstdout.write("> Starting Assembler...\n")
+	if(not options.quiet):
+		oldstdout.write("> Starting Assembler...\n")
 
 	# Get line by line
 	lines = iparser.parseLines(lines)
 
-	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose)
+	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose, options.quiet)
 	
-	print "> Starting Simulation..."
+	if(not options.quiet):
+		print "> Starting Simulation..."
 
 	startTime = time.clock()
 
@@ -86,16 +98,25 @@ def main() :
 
 	elapsedTime = (time.clock() - startTime)
 
-	oldstdout.write("\n> Simulation Completed in ")
-	oldstdout.write(str(elapsedTime))
-	oldstdout.write(" s")
+	if(not options.quiet):
+		oldstdout.write("\n> Simulation Completed in ")
+		oldstdout.write(str(elapsedTime))
+		oldstdout.write(" s")
 
 	simulationFile.close()
 	PPLogFile.close()
 
 	sys.stdout = oldstdout
-	checker = Checker.Checker(simulationFileName)
-	checker.runCheck()
+	checker = Checker.Checker(simulationFileName, options.quiet)
+	success = False
+	if(not options.quiet):
+		checker.runCheck()
+	else:
+		success = checker.runCheck()
+		if(success):
+			B.printPass(args[0], checker.getCycles())
+		else:
+			B.printFail(args[0], "")
 
 if __name__ == "__main__":
     main()

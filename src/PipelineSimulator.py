@@ -11,7 +11,7 @@ class PipelineSimulator(object):
                     'sra':'>>', 'srav':'>>',
                     'div':'/',   'mul':'*',  'xor':'^',  'xori':'^'  }
                   
-    def __init__(self,instrCollection,dataMem,mainAddr,oldstdout,verbose):
+    def __init__(self,instrCollection,dataMem,mainAddr,oldstdout,verbose,quiet):
         sys.stdout = oldstdout
         self.oldstdout = oldstdout
         self.instrCount = 0
@@ -27,7 +27,10 @@ class PipelineSimulator(object):
         self.accessedDataMem = []
         self.branchTaken = False
         self.branchAddr = 0
+
+        # Output options from main program
         self.verbose = verbose
+        self.quiet = quiet
 
         self.UseBranchDelaySlot = True
         self.dataMemoryWords = 0xfffc
@@ -52,7 +55,8 @@ class PipelineSimulator(object):
         #   2 = Read
         #   3 = Execute 
         #   4 = Data Access
-        print "> Initializing Pipeline"
+        if(not self.quiet):
+            print "> Initializing Pipeline"
         self.pipeline = [None for x in range(0,5)]
 
         self.pipeline[0] = FetchStage(Nop, self)
@@ -61,7 +65,8 @@ class PipelineSimulator(object):
         self.pipeline[3] = ExecStage(Nop, self)
         self.pipeline[4] = DataStage(Nop, self)
         
-        print "> Initializing Registers"
+        if(not self.quiet):
+            print "> Initializing Registers"
         # ex: {'$r0' : 0, '$r1' : 0 ... '$r31' : 0 }
         self.registers = dict([("$r%s" % x, 0) for x in range(32)]) 
 
@@ -71,7 +76,8 @@ class PipelineSimulator(object):
         self.hi = 0
 
         # Stack Initalization
-        print "> Initializing Stack and Main pointers"
+        if(not self.quiet):
+            print "> Initializing Stack and Main pointers"
         self.registers["$r29"] = 0xfffc
 
         # programCounter to state where in the instruction collection
@@ -81,11 +87,13 @@ class PipelineSimulator(object):
 
         # set up the data memory construct, a list index starting at 0 and continuing to 0xffc
 
-        print "> Initializing Data Memory"
+        if(not self.quiet):
+            print "> Initializing Data Memory"
         self.dataMemory = dict([(x, 0) for x in range(self.dataMemoryWords)])
         # Input data memory
         self.dataMemIn = dataMem
-        print "> Initializing Instruction Memory"
+        if(not self.quiet):
+            print "> Initializing Instruction Memory"
         self.instructionMemory = dict([(x, 0) for x in range(self.instructionMemoryWords)])
 
         # the list of instruction objects passed into the simulator,
@@ -152,7 +160,8 @@ class PipelineSimulator(object):
         """ Run the simulator, call step until we are done """
         while not self.__done:
             self.step()
-            self.printCycles()
+            if(not self.quiet):
+                self.printCycles()
             if(self.verbose):
                 self.debug_lite()
         self.debug()

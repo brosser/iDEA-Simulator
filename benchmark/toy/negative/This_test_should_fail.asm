@@ -592,8 +592,6 @@ int main()
     return main_result;
 }
  2b0:	00621021 	addu	v0,v1,v0
-   // Manually
-  2310: 0000000 addu v0,zero,zero
  2b4:	8fbe008c 	lw	s8,140(sp)
  2b8:	8fb70088 	lw	s7,136(sp)
  2bc:	8fb60084 	lw	s6,132(sp)
