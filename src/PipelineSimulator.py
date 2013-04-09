@@ -66,17 +66,28 @@ class PipelineSimulator(object):
             print "> Initializing Pipeline with", self.nPipelineStages, "stages:"
         self.pipeline = [None for x in range(0,self.nPipelineStages)]
 
-        for i in range(0, self.nIFit):
-            self.pipeline[i] = FetchStage(Nop, self)
+        self.pipeline[0] = FetchStage(Nop, self)
+        print "\t> Stage " + str(0+1) + "\tIF" + str(0+1), ": Instruction Fetch"
+        for i in range(1, self.nIFit):
+            self.pipeline[i] = DummyFetchStage(Nop, self)
             print "\t> Stage " + str(i+1) + "\tIF" + str(i+1), ": Instruction Fetch"
-        for i in range(self.nIFit, self.nIFit+self.nIDit):
-            self.pipeline[i] = ReadStage(Nop, self)
+
+        self.pipeline[self.nIFit] = ReadStage(Nop, self)
+        print "\t> Stage " + str(self.nIFit+1) + "\tID" + str(self.nIFit+1-self.nIFit), ": Instruction Decode"
+        for i in range(self.nIFit+1, self.nIFit+self.nIDit):
+            self.pipeline[i] = DummyReadStage(Nop, self)
             print "\t> Stage " + str(i+1) + "\tID" + str(i+1-self.nIFit), ": Instruction Decode"
-        for i in range(self.nIFit+self.nIDit, self.nIFit+self.nIDit+self.nEXit):
-            self.pipeline[i] = ExecStage(Nop, self)   
-            print "\t> Stage " + str(i+1) + "\tEX" + str(i+1-self.nIFit-self.nIDit), ": Execute/Memory"     
-        for i in range(self.nIFit+self.nIDit+self.nEXit, self.nIFit+self.nIDit+self.nEXit+self.nWBit):
-            self.pipeline[i] = WriteStage(Nop, self) 
+
+        self.pipeline[self.nIFit+self.nIDit] = ExecStage(Nop, self)
+        print "\t> Stage " + str(self.nIFit+self.nIDit+1) + "\tEX" + str(self.nIFit+self.nIDit+1-self.nIFit-self.nIDit), ": Execute/Memory" 
+        for i in range(self.nIFit+self.nIDit+1, self.nIFit+self.nIDit+self.nEXit):
+            self.pipeline[i] = DummyExecStage(Nop, self)   
+            print "\t> Stage " + str(i+1) + "\tEX" + str(i+1-self.nIFit-self.nIDit), ": Execute/Memory" 
+
+        self.pipeline[self.nIFit+self.nIDit+self.nEXit] = WriteStage(Nop, self)
+        print "\t> Stage " + str(self.nIFit+self.nIDit+self.nEXit+1) + "\tWB" + str(self.nIFit+self.nIDit+self.nEXit+1-self.nIFit-self.nIDit-self.nEXit), ": Writeback"   
+        for i in range(self.nIFit+self.nIDit+self.nEXit+1, self.nIFit+self.nIDit+self.nEXit+self.nWBit):
+            self.pipeline[i] = DummyWriteStage(Nop, self) 
             print "\t> Stage " + str(i+1) + "\tWB" + str(i+1-self.nIFit-self.nIDit-self.nEXit), ": Writeback"          
 
         """
@@ -156,15 +167,22 @@ class PipelineSimulator(object):
             self.pipeline[0] = FetchStage(Nop, self)
         """
 
-        for i in range(self.nIFit+self.nIDit+self.nEXit+self.nWBit, self.nIFit+self.nIDit+self.nEXit, -1):
-            self.pipeline[i-1] = WriteStage(self.pipeline[i-2].instr, self)  
-        for i in range(self.nIFit+self.nIDit+self.nEXit, self.nIFit+self.nIDit, -1):
-            self.pipeline[i-1] = ExecStage(self.pipeline[i-2].instr, self)  
-        for i in range(self.nIFit+self.nIDit, self.nIFit, -1):
-            self.pipeline[i-1] = ReadStage(self.pipeline[i-2].instr, self)  
+        for i in range(self.nIFit+self.nIDit+self.nEXit+self.nWBit, self.nIFit+self.nIDit+self.nEXit+1, -1):
+            self.pipeline[i-1] = DummyWriteStage(self.pipeline[i-2].instr, self)  
+        self.pipeline[self.nIFit+self.nIDit+self.nEXit] = WriteStage(self.pipeline[self.nIFit+self.nIDit+self.nEXit-1].instr, self)  
+
+        for i in range(self.nIFit+self.nIDit+self.nEXit, self.nIFit+self.nIDit+1, -1):
+            self.pipeline[i-1] = DummyExecStage(self.pipeline[i-2].instr, self)  
+        self.pipeline[self.nIFit+self.nIDit] = ExecStage(self.pipeline[self.nIFit+self.nIDit-1].instr, self) 
+        
+        for i in range(self.nIFit+self.nIDit, self.nIFit+1, -1):
+            self.pipeline[i-1] = DummyReadStage(self.pipeline[i-2].instr, self)
+        self.pipeline[self.nIFit] = ReadStage(self.pipeline[self.nIFit-1].instr, self)  
+
         for i in range(self.nIFit, 1, -1):
-            self.pipeline[i-1] = FetchStage(self.pipeline[i-2].instr, self)    
+            self.pipeline[i-1] = DummyFetchStage(self.pipeline[i-2].instr, self) 
         self.pipeline[0] = FetchStage(Nop,self)
+
 
         #call advance on each instruction in the pipeline
         for pi in self.pipeline:
@@ -359,6 +377,41 @@ class FetchStage(PipelineStage):
     def __str__(self):
         return 'Fetch Stage\t'
     
+class DummyFetchStage(PipelineStage):
+    def advance(self):
+        """ 
+        Fetch the next instruction according to simulator program counter
+        """
+        # Nothing to see here, move along...
+        return
+ 
+    def __str__(self):
+        return 'Dummy Fetch Stage\t'  
+
+class DummyReadStage(PipelineStage):
+    def advance(self):
+        # Nothing to see here, move along...
+        return
+ 
+    def __str__(self):
+        return 'Dummy Read from Register\t' 
+
+class DummyExecStage(PipelineStage):
+    def advance(self):
+        # Nothing to see here, move along...
+        return
+ 
+    def __str__(self):
+        return 'Dummy Execution/Memory Stage Stage\t' 
+
+class DummyWriteStage(PipelineStage):
+    def advance(self):
+        # Nothing to see here, move along...
+        return
+ 
+    def __str__(self):
+        return 'Dummy Writeback Stage\t'      
+
 class ReadStage(PipelineStage):
     def advance(self):
         """
@@ -455,8 +508,8 @@ class ExecStage(PipelineStage):
             """
 
             #append the destination register to the hazard list 
-            if self.instr.regWrite :
-                self.simulator.hazardList.append(self.instr.dest)    
+            #if self.instr.regWrite :
+                #self.simulator.hazardList.append(self.instr.dest)    
 
             if self.instr.op == 'END':
                 return
@@ -640,7 +693,7 @@ class ExecStage(PipelineStage):
         self.simulator.branched = True
 
     def __str__(self):
-        return 'Execute Stage\t'
+        return 'Execution/Memory Stage\t'
     
 class WriteStage(PipelineStage):
     def advance(self):

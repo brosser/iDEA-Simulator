@@ -31,7 +31,7 @@ class InstructionParser(object):
             }
 
         self.nopInserts = []
-        self.nNOPs = 0
+        self.nNOPs = 6
 
     def parseFile(self, filename):
         with open(filename) as f:
@@ -47,6 +47,7 @@ class InstructionParser(object):
         print "<Successfully parsed instructions>"
         print "\tInstruction Count: ", len(instructions) 
         instructions = self.checkDependencies(instructions)
+        #self.checkDependencies(instructions)
         print "\n<Preprocessing finished>"
         return instructions
 
@@ -150,52 +151,70 @@ class InstructionParser(object):
 ##########################################################
 
     # Checking for WAR, RAW and Memory depencences between consecutive instructions
-    def checkDependencies(self, instructions):
-        print "\n<Dependency Checking>"
-        if(self.nNOPs == 0):
-            print "\tDependency Check = OFF\n\tInserted 0 NOPs"
-            return instructions
-        print "<Unprocessed Instructions>"
-        addr = 0x0
-        for i in instructions:
-            print hex(addr), ": ", i
-            addr += 0x4
+    def checkDependencies(self, instr):
 
-        print "\n<Data Dependencies>"
-        for i in range(0, len(instructions)-2):
-            current = instructions[i]
-            next = instructions[i+1]
-            
-            # Check memory dependencies
-            # If writing to a memory location being written to or read in the next instruction
-            if(current.writeMem) :
-                if(next.writeMem and (current.s2 == next.s2) and 
-                        (abs(int(current.immed) - int(next.immed)) <= 4)) :
-                    self.addDep(i+1, "MEM")
-                if(next.readMem and (current.s2 == next.s1) and 
-                        (abs(int(current.immed) - int(next.immed)) <= 4)) :
-                    self.addDep(i+1, "MEM")
-            if(current.dest == next.s1 or current.dest == next.s2) :
-                self.addDep(i+1, "RAW")
-            if(next.dest == current.s1 or next.dest == current.s2) :
-                self.addDep(i+1, "WAR")
-            if(next.dest == current.dest) :
-                self.addDep(i+1, "WAW")
-        return self.insertNOPs(instructions)
+        nList = []
+        dist = 0
+        for i in range(0, len(instr)-1):
+            nList.append(0)
+
+        for i in range(0, len(instr)-1):
+            dist = 0
+            l = 1
+            if instr[i].op == 'nop':
+                    continue
+            while(dist < self.nNOPs and i-l >= 0 and dist < self.nNOPs):
+                curr = instr[i]
+                prev = instr[i-l]
+                if(prev.op == 'nop'):
+                    dist += nList[i] + 1
+                    l += 1
+                    continue
+                imd = abs(int(curr.immed)-int(prev.immed)) if (curr.immed and prev.immed) else 0
+                match1 = ((curr.dest == prev.s1 or curr.dest == prev.s2) and curr.dest is not None)
+                match2 = ((prev.dest == curr.s1 or prev.dest == curr.s2) and prev.dest is not None)
+                match3 = (prev.dest == curr.dest and prev.dest is not None)
+                matchsw1 = ((curr.writeMem) and ((prev.writeMem and (curr.s2 == prev.s2) and (imd <= 4)))) 
+                matchsw2 = ((prev.readMem and (curr.s2 == prev.s1) and (imd <= 4)))
+                prevIsJump = prev.op in ['j', 'jr', 'jal', 'jalr']
+                prevIsBranch = prev.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz']
+                if (prevIsJump or prevIsBranch):
+                    nList[i] = self.nNOPs-dist
+                if (matchsw1 or matchsw2):
+                    nList[i] = self.nNOPs-dist
+                if (match1 or match2 or match3):
+                    nList[i] = self.nNOPs-dist
+                dist += nList[i] + nList[i-l] + 1
+                l += 1
+                
+        print "\n<Dependency Checking>"
+        print nList
+
+
+        for i in range (0, len(nList)):
+            for n in range (0, nList[i]):
+                self.nopInserts.append(i)
+
+        print "\n<NOP Inserts>"
+        print self.nopInserts
+        return self.insertNOPs(instr)
 
     # Insert NOPs
     def insertNOPs(self, instructions):
         for k in range(0, len(self.nopInserts)):
+            
+            # Insert NOPs
             instructions.insert(self.nopInserts[k], Nop)
+
             # Recalculate target values for branches and jumps
             for i in instructions:
                 targetval = 0
                 vstr = ''
                 if i.branch:
-                    if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez']) :
+                    if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz']) :
                         targetval = int(i.immed)
                         vstr = 'immed'
-                    elif(i.op == 'j'):
+                    elif(i.op == 'j', 'jal'):
                         targetval = int(i.target)
                         vstr = 'target'
                     else:
