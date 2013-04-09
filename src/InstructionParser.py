@@ -1,7 +1,7 @@
 from Instruction import Instruction
 from Instruction import Nop
 
-import networkx as nx
+#import networkx as nx
 
 class InstructionParser(object):
 
