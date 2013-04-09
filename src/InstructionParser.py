@@ -40,8 +40,9 @@ class InstructionParser(object):
             instructions = [self.parse(a.replace(',',' ')) for a in data]
             return instructions
 
-    def parseLines(self, lines):
+    def parseLines(self, lines, nNOPs):
         print "###################### Preprocessing Logfile ######################\n"
+        self.nNOPs = nNOPs
         instructions = [self.parse(a.replace(',',' ')) for a in lines]
         instructions = self.createEndInstruction(instructions)
         print "<Successfully parsed instructions>"
@@ -176,10 +177,13 @@ class InstructionParser(object):
                 match3 = (prev.dest == curr.dest and prev.dest is not None)
                 matchsw1 = ((curr.writeMem) and ((prev.writeMem and (curr.s2 == prev.s2) and (imd <= 4)))) 
                 matchsw2 = ((prev.readMem and (curr.s2 == prev.s1) and (imd <= 4)))
-                prevIsJump = prev.op in ['j', 'jr', 'jal', 'jalr']
-                prevIsBranch = prev.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz']
-                if (prevIsJump or prevIsBranch):
-                    nList[i] = self.nNOPs-dist
+                #prevIsJump = prev.op in ['j', 'jr', 'jal', 'jalr']
+                #prevIsBranch = prev.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz']
+                currIsJump = curr.op in ['j', 'jr', 'jal', 'jalr']
+                currIsBranch = curr.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz']
+                if (currIsJump or currIsBranch):
+                    # Pad jumps and branches with nops
+                    nList[i] = self.nNOPs
                 if (matchsw1 or matchsw2):
                     nList[i] = self.nNOPs-dist
                 if (match1 or match2 or match3):

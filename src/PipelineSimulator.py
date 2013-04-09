@@ -67,28 +67,36 @@ class PipelineSimulator(object):
         self.pipeline = [None for x in range(0,self.nPipelineStages)]
 
         self.pipeline[0] = FetchStage(Nop, self)
-        print "\t> Stage " + str(0+1) + "\tIF" + str(0+1), ": Instruction Fetch"
+        if(not self.quiet): 
+            print "\t> Stage " + str(0+1) + "\tIF" + str(0+1), ": Instruction Fetch"
         for i in range(1, self.nIFit):
             self.pipeline[i] = DummyFetchStage(Nop, self)
-            print "\t> Stage " + str(i+1) + "\tIF" + str(i+1), ": Instruction Fetch"
+            if(not self.quiet): 
+                print "\t> Stage " + str(i+1) + "\tIF" + str(i+1), ": Instruction Fetch"
 
         self.pipeline[self.nIFit] = ReadStage(Nop, self)
-        print "\t> Stage " + str(self.nIFit+1) + "\tID" + str(self.nIFit+1-self.nIFit), ": Instruction Decode"
+        if(not self.quiet):
+            print "\t> Stage " + str(self.nIFit+1) + "\tID" + str(self.nIFit+1-self.nIFit), ": Instruction Decode"
         for i in range(self.nIFit+1, self.nIFit+self.nIDit):
             self.pipeline[i] = DummyReadStage(Nop, self)
-            print "\t> Stage " + str(i+1) + "\tID" + str(i+1-self.nIFit), ": Instruction Decode"
+            if(not self.quiet):
+                print "\t> Stage " + str(i+1) + "\tID" + str(i+1-self.nIFit), ": Instruction Decode"
 
         self.pipeline[self.nIFit+self.nIDit] = ExecStage(Nop, self)
-        print "\t> Stage " + str(self.nIFit+self.nIDit+1) + "\tEX" + str(self.nIFit+self.nIDit+1-self.nIFit-self.nIDit), ": Execute/Memory" 
+        if(not self.quiet):
+            print "\t> Stage " + str(self.nIFit+self.nIDit+1) + "\tEX" + str(self.nIFit+self.nIDit+1-self.nIFit-self.nIDit), ": Execute/Memory" 
         for i in range(self.nIFit+self.nIDit+1, self.nIFit+self.nIDit+self.nEXit):
             self.pipeline[i] = DummyExecStage(Nop, self)   
-            print "\t> Stage " + str(i+1) + "\tEX" + str(i+1-self.nIFit-self.nIDit), ": Execute/Memory" 
+            if(not self.quiet):
+                print "\t> Stage " + str(i+1) + "\tEX" + str(i+1-self.nIFit-self.nIDit), ": Execute/Memory" 
 
         self.pipeline[self.nIFit+self.nIDit+self.nEXit] = WriteStage(Nop, self)
-        print "\t> Stage " + str(self.nIFit+self.nIDit+self.nEXit+1) + "\tWB" + str(self.nIFit+self.nIDit+self.nEXit+1-self.nIFit-self.nIDit-self.nEXit), ": Writeback"   
+        if(not self.quiet):
+            print "\t> Stage " + str(self.nIFit+self.nIDit+self.nEXit+1) + "\tWB" + str(self.nIFit+self.nIDit+self.nEXit+1-self.nIFit-self.nIDit-self.nEXit), ": Writeback"   
         for i in range(self.nIFit+self.nIDit+self.nEXit+1, self.nIFit+self.nIDit+self.nEXit+self.nWBit):
             self.pipeline[i] = DummyWriteStage(Nop, self) 
-            print "\t> Stage " + str(i+1) + "\tWB" + str(i+1-self.nIFit-self.nIDit-self.nEXit), ": Writeback"          
+            if(not self.quiet):
+                print "\t> Stage " + str(i+1) + "\tWB" + str(i+1-self.nIFit-self.nIDit-self.nEXit), ": Writeback"          
 
         """
         self.pipeline[1] = WriteStage(Nop, self)
@@ -375,7 +383,7 @@ class FetchStage(PipelineStage):
         self.simulator.programCounter += 4
          
     def __str__(self):
-        return 'Fetch Stage\t'
+        return 'Fetch\t\t\t\t'
     
 class DummyFetchStage(PipelineStage):
     def advance(self):
@@ -386,7 +394,7 @@ class DummyFetchStage(PipelineStage):
         return
  
     def __str__(self):
-        return 'Dummy Fetch Stage\t'  
+        return 'Fetch\t\t\t\t'  
 
 class DummyReadStage(PipelineStage):
     def advance(self):
@@ -394,7 +402,7 @@ class DummyReadStage(PipelineStage):
         return
  
     def __str__(self):
-        return 'Dummy Read from Register\t' 
+        return 'Read from Register\t\t' 
 
 class DummyExecStage(PipelineStage):
     def advance(self):
@@ -402,7 +410,7 @@ class DummyExecStage(PipelineStage):
         return
  
     def __str__(self):
-        return 'Dummy Execution/Memory Stage Stage\t' 
+        return 'Execution/Memory\t' 
 
 class DummyWriteStage(PipelineStage):
     def advance(self):
@@ -410,7 +418,7 @@ class DummyWriteStage(PipelineStage):
         return
  
     def __str__(self):
-        return 'Dummy Writeback Stage\t'      
+        return 'Write to Register\t'      
 
 class ReadStage(PipelineStage):
     def advance(self):
@@ -435,42 +443,68 @@ class ReadStage(PipelineStage):
         # Update PC
         if self.instr.op == 'jal':
             # Save return address in $ra = $r31
+            
             self.simulator.registers["$r31"] = self.simulator.programCounter
             self.simulator.changedRegs.append("$r31")
             self.simulator.changedRegsVal.append(hex(self.simulator.programCounter))
             targetval = int(self.instr.target)
             self.simulator.programCounter = targetval
+            if(self.simulator.verbose):
+                print "Jump to address", hex(targetval)
             # Set the o  instructions currently in the pipeline to a Nop
             # Branch Delay Slot or Stall
-            if(self.simulator.UseBranchDelaySlot == False):
-                self.simulator.pipeline[0] = FetchStage(Nop, self)      
+            #if(self.simulator.UseBranchDelaySlot == False):
+            #    self.simulator.pipeline[0] = FetchStage(Nop, self)      
+            if(self.simulator.nIFit >= 2):
+                self.simulator.pipeline[0] = FetchStage(Nop, self)
+            if(self.simulator.nIFit == 3):
+                self.simulator.pipeline[1] = FetchStage(Nop, self)
+
 
         if self.instr.op == 'j':
             targetval = int(self.instr.target)
             self.simulator.programCounter = targetval
+            if(self.simulator.verbose):
+                print "Jump to address", hex(targetval)
             # Set the o  instructions currently in the pipeline to a Nop
             # Branch Delay Slot or Stall
-            if(self.simulator.UseBranchDelaySlot == False):
+            #if(self.simulator.UseBranchDelaySlot == False):
+            #    self.simulator.pipeline[0] = FetchStage(Nop, self)
+            if(self.simulator.nIFit >= 2):
                 self.simulator.pipeline[0] = FetchStage(Nop, self)
+            if(self.simulator.nIFit == 3):
+                self.simulator.pipeline[1] = FetchStage(Nop, self)
        
         if self.instr.op == 'jr':
+            if(self.simulator.verbose):
+                print "Jump to address", hex(self.instr.source1RegValue)
             self.simulator.programCounter = self.instr.source1RegValue
             # Branch Delay Slot or Stall
-            if(self.simulator.UseBranchDelaySlot == False):
+            #if(self.simulator.UseBranchDelaySlot == False):
+            #    self.simulator.pipeline[0] = FetchStage(Nop, self)
+            if(self.simulator.nIFit >= 2):
                 self.simulator.pipeline[0] = FetchStage(Nop, self)
+            if(self.simulator.nIFit == 3):
+                self.simulator.pipeline[1] = FetchStage(Nop, self)
 
         elif self.instr.op == 'jalr':
             # Save return address in $ra = $r31
             self.simulator.registers["$r31"] = self.simulator.programCounter
             self.simulator.changedRegs.append("$r31")
+            if(self.simulator.verbose):
+                print "Jump to address", hex(self.instr.source1RegValue)
             self.simulator.changedRegsVal.append(hex(self.simulator.programCounter))
             self.simulator.programCounter = self.instr.source1RegValue
             # Branch Delay slot or  or Stall
-            if(self.simulator.UseBranchDelaySlot == False):
+            #if(self.simulator.UseBranchDelaySlot == False):
+            #    self.simulator.pipeline[0] = FetchStage(Nop, self)
+            if(self.simulator.nIFit >= 2):
                 self.simulator.pipeline[0] = FetchStage(Nop, self)
+            if(self.simulator.nIFit == 3):
+                self.simulator.pipeline[1] = FetchStage(Nop, self)
 
     def __str__(self):
-        return 'Read from Register'
+        return 'Read from Register\t'
     
 class ExecStage(PipelineStage):
     def advance(self):
@@ -480,36 +514,7 @@ class ExecStage(PipelineStage):
         """
 
         if self.instr is not Nop and self.instr.aluop:
-            #if we have a hazard in either s1 or s2, 
-            # grab the value from the other instructions
-            # in the pipeline
-
-            # No forwarding in iDEA
-            """
-            if self.instr.s1 in self.simulator.hazardList and self.instr.s1 is not '$r0':
-                forwardVal = self.simulator.getForwardVal(self.instr.s1)
-                if forwardVal != "NOVAL":
-                    self.instr.source1RegValue = forwardVal
-                    if(self.simulator.verbose):
-                        print "Forwarding register", self.instr.s1, " = ", forwardVal
-                else :
-                    self.simulator.stall = True
-                    return
-
-            if self.instr.s2 in self.simulator.hazardList and self.instr.s2 is not '$r0':
-                forwardVal = self.simulator.getForwardVal(self.instr.s2)
-                if forwardVal != "NOVAL" :
-                    self.instr.source2RegValue = forwardVal
-                    if(self.simulator.verbose):
-                        print "Forwarding register", self.instr.s2, " = ", forwardVal
-                else :
-                    self.simulator.stall = True
-                    return
-            """
-
-            #append the destination register to the hazard list 
-            #if self.instr.regWrite :
-                #self.simulator.hazardList.append(self.instr.dest)    
+            # No forwarding in iDEA   
 
             if self.instr.op == 'END':
                 return
@@ -693,7 +698,7 @@ class ExecStage(PipelineStage):
         self.simulator.branched = True
 
     def __str__(self):
-        return 'Execution/Memory Stage\t'
+        return 'Execution/Memory\t'
     
 class WriteStage(PipelineStage):
     def advance(self):
@@ -720,4 +725,4 @@ class WriteStage(PipelineStage):
                 self.simulator.changedRegsVal.append(self.instr.result)
                 
     def __str__(self):
-        return 'Write to Register'
+        return 'Write to Register\t'
