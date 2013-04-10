@@ -4,7 +4,7 @@
 # $ chmod +x runSimulations.sh
 # $ ./runSimulations.sh
 
-for I in 5 6 7 8 9 
+for I in 5 6 7 9 
 do
 
 	echo -e "\n"
