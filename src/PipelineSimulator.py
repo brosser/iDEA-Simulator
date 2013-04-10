@@ -693,9 +693,18 @@ class ExecStage(PipelineStage):
         self.simulator.programCounter = targetval + 4
         # Set the other instructions currently in the pipeline to Nops
         self.simulator.pipeline[0] = FetchStage(Nop, self)
-        if(self.simulator.UseBranchDelaySlot == False):
+
+        if(self.simulator.nIFit >= 2):
+            self.simulator.pipeline[1] = FetchStage(Nop, self)
+        if(self.simulator.nIFit == 3):
             self.simulator.pipeline[2] = FetchStage(Nop, self)
+
+        #self.simulator.pipeline[0] = FetchStage(Nop, self)
+        #if(self.simulator.UseBranchDelaySlot == False):
+        #    self.simulator.pipeline[2] = FetchStage(Nop, self)
         self.simulator.branched = True
+
+
 
     def __str__(self):
         return 'Execution/Memory\t'

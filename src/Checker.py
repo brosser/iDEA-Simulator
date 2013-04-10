@@ -66,10 +66,10 @@ class Checker:
         return "0"
 
     def getCycles(self):
-        return self.cycles
+        return (str(self.cycles)).replace(' ', '')[:-2].upper()
 
     def getNOPs(self):
-        return self.nops
+        return (str(self.nops)).replace(' ', '')[:-2].upper()
 
     def getCPI(self):
         return str(round(float(self.cpi), 4))
