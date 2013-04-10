@@ -18,6 +18,10 @@ class elf32parser:
 		self.dataMemory = dict([(x*4, 0) for x in range(0xffc/4)])
 		self.dataMemory.clear()
 		self.lines = []
+		self.mainAddr = 0
+		self.CCoreInstr = []
+		self.coreInstr = False
+		self.ccoreStart = False
 
 	# Parse instructions from file
 	def parseInstructions(self):
@@ -25,8 +29,11 @@ class elf32parser:
 		# Read line by line in file, stripping the newline character
 		lines = [line.strip() for line in self.inputFile]
 
+		self.CCoreInstr = []
+		self.coreInstr = False
+
 		for line in lines:
-			
+
 			# Hexadecimal operand/imm?
 			ishex = False
 			if("0x" in line):
@@ -36,6 +43,13 @@ class elf32parser:
 			# Normal instruction
 			if('.rodata:' in line):
 				self.parseDataMem = True
+			# Mark "computation core" instructions
+			if('START_CCORE' in line and self.coreInstr is False):
+				print "STARTING CYCLE COUNT"
+				self.coreInstr = True
+			if('END_CCORE' in line and self.coreInstr is True):
+				print "STARTING CYCLE COUNT"
+				self.coreInstr = False
 			if(self.parseDataMem == False):
 				if(self.foundMain == False):
 					match = re.match('([0-9a-fA-F]+)' + '\s+' + '<main>:', line)
@@ -50,11 +64,13 @@ class elf32parser:
 					if(ishex or mnemonic in ['j', 'jal', 'bne', 'beq', 'bltz', 'bgtz', 'bnez', 'beqz', 'blez', 'bgez']) :
 						operands[-1] = str(int(str(operands[-1]), 16))
 					self.instructions.append(elf32instr('', match.group(1), match.group(2), match.group(3), len(operands), operands, match.group(7)))
+					self.CCoreInstr.append(self.coreInstr)
 					continue
 				# NOPs and instructions without operands
 				match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+' + '(\w+)' + '\s?', line)
 				if match:
-					self.instructions.append(elf32instr('', match.group(1), match.group(2), match.group(3), 0, [], None))	
+					self.instructions.append(elf32instr('', match.group(1), match.group(2), match.group(3), 0, [], None))
+					self.CCoreInstr.append(self.coreInstr)
 			# Parse datamemory
 			elif(self.parseDataMem == True):
 				match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+?' + '(\w+)?' + '\s+?' + '((\w+)(,\s*-?\w+)*)(\([a-zA-Z0-9_]+\))*', line)
@@ -98,3 +114,6 @@ class elf32parser:
 
 	def getMainAddr(self):
 		return self.mainAddr
+
+	def getCCoreInstr(self):
+		return self.CCoreInstr

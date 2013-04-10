@@ -33,13 +33,15 @@ class Instruction(object):
                        'immed': None,
                        'shamt': None,
                        'target': None
+                       
         }
         self.controls = {'aluop'   : None,
                          'regRead' : None,
                          'regWrite': None,
                          'readMem' : None,
                          'writeMem': None,
-                         'branch'  : None  }
+                         'branch'  : None,
+                         'coreInstr': None  }
 
         for key in input:
             if key in self.values.keys():
@@ -111,6 +113,11 @@ class Instruction(object):
     def branch(self):
         """ Get this Instruction's control to decide if branch instr """
         return self.controls['branch']
+
+    @property 
+    def coreInstr(self):
+        """ Get this Instruction's core/kernel/loop status """
+        return self.controls['coreInstr']
     
     def __str__(self):
         str = "%s\t%s %s %s %s %s %s" % (self.values['op'],
@@ -124,15 +131,29 @@ class Instruction(object):
     
     def __repr__(self):
         return repr(self.values)
+
+    
         
 class Nop(Instruction):
+
+    def __init__(self):
+        self.core = False
+
+    def setCore(self,core):
+        self.core = core
+
     @property
     def op(self):
         """ Get this Instruction's name """
-        return 'nop' 
+        return 'nop'
+
+    def core(self):
+        """ Get this Instruction's name """
+        return self.core
+
     def __str__(self):
         return 'nop'  
     pass
     
 #nop singleton
-Nop = Nop()
+#Nop = Nop()

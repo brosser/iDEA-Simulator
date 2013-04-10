@@ -16,6 +16,8 @@ class PipelineSimulator(object):
         self.oldstdout = oldstdout
         self.instrCount = 0
         self.nopCount = 0
+        self.coreInstrCount = 0
+        self.coreNopCount = 0
         self.cycles = 0
         self.hazardList = []
         self.__done = False
@@ -66,35 +68,35 @@ class PipelineSimulator(object):
             print "> Initializing Pipeline with", self.nPipelineStages, "stages:"
         self.pipeline = [None for x in range(0,self.nPipelineStages)]
 
-        self.pipeline[0] = FetchStage(Nop, self)
+        self.pipeline[0] = FetchStage(Instruction(op='nop', coreInstr=False), self)
         if(not self.quiet): 
             print "\t> Stage " + str(0+1) + "\tIF" + str(0+1), ": Instruction Fetch"
         for i in range(1, self.nIFit):
-            self.pipeline[i] = DummyFetchStage(Nop, self)
+            self.pipeline[i] = DummyFetchStage(Instruction(op='nop', coreInstr=False), self)
             if(not self.quiet): 
                 print "\t> Stage " + str(i+1) + "\tIF" + str(i+1), ": Instruction Fetch"
 
-        self.pipeline[self.nIFit] = ReadStage(Nop, self)
+        self.pipeline[self.nIFit] = ReadStage(Instruction(op='nop', coreInstr=False), self)
         if(not self.quiet):
             print "\t> Stage " + str(self.nIFit+1) + "\tID" + str(self.nIFit+1-self.nIFit), ": Instruction Decode"
         for i in range(self.nIFit+1, self.nIFit+self.nIDit):
-            self.pipeline[i] = DummyReadStage(Nop, self)
+            self.pipeline[i] = DummyReadStage(Instruction(op='nop', coreInstr=False), self)
             if(not self.quiet):
                 print "\t> Stage " + str(i+1) + "\tID" + str(i+1-self.nIFit), ": Instruction Decode"
 
-        self.pipeline[self.nIFit+self.nIDit] = ExecStage(Nop, self)
+        self.pipeline[self.nIFit+self.nIDit] = ExecStage(Instruction(op='nop', coreInstr=False), self)
         if(not self.quiet):
             print "\t> Stage " + str(self.nIFit+self.nIDit+1) + "\tEX" + str(self.nIFit+self.nIDit+1-self.nIFit-self.nIDit), ": Execute/Memory" 
         for i in range(self.nIFit+self.nIDit+1, self.nIFit+self.nIDit+self.nEXit):
-            self.pipeline[i] = DummyExecStage(Nop, self)   
+            self.pipeline[i] = DummyExecStage(Instruction(op='nop', coreInstr=False), self)   
             if(not self.quiet):
                 print "\t> Stage " + str(i+1) + "\tEX" + str(i+1-self.nIFit-self.nIDit), ": Execute/Memory" 
 
-        self.pipeline[self.nIFit+self.nIDit+self.nEXit] = WriteStage(Nop, self)
+        self.pipeline[self.nIFit+self.nIDit+self.nEXit] = WriteStage(Instruction(op='nop', coreInstr=False), self)
         if(not self.quiet):
             print "\t> Stage " + str(self.nIFit+self.nIDit+self.nEXit+1) + "\tWB" + str(self.nIFit+self.nIDit+self.nEXit+1-self.nIFit-self.nIDit-self.nEXit), ": Writeback"   
         for i in range(self.nIFit+self.nIDit+self.nEXit+1, self.nIFit+self.nIDit+self.nEXit+self.nWBit):
-            self.pipeline[i] = DummyWriteStage(Nop, self) 
+            self.pipeline[i] = DummyWriteStage(Instruction(op='nop', coreInstr=False), self) 
             if(not self.quiet):
                 print "\t> Stage " + str(i+1) + "\tWB" + str(i+1-self.nIFit-self.nIDit-self.nEXit), ": Writeback"          
 
@@ -189,7 +191,7 @@ class PipelineSimulator(object):
 
         for i in range(self.nIFit, 1, -1):
             self.pipeline[i-1] = DummyFetchStage(self.pipeline[i-2].instr, self) 
-        self.pipeline[0] = FetchStage(Nop,self)
+        self.pipeline[0] = FetchStage(Instruction(op='nop', coreInstr=False),self)
 
 
         #call advance on each instruction in the pipeline
@@ -229,11 +231,11 @@ class PipelineSimulator(object):
         """ Forward the proper value based on the given register name
             If the value is not ready, return "NOVAL" 
         """
-        if (self.pipeline[4] is not Nop 
+        if (self.pipeline[4].instr.op != 'nop' 
                 and self.pipeline[4].instr.result is not None
                 and self.pipeline[4].instr.dest == regName) :
                     return self.pipeline[4].instr.result
-        elif (self.pipeline[1] is not Nop
+        elif (self.pipeline[1].instr.op != 'nop' 
             and self.pipeline[1].instr.result is not None
                 and self.pipeline[1].instr.dest == regName ):
                     return self.pipeline[1].instr.result
@@ -244,15 +246,15 @@ class PipelineSimulator(object):
         """ Forward the proper value based on the given register name
             If the value is not ready, return "NOVAL" 
         """
-        if (self.pipeline[3] is not Nop 
+        if (self.pipeline[3].instr.op != 'nop' 
                 and self.pipeline[3].instr.result is not None
                 and self.pipeline[3].instr.dest == regName) :
                     return self.pipeline[3].instr.result
-        if (self.pipeline[4] is not Nop 
+        if (self.pipeline[4].instr.op != 'nop' 
                 and self.pipeline[4].instr.result is not None
                 and self.pipeline[4].instr.dest == regName) :
                     return self.pipeline[4].instr.result
-        elif (self.pipeline[1] is not Nop
+        elif (self.pipeline[1].instr.op != 'nop' 
             and self.pipeline[1].instr.result is not None
                 and self.pipeline[1].instr.dest == regName ):
                     return self.pipeline[1].instr.result
@@ -284,7 +286,9 @@ class PipelineSimulator(object):
         self.printDataMemory()
 
         print "\n<Final Program Counter> : ", hex(self.programCounter)
-        print "<Cycles> : " , float(self.cycles)
+        print "<Total Cycles> : " , float(self.cycles)
+        print "<Core Cycles> : " , float(self.coreInstrCount)
+        print "<Core NOPs> : " , float(self.coreNopCount)
         print "<Instructions Executed> : " , float(self.instrCount)
         print "<NOPs> : " , float(self.nopCount)
         print "<CPI> : " , float(self.cycles) / (float(self.instrCount)-float(self.nopCount)) , "\n"
@@ -378,8 +382,12 @@ class FetchStage(PipelineStage):
             if(self.instr.op is 'nop'):
                 self.simulator.instrCount += 1
                 self.simulator.nopCount += 1
+            if(self.instr.coreInstr):
+                self.simulator.coreInstrCount += 1
+                if(self.instr.op is 'nop'):
+                    self.simulator.coreNopCount += 1
         else:
-            self.instr = Nop
+            self.instr = Instruction(op='nop', coreInstr=False)
         self.simulator.programCounter += 4
          
     def __str__(self):
@@ -456,9 +464,9 @@ class ReadStage(PipelineStage):
             #if(self.simulator.UseBranchDelaySlot == False):
             #    self.simulator.pipeline[0] = FetchStage(Nop, self)      
             if(self.simulator.nIFit >= 2):
-                self.simulator.pipeline[0] = FetchStage(Nop, self)
+                self.simulator.pipeline[0] = FetchStage(Instruction(op='nop', coreInstr=True), self)
             if(self.simulator.nIFit == 3):
-                self.simulator.pipeline[1] = FetchStage(Nop, self)
+                self.simulator.pipeline[1] = FetchStage(Instruction(op='nop', coreInstr=True), self)
 
 
         if self.instr.op == 'j':
@@ -471,9 +479,9 @@ class ReadStage(PipelineStage):
             #if(self.simulator.UseBranchDelaySlot == False):
             #    self.simulator.pipeline[0] = FetchStage(Nop, self)
             if(self.simulator.nIFit >= 2):
-                self.simulator.pipeline[0] = FetchStage(Nop, self)
+                self.simulator.pipeline[0] = FetchStage(Instruction(op='nop', coreInstr=True), self)
             if(self.simulator.nIFit == 3):
-                self.simulator.pipeline[1] = FetchStage(Nop, self)
+                self.simulator.pipeline[1] = FetchStage(Instruction(op='nop', coreInstr=True), self)
        
         if self.instr.op == 'jr':
             if(self.simulator.verbose):
@@ -483,9 +491,9 @@ class ReadStage(PipelineStage):
             #if(self.simulator.UseBranchDelaySlot == False):
             #    self.simulator.pipeline[0] = FetchStage(Nop, self)
             if(self.simulator.nIFit >= 2):
-                self.simulator.pipeline[0] = FetchStage(Nop, self)
+                self.simulator.pipeline[0] = FetchStage(Instruction(op='nop', coreInstr=True), self)
             if(self.simulator.nIFit == 3):
-                self.simulator.pipeline[1] = FetchStage(Nop, self)
+                self.simulator.pipeline[1] = FetchStage(Instruction(op='nop', coreInstr=True), self)
 
         elif self.instr.op == 'jalr':
             # Save return address in $ra = $r31
@@ -499,9 +507,9 @@ class ReadStage(PipelineStage):
             #if(self.simulator.UseBranchDelaySlot == False):
             #    self.simulator.pipeline[0] = FetchStage(Nop, self)
             if(self.simulator.nIFit >= 2):
-                self.simulator.pipeline[0] = FetchStage(Nop, self)
+                self.simulator.pipeline[0] = FetchStage(Instruction(op='nop', coreInstr=True), self)
             if(self.simulator.nIFit == 3):
-                self.simulator.pipeline[1] = FetchStage(Nop, self)
+                self.simulator.pipeline[1] = FetchStage(Instruction(op='nop', coreInstr=True), self)
 
     def __str__(self):
         return 'Read from Register\t'
@@ -513,7 +521,7 @@ class ExecStage(PipelineStage):
         assembly operation to Python operation
         """
 
-        if self.instr is not Nop and self.instr.aluop:
+        if self.instr.op != 'nop' and self.instr.aluop:
             # No forwarding in iDEA   
 
             if self.instr.op == 'END':
@@ -692,12 +700,12 @@ class ExecStage(PipelineStage):
             print "Branching to target ", hex(targetval)
         self.simulator.programCounter = targetval + 4
         # Set the other instructions currently in the pipeline to Nops
-        self.simulator.pipeline[0] = FetchStage(Nop, self)
+        self.simulator.pipeline[0] = FetchStage(Instruction(op='nop', coreInstr=True), self)
 
         if(self.simulator.nIFit >= 2):
-            self.simulator.pipeline[1] = FetchStage(Nop, self)
+            self.simulator.pipeline[1] = FetchStage(Instruction(op='nop', coreInstr=True), self)
         if(self.simulator.nIFit == 3):
-            self.simulator.pipeline[2] = FetchStage(Nop, self)
+            self.simulator.pipeline[2] = FetchStage(Instruction(op='nop', coreInstr=True), self)
 
         #self.simulator.pipeline[0] = FetchStage(Nop, self)
         #if(self.simulator.UseBranchDelaySlot == False):

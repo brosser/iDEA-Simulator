@@ -53,6 +53,7 @@ int main ()
         sum[i] = a + b;
         a = b;
         b = sum[i];
+START_CCORE
   28:	00c02021 	addu	a0,a2,zero
   
   int main_result = 0;
@@ -105,6 +106,7 @@ int main ()
   80:	24630001 	addiu	v1,v1,1
   84:	1468fff6 	bne	v1,t0,60 <main+0x60>
   88:	24840004 	addiu	a0,a0,4
+END_CCORE
         main_result += (output[i] != sum[i]);
     }
         //printf ("%d\n", main_result);

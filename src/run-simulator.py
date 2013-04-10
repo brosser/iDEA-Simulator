@@ -132,6 +132,7 @@ def main() :
 	lines = eparser.getLines()
 	datamem = eparser.getDataMem() 
 	mainAddr = eparser.getMainAddr()
+	coreInstr = eparser.getCCoreInstr()
 
 	# Parse in lines and check for dependencies
 	PPLogFileName = args[3] if len(args) >= 4 else defaultPreProcLogFile
@@ -142,7 +143,7 @@ def main() :
 		oldstdout.write("> Starting Assembler...\n")
 
 	# Get line by line
-	lines = iparser.parseLines(lines, (options.pipeline-options.ifcycles), options.ifcycles)
+	lines = iparser.parseLines(lines, (options.pipeline-options.ifcycles), options.ifcycles, coreInstr)
 	pipelineInfo = [options.pipeline, options.ifcycles, options.idcycles, options.excycles, options.wbcycles]
 
 	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose, options.quiet, pipelineInfo)

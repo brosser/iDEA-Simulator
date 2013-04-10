@@ -69,6 +69,7 @@ int main ()
   ac:	00000000 	sll	zero,zero,0x0
     {							 
         sum[i] = a + b;
+START_CCORE
   b0:	8fc30000 	lw	v1,0(s8)
   b4:	8fc20004 	lw	v0,4(s8)
   b8:	00000000 	sll	zero,zero,0x0
@@ -153,11 +154,13 @@ int main ()
  1a0:	2842000a 	slti	v0,v0,10
  1a4:	1440ffe4 	bnez	v0,138 <main+0x138>
  1a8:	00000000 	sll	zero,zero,0x0
+
         main_result += (output[i] != sum[i]);
     }
         //printf ("%d\n", main_result);
     
   return main_result;
+END_CCORE
  1ac:	8fc2000c 	lw	v0,12(s8)
  1b0:	0160e821 	addu	sp,t3,zero
 }

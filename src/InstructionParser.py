@@ -8,6 +8,7 @@ class InstructionParser(object):
     def __init__(self):
 
         self.expandInstruction = False
+        self.CCoreInstr = []
         self.instructionSet = {
             'pseudo': ['neg', 'negu', 'abs', 'break'],
             'rtype': ['add', 'sub', 'and', 'or', 'jr', 'jalr', 'nor', 'slt',
@@ -31,6 +32,7 @@ class InstructionParser(object):
             }
 
         self.nopInserts = []
+        self.nopInsertsCore = []
         self.nNOPs = 6
         self.IFiterations = 0
 
@@ -41,11 +43,13 @@ class InstructionParser(object):
             instructions = [self.parse(a.replace(',',' ')) for a in data]
             return instructions
 
-    def parseLines(self, lines, nNOPs, IFiterations):
+    def parseLines(self, lines, nNOPs, IFiterations, CCoreInstr):
+        self.CCoreInstr = CCoreInstr
         self.IFiterations = IFiterations
         print "###################### Preprocessing Logfile ######################\n"
         self.nNOPs = nNOPs
         instructions = [self.parse(a.replace(',',' ')) for a in lines]
+        instructions = self.insertCoreStatus(instructions)
         instructions = self.createEndInstruction(instructions)
         print "<Successfully parsed instructions>"
         print "\tInstruction Count: ", len(instructions) 
@@ -59,7 +63,7 @@ class InstructionParser(object):
         
         instr = s[0]
         instr.strip()
-        
+        print s
         if instr in self.instructionSet['pseudo']:
             return self.translatePseudoInstruction(s)
         if instr in self.instructionSet['rtype']:
@@ -84,7 +88,8 @@ class InstructionParser(object):
         elif s[0] == "abs" and n == 0:
             return Instruction(op="abs", s1 = s[1], regRead = 1, regWrite=1, aluop=1)
         elif s[0] == "break":
-            return Nop
+            #return Nop
+            return Instruction(op='nop')
 
     def createEndInstruction(self, instructions):
         replaceindex = -1
@@ -102,7 +107,8 @@ class InstructionParser(object):
         if s[0] in ["jr", "jalr"]:
             return Instruction(op=s[0], s1 = s[1], regRead = 1, aluop=0, branch=1)
         if(s[0] == "nop" or (s[0] == "sll" and s[1] == "$r0")):
-            return Nop
+            #return Nop
+            return Instruction(op='nop')
         if(s[0] in ["mult", "multu"]):
             return Instruction(op=s[0], dest=s[1], s1=s[1], s2=s[2], regRead=1, regWrite=1, aluop=1)
         if(s[0] in ["mflo", "mfhi"]):
@@ -146,6 +152,10 @@ class InstructionParser(object):
         # J or JAL
         return Instruction(op=s[0], target=s[1], branch=1)
 
+    def insertCoreStatus(self, instructions):
+        for i in range(0, len(instructions)):
+            instructions[i].controls['coreInstr'] = self.CCoreInstr[i]
+        return instructions
 
 ##########################################################
 #
@@ -186,10 +196,16 @@ class InstructionParser(object):
                 if (currIsJump or currIsBranch):
                     # Pad jumps and branches with nops
                     nList[i] = self.nNOPs
+                    for n in range (0, nList[i]):
+                        self.nopInsertsCore.append(curr.controls['coreInstr'])
                 if (matchsw1 or matchsw2):
                     nList[i] = self.nNOPs-dist
+                    for n in range (0, nList[i]):
+                        self.nopInsertsCore.append(curr.controls['coreInstr'])
                 if (match1 or match2 or match3):
                     nList[i] = self.nNOPs-dist
+                    for n in range (0, nList[i]):
+                        self.nopInsertsCore.append(curr.controls['coreInstr'])
                 dist += nList[i] + nList[i-l] + 1
                 l += 1
                 
@@ -211,7 +227,7 @@ class InstructionParser(object):
         # 1st iteration
         for k in range(0, len(self.nopInserts)):
             # Insert NOPs
-            instructions.insert(self.nopInserts[k], Nop)
+            instructions.insert(self.nopInserts[k], Instruction(op='nop', coreInstr=self.nopInsertsCore[k])) #Nop)
             # Recalculate target values for branches and jumps
             for i in instructions:
                 targetval = 0
@@ -258,7 +274,7 @@ class InstructionParser(object):
         # 2nd Iteration
         for k in range(0, len(self.nopInserts)):
             # Insert NOPs
-            instructions.insert(self.nopInserts[k], Nop)
+            instructions.insert(self.nopInserts[k], Instruction(op='nop', coreInstr=True))#Nop)
             # Recalculate target values for branches and jumps
             for i in instructions:
                 targetval = 0
