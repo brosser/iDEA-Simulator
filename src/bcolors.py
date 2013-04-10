@@ -5,7 +5,7 @@ class bcolors:
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
-    
+
     def __init__(self):
 	   self.defaultErrorMsg = "Error"
 
@@ -24,8 +24,12 @@ class bcolors:
             if (len(s) < i):
                 n += 1
             i -= 8
-        tabs = n*"\t"
-        print self.OKGREEN + "Passed \t|\t " + s + tabs + stats + self.ENDC
+        #tabs = n*"\t"
+        printstr = self.OKGREEN + "Passed \t| " + s + "\t" #+ tabs
+        for stat in stats:
+            printstr += str(stat) + "\t\t"
+        printstr += self.ENDC
+        print printstr
 
     def printFail(self, s, errorMsg):
 	   print self.FAIL + "Failed \t|\t " + s + "\t" + errorMsg + self.ENDC

@@ -142,7 +142,7 @@ def main() :
 		oldstdout.write("> Starting Assembler...\n")
 
 	# Get line by line
-	lines = iparser.parseLines(lines, (options.pipeline-options.ifcycles))
+	lines = iparser.parseLines(lines, (options.pipeline-options.ifcycles), options.ifcycles)
 	pipelineInfo = [options.pipeline, options.ifcycles, options.idcycles, options.excycles, options.wbcycles]
 
 	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose, options.quiet, pipelineInfo)
@@ -181,7 +181,7 @@ def main() :
 	else:
 		success = checker.runCheck()
 		if(success):
-			B.printPass(args[0], checker.getCycles())
+			B.printPass(args[0], [checker.getCycles(), checker.getNOPs(), checker.getCPI()])
 		else:
 			B.printFail(args[0], "")
 

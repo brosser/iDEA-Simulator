@@ -152,7 +152,7 @@ int main()
 
     return main_result;
 }
-  e0:	08000045 	j	118 <main+0x114>
+  e0:	08000045 	j	12c <main+0x118>
   e4:	27bd0068 	addiu	sp,sp,104
     int x, y;
     int sum = 0;
@@ -179,16 +179,24 @@ int main()
  106: 01242821  addiu  a1,a1,0xc8
 
  108:	03a42021 	addu	a0,sp,a0
+ 110: 24030005  addiu v1,zero,5
  10c:	0800002a 	j	a8 <main+0xa8>
- 110:	24030005 	addiu	v1,zero,5
+ 000: 00000000  nop
+ 
     }
 
     //printf("%d\n", main_result);
 
     return main_result;
 }
- 114:	03e00008 	jr	ra
+ 
  118:	00000000 	sll	zero,zero,0x0
+
+118:  00000000  sll zero,zero,0x0
+114:  03e00008  jr  ra
+ 118: 00000000  sll zero,zero,0x0
+ 118: 00000000  sll zero,zero,0x0
+ 118: 00000000  sll zero,zero,0x0
 
 Disassembly of section .rodata:
 

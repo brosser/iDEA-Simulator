@@ -32,6 +32,7 @@ class InstructionParser(object):
 
         self.nopInserts = []
         self.nNOPs = 6
+        self.IFiterations = 0
 
     def parseFile(self, filename):
         with open(filename) as f:
@@ -40,7 +41,8 @@ class InstructionParser(object):
             instructions = [self.parse(a.replace(',',' ')) for a in data]
             return instructions
 
-    def parseLines(self, lines, nNOPs):
+    def parseLines(self, lines, nNOPs, IFiterations):
+        self.IFiterations = IFiterations
         print "###################### Preprocessing Logfile ######################\n"
         self.nNOPs = nNOPs
         instructions = [self.parse(a.replace(',',' ')) for a in lines]
@@ -205,11 +207,11 @@ class InstructionParser(object):
 
     # Insert NOPs
     def insertNOPs(self, instructions):
+        t = 0
+        # 1st iteration
         for k in range(0, len(self.nopInserts)):
-            
             # Insert NOPs
             instructions.insert(self.nopInserts[k], Nop)
-
             # Recalculate target values for branches and jumps
             for i in instructions:
                 targetval = 0
@@ -226,9 +228,72 @@ class InstructionParser(object):
                 if(targetval >= (self.nopInserts[k])*4):
                     targetval += 4
                     i.values[vstr] = targetval
-                
+
             for j in range(k+1, len(self.nopInserts)):
                 self.nopInserts[j] += 1
+
+        # Get addresses that are targets of branches or jumps
+        targetvals = []
+        self.nopInserts = []
+
+        for i in instructions:
+            if i.branch:
+                if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz']) :
+                    if(int(i.immed) not in targetvals):
+                        targetvals.append(int(i.immed))
+                elif(i.op == 'j', 'jal'):
+                    if(int(i.target) not in targetvals):
+                        targetvals.append(int(i.target))
+
+        for k in range (0, len(instructions)-1):
+            p = k*0x4 # Address
+            if(p in targetvals):
+                for q in range(0, self.nNOPs-self.IFiterations):
+                    self.nopInserts.append(k)
+
+        print "TARGETVALS: "
+        for t in targetvals:
+            print hex(t)
+
+        # 2nd Iteration
+        for k in range(0, len(self.nopInserts)):
+            # Insert NOPs
+            instructions.insert(self.nopInserts[k], Nop)
+            # Recalculate target values for branches and jumps
+            for i in instructions:
+                targetval = 0
+                vstr = ''
+                if i.branch:
+                    if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz']) :
+                        targetval = int(i.immed)
+                        vstr = 'immed'
+                    elif(i.op == 'j', 'jal'):
+                        targetval = int(i.target)
+                        vstr = 'target'
+                    else:
+                        targetval = 0
+                if(targetval >= (self.nopInserts[k])*4):
+                    targetval += 4
+                    i.values[vstr] = targetval
+
+            for j in range(k+1, len(self.nopInserts)):
+                self.nopInserts[j] += 1
+
+        # 3rd Iteration
+        # Recalculate target values for branches and jumps
+        for i in instructions:
+            targetval = 0
+            vstr = ''
+            if i.branch:
+                if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz']) :
+                    targetval = int(i.immed)
+                    vstr = 'immed'
+                elif(i.op == 'j', 'jal'):
+                    targetval = int(i.target)
+                    vstr = 'target'
+                else:
+                    targetval = 0
+                i.values[vstr] = (targetval-((self.nNOPs-self.IFiterations)*0x4)) 
 
         print "\n<Processed Instructions>"
         addr = 0x0
@@ -237,14 +302,6 @@ class InstructionParser(object):
             addr += 0x4
 
         return instructions
-
-    def addDep(self, i, logstr):
-        print (self.loglines[logstr] + hex(4*(i+1)) + " and " + hex(4*(i+2)))
-        if(i not in self.nopInserts) :
-            print "Inserting ", self.nNOPs, " NOP(s)"
-            for k in range(0, self.nNOPs):
-                self.nopInserts.append(i)
-        return
 
 ##########################################################
 #

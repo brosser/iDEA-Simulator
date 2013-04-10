@@ -17,8 +17,16 @@ class Checker:
         self.quiet = quiet
         self.lines = f.readlines()
 
+        self.getStats()
+
+        self.cycles = 0
+        self.nops = 0
+        self.kernelCycles = 0
+        self.cpi = 0
+
     def runCheck(self):
         lineN = len(self.lines)-1
+        self.getStats()
         for line in reversed(self.lines):
             lineN -= 1
             if re.match( ".*" + "Debug" + ".*" , line): # Caveat: Debug sequence must not change.
@@ -39,13 +47,29 @@ class Checker:
                     else:
                         return False
 
-    def getCycles(self):
+    def getStats(self):
         lineN = len(self.lines)-1
         for line in reversed(self.lines):
             lineN -= 1
             if re.match( '<Cycles> :' + '.*' , line): # Caveat: Debug sequence must not change.
                 strp = line.strip()
                 s = strp.split(' ')
-                #print " ", str(s)
-                return str(s[3])
+                self.cycles = str(s[3])
+            if re.match( '<NOPs> :' + '.*' , line): # Caveat: Debug sequence must not change.
+                strp = line.strip()
+                s = strp.split(' ')
+                self.nops = str(s[3])
+            if re.match( '<CPI> :' + '.*' , line): # Caveat: Debug sequence must not change.
+                strp = line.strip()
+                s = strp.split(' ')
+                self.cpi = str(s[3])
         return "0"
+
+    def getCycles(self):
+        return self.cycles
+
+    def getNOPs(self):
+        return self.nops
+
+    def getCPI(self):
+        return str(round(float(self.cpi), 4))

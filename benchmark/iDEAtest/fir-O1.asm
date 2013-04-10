@@ -11,117 +11,117 @@ Disassembly of section .text:
                         0, 0, 0, 0}; // Padded line for y[49]
 
 int main () {
-   0:	27bdff20 	addiu	sp,sp,-224
+   0: 27bdff20  addiu sp,sp,-224
     int k, n;
     int sum;
     
     int ndata = 50;
     int ncoeff = 5;
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
-   4:	24020003 	addiu	v0,zero,3
-   8:	afa20000 	sw	v0,0(sp)
-   c:	24020005 	addiu	v0,zero,5
-  10:	afa20004 	sw	v0,4(sp)
-  14:	2402000f 	addiu	v0,zero,15
-  18:	afa20008 	sw	v0,8(sp)
-  1c:	2402000c 	addiu	v0,zero,12
-  20:	afa2000c 	sw	v0,12(sp)
-  24:	24020007 	addiu	v0,zero,7
-  28:	afa20010 	sw	v0,16(sp)
-  2c:	27a70014 	addiu	a3,sp,20
+   4: 24020003  addiu v0,zero,3
+   8: afa20000  sw  v0,0(sp)
+   c: 24020005  addiu v0,zero,5
+  10: afa20004  sw  v0,4(sp)
+  14: 2402000f  addiu v0,zero,15
+  18: afa20008  sw  v0,8(sp)
+  1c: 2402000c  addiu v0,zero,12
+  20: afa2000c  sw  v0,12(sp)
+  24: 24020007  addiu v0,zero,7
+  28: afa20010  sw  v0,16(sp)
+  2c: 27a70014  addiu a3,sp,20
         int y[50];
 
     for (n = 0; n < ndata; n++) {
-  30:	00003021 	addu	a2,zero,zero
+  30: 00003021  addu  a2,zero,zero
                         33, 25, 35, 25, 14, 31, 41, 17, 15, 22,
                         16, 26, 22, 29, 25, 11, 33, 20, 21, 9,
                         25, 21, 4, 21, 14, 14, 32, 30, 13, 1,
                         0, 0, 0, 0}; // Padded line for y[49]
 
 int main () {
-  34:	3c0a0000 	lui	t2,0x0
-  38:	254a0000 	addiu	t2,t2,0
-  3c:	00e02821 	addu	a1,a3,zero
+  34: 3c0a0000  lui t2,0x0
+  38: 254a0000  addiu t2,t2,0
+  3c: 00e02821  addu  a1,a3,zero
     int ndata = 50;
     int ncoeff = 5;
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
         int y[50];
 
     for (n = 0; n < ndata; n++) {
-  40:	0800001f 	j	7c <main+0x7c>
-  44:	24090032 	addiu	t1,zero,50
+  40: 0800001f  j 7c <main+0x7c>
+  44: 24090032  addiu t1,zero,50
         sum = 0;
         for (k = 0; k < ncoeff; k++) {
             sum = sum + coeff[k] * data[k+n];
-  48:	8c6c0000 	lw	t4,0(v1)
-  4c:	8c4b0000 	lw	t3,0(v0)
-  50:	00000000 	sll	zero,zero,0x0
-  54:	018b0018 	mult	t4,t3
-  58:	00005812 	mflo	t3
-  5c:	008b2021 	addu	a0,a0,t3
-  60:	24420004 	addiu	v0,v0,4
+  48: 8c6c0000  lw  t4,0(v1)
+  4c: 8c4b0000  lw  t3,0(v0)
+  50: 00000000  sll zero,zero,0x0
+  54: 018b0018  mult  t4,t3
+  58: 00005812  mflo  t3
+  5c: 008b2021  addu  a0,a0,t3
+  60: 24420004  addiu v0,v0,4
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
         int y[50];
 
     for (n = 0; n < ndata; n++) {
         sum = 0;
         for (k = 0; k < ncoeff; k++) {
-  64:	1445fff8 	bne	v0,a1,48 <main+0x48>
-  68:	24630004 	addiu	v1,v1,4
-  6c:	ad040000 	sw	a0,0(t0)
+  64: 1445fff8  bne v0,a1,48 <main+0x48>
+  68: 24630004  addiu v1,v1,4
+  6c: ad040000  sw  a0,0(t0)
     int ndata = 50;
     int ncoeff = 5;
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
         int y[50];
 
     for (n = 0; n < ndata; n++) {
-  70:	24c60001 	addiu	a2,a2,1
-  74:	10c90007 	beq	a2,t1,94 <main+0x94>
-  78:	24e70004 	addiu	a3,a3,4
+  70: 24c60001  addiu a2,a2,1
+  74: 10c90007  beq a2,t1,94 <main+0x94>
+  78: 24e70004  addiu a3,a3,4
                         33, 25, 35, 25, 14, 31, 41, 17, 15, 22,
                         16, 26, 22, 29, 25, 11, 33, 20, 21, 9,
                         25, 21, 4, 21, 14, 14, 32, 30, 13, 1,
                         0, 0, 0, 0}; // Padded line for y[49]
 
 int main () {
-  7c:	00e04021 	addu	t0,a3,zero
-  80:	03a01021 	addu	v0,sp,zero
-  84:	00061880 	sll	v1,a2,0x2
-  88:	01431821 	addu	v1,t2,v1
-  8c:	08000012 	j	48 <main+0x48>
-  90:	00002021 	addu	a0,zero,zero
+  7c: 00e04021  addu  t0,a3,zero
+  80: 03a01021  addu  v0,sp,zero
+  84: 00061880  sll v1,a2,0x2
+  88: 01431821  addu  v1,t2,v1
+  8c: 08000012  j 48 <main+0x48>
+  90: 00002021  addu  a0,zero,zero
     int ndata = 50;
     int ncoeff = 5;
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
         int y[50];
 
     for (n = 0; n < ndata; n++) {
-  94:	00001821 	addu	v1,zero,zero
-  98:	00001021 	addu	v0,zero,zero
+  94: 00001821  addu  v1,zero,zero
+  98: 00001021  addu  v0,zero,zero
                         33, 25, 35, 25, 14, 31, 41, 17, 15, 22,
                         16, 26, 22, 29, 25, 11, 33, 20, 21, 9,
                         25, 21, 4, 21, 14, 14, 32, 30, 13, 1,
                         0, 0, 0, 0}; // Padded line for y[49]
 
 int main () {
-  9c:	3c080000 	lui	t0,0x0
-  a0:	25080000 	addiu	t0,t0,0
-  a4:	27a70014 	addiu	a3,sp,20
+  9c: 3c080000  lui t0,0x0
+  a0: 25080000  addiu t0,t0,0
+  a4: 27a70014  addiu a3,sp,20
             sum = sum + coeff[k] * data[k+n];
             y[n] = sum;           
         }
     }
     
     for (i = 0; i < 50; i++){
-  a8:	240600c8 	addiu	a2,zero,200
+  a8: 240600c8  addiu a2,zero,200
                         33, 25, 35, 25, 14, 31, 41, 17, 15, 22,
                         16, 26, 22, 29, 25, 11, 33, 20, 21, 9,
                         25, 21, 4, 21, 14, 14, 32, 30, 13, 1,
                         0, 0, 0, 0}; // Padded line for y[49]
 
 int main () {
-  ac:	01032821 	addu	a1,t0,v1
-  b0:	00e32021 	addu	a0,a3,v1
+  ac: 01032821  addu  a1,t0,v1
+  b0: 00e32021  addu  a0,a3,v1
             y[n] = sum;           
         }
     }
@@ -132,29 +132,29 @@ int main () {
 
     for (i = 0; i < 50; i++){
         main_result += (output[i] != y[i]);
-  b4:	8ca50000 	lw	a1,0(a1)
-  b8:	8c840000 	lw	a0,0(a0)
+  b4: 8ca50000  lw  a1,0(a1)
+  b8: 8c840000  lw  a0,0(a0)
 
-  bc:	00000000 	sll	zero,zero,0x0
-  c0:	00a42026 	xor	a0,a1,a0
-  c4:	0004202b 	sltu	a0,zero,a0
-  c8:	24630004 	addiu	v1,v1,4
+  bc: 00000000  sll zero,zero,0x0
+  c0: 00a42026  xor a0,a1,a0
+  c4: 0004202b  sltu  a0,zero,a0
+  c8: 24630004  addiu v1,v1,4
             sum = sum + coeff[k] * data[k+n];
             y[n] = sum;           
         }
     }
     
     for (i = 0; i < 50; i++){
-  cc:	1466fff7 	bne	v1,a2,ac <main+0xac>
-  d0:	00441021 	addu	v0,v0,a0
+  cc: 1466fff7  bne v1,a2,ac <main+0xac>
+  d0: 00441021  addu  v0,v0,a0
         main_result += (output[i] != y[i]);
     }
     //printf ("%d\n", main_result);
     
     return main_result;
 }
-  d4:	03e00008 	jr	ra
-  d8:	27bd00e0 	addiu	sp,sp,224
+  d4: 03e00008  jr  ra
+  d8: 27bd00e0  addiu sp,sp,224
 
 Disassembly of section .rodata:
 
