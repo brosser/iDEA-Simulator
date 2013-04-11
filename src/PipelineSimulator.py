@@ -286,9 +286,9 @@ class PipelineSimulator(object):
         self.printDataMemory()
 
         print "\n<Final Program Counter> : ", hex(self.programCounter)
-        print "<Total Cycles> : " , float(self.cycles)
-        print "<Core Cycles> : " , float(self.coreInstrCount)
-        print "<Core NOPs> : " , float(self.coreNopCount)
+        print "<TotalCycles> : " , float(self.cycles)
+        print "<CoreCycles> : " , float(self.coreInstrCount)
+        print "<CoreNOPs> : " , float(self.coreNopCount)
         print "<Instructions Executed> : " , float(self.instrCount)
         print "<NOPs> : " , float(self.nopCount)
         print "<CPI> : " , float(self.cycles) / (float(self.instrCount)-float(self.nopCount)) , "\n"

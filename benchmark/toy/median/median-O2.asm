@@ -56,6 +56,7 @@ const int output[16] = {3, 4, 5, 6, 7,
                         18}; /*N - window_size - 1*/
 
 int main () {
+START_CCORE
   24:	000c1880 	sll	v1,t4,0x2
   28:	03231821 	addu	v1,t9,v1
     int result[20];
@@ -221,6 +222,7 @@ int main () {
     // Manually changed by Fred
   f8:	1466fff8 	bne	v1,a2,e0 <main+0xdc>
   fc:	00441021 	addu	v0,v0,a0
+END_CCORE
         //printf("%i: %i\n", i, result[i]);
     }
     //printf("%i\n", main_result);

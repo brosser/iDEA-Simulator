@@ -182,7 +182,7 @@ def main() :
 	else:
 		success = checker.runCheck()
 		if(success):
-			B.printPass(args[0], [checker.getCycles(), checker.getNOPs(), checker.getCPI()])
+			B.printPass(args[0], [checker.getCycles(), checker.getNOPs(), checker.getCPI(), checker.getCoreCycles(), checker.getCoreNops()])
 		else:
 			B.printFail(args[0], "")
 

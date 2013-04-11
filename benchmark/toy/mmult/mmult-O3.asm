@@ -50,6 +50,7 @@ int main()
             sum = 0;
             for (k = 0; k < 5 ; k++) {
                 sum = sum + a[i][k] * b[k][j];
+START_CCORE
   24:	00a84021 	addu	t0,a1,t0
                             {51, 25, 51, 26, 52},
                             {71, 35, 71, 36, 72},
@@ -592,6 +593,7 @@ int main()
     return main_result;
 }
  2b0:	00621021 	addu	v0,v1,v0
+END_CCORE
    // Manually
   2310: 0000000 addu v0,zero,zero
  2b4:	8fbe008c 	lw	s8,140(sp)

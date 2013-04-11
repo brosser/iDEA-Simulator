@@ -9,8 +9,8 @@ do
 
 	echo -e "\n"
 	echo -e "\t\t\t\t [  $I Stage Pipeline  ]"
-	echo -e "Result \t\t Benchmark\t\t\tCycles \t\t NOPs \t\t CPI"
-	echo -e "---------------------------------------------------------------------------------------"
+	echo -e "Result \t\t Benchmark\t\t      Cycles\tNOPs\tCPI\tCore\tCoreNOPs"
+	echo -e "----------------------------------------------------------------------------------------"
 	# Fib
 	python src/run-simulator.py -q -p $I ./benchmark/toy/fib/fib-O0.asm
 	python src/run-simulator.py -q -p $I ./benchmark/toy/fib/fib-O1.asm

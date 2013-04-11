@@ -46,6 +46,7 @@ int main () {
   4c:	08000043 	j	10c <main+0x10c>
   50:	00000000 	sll	zero,zero,0x0
         sum = 0;
+START_CCORE
   54:	afc00010 	sw	zero,16(s8)
         for (k = 0; k < ncoeff; k++) {
   58:	afc00008 	sw	zero,8(s8)
@@ -161,6 +162,7 @@ int main () {
  194:	28420032 	slti	v0,v0,50
  198:	1440ffe5 	bnez	v0,130 <main+0x130>
  19c:	00000000 	sll	zero,zero,0x0
+END_CCORE
         main_result += (output[i] != y[i]);
     }
     //printf ("%d\n", main_result);

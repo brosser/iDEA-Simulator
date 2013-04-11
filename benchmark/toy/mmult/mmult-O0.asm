@@ -28,6 +28,7 @@ int main()
   18:	08000053 	j	14c <main+0x14c>
   1c:	00000000 	sll	zero,zero,0x0
         for (j = 0; j < 5; j++) {
+START_CCORE
   20:	afc00004 	sw	zero,4(s8)
   24:	0800004a 	j	128 <main+0x128>
   28:	00000000 	sll	zero,zero,0x0
@@ -205,6 +206,7 @@ int main()
  230:	28420005 	slti	v0,v0,5
  234:	1440ffcd 	bnez	v0,16c <main+0x16c>
  238:	00000000 	sll	zero,zero,0x0
+END_CCORE
         }
     }
     //printf("%d\n", main_result);

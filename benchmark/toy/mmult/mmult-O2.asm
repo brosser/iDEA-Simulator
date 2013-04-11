@@ -33,6 +33,7 @@ int main()
                             {91, 45, 91, 46, 92}};
 
 int main()
+START_CCORE
   1c:	000b4880 	sll	t1,t3,0x2
   20:	000b1100 	sll	v0,t3,0x4
   24:	01224821 	addu	t1,t1,v0
@@ -182,6 +183,7 @@ int main()
   dc:	1523ffef 	bne	t1,v1,a4 <main+0x9c>
 
   e0:	00000000 	sll	zero,zero,0x0
+END_CCORE
     }
 
     //printf("%d\n", main_result);

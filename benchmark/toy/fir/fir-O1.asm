@@ -53,6 +53,7 @@ int main () {
         sum = 0;
         for (k = 0; k < ncoeff; k++) {
             sum = sum + coeff[k] * data[k+n];
+START_CCORE
   48:	8c6c0000 	lw	t4,0(v1)
   4c:	8c4b0000 	lw	t3,0(v0)
   50:	00000000 	sll	zero,zero,0x0
@@ -147,6 +148,7 @@ int main () {
     for (i = 0; i < 50; i++){
   cc:	1466fff7 	bne	v1,a2,ac <main+0xac>
   d0:	00441021 	addu	v0,v0,a0
+END_CCORE
         main_result += (output[i] != y[i]);
     }
     //printf ("%d\n", main_result);
