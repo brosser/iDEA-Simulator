@@ -93,7 +93,7 @@ START_CCORE
         a = b;
         b = sum[i];
     }
-    
+END_CCORE    
     for (i = 0; i < 10; i++){
   5c:	2408000a 	addiu	t0,zero,10
         main_result += (output[i] != sum[i]);
@@ -122,7 +122,7 @@ START_CCORE
   84:	24840004 	addiu	a0,a0,4
 END_CCORE
         main_result += (output[i] != sum[i]);
-END_CCORE
+
     }
         //printf ("%d\n", main_result);
     

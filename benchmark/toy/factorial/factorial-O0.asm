@@ -6,8 +6,8 @@ Disassembly of section .text:
 
 00000000 <calc_factorial>:
 
-const int number = 3;
-const int output = 6;
+const int number = 8; // number of iterations
+const int output = 40320;
 
 int calc_factorial (int n)
 {
@@ -17,92 +17,90 @@ int calc_factorial (int n)
    c:	afc40010 	sw	a0,16(s8)
 
     int i;
-    short factorial_number = 1;
+    int factorial_number = 1;
   10:	24020001 	addiu	v0,zero,1
-  14:	a7c20004 	sh	v0,4(s8)
+  14:	afc20004 	sw	v0,4(s8)
 
     for (i=1; i <= n; ++i){
   18:	24020001 	addiu	v0,zero,1
   1c:	afc20000 	sw	v0,0(s8)
-  20:	08000017 	j	5c <calc_factorial+0x5c>
+  20:	08000014 	j	50 <calc_factorial+0x50>
   24:	00000000 	sll	zero,zero,0x0
         factorial_number = factorial_number * i;
-  28:	8fc20000 	lw	v0,0(s8)
-  2c:	00000000 	sll	zero,zero,0x0
-  30:	3043ffff 	andi	v1,v0,0xffff
-  34:	97c20004 	lhu	v0,4(s8)
-  38:	00000000 	sll	zero,zero,0x0
-  3c:	00620018 	mult	v1,v0
-  40:	00001012 	mflo	v0
-  44:	3042ffff 	andi	v0,v0,0xffff
-  48:	a7c20004 	sh	v0,4(s8)
+  28:	8fc30004 	lw	v1,4(s8)
+  2c:	8fc20000 	lw	v0,0(s8)
+  30:	00000000 	sll	zero,zero,0x0
+  34:	00620018 	mult	v1,v0
+  38:	00001012 	mflo	v0
+  3c:	afc20004 	sw	v0,4(s8)
 {
 
     int i;
-    short factorial_number = 1;
+    int factorial_number = 1;
 
     for (i=1; i <= n; ++i){
-  4c:	8fc20000 	lw	v0,0(s8)
-  50:	00000000 	sll	zero,zero,0x0
-  54:	24420001 	addiu	v0,v0,1
-  58:	afc20000 	sw	v0,0(s8)
-  5c:	8fc30000 	lw	v1,0(s8)
-  60:	8fc20010 	lw	v0,16(s8)
+  40:	8fc20000 	lw	v0,0(s8)
+  44:	00000000 	sll	zero,zero,0x0
+  48:	24420001 	addiu	v0,v0,1
+  4c:	afc20000 	sw	v0,0(s8)
+  50:	8fc30000 	lw	v1,0(s8)
+  54:	8fc20010 	lw	v0,16(s8)
+  58:	00000000 	sll	zero,zero,0x0
+  5c:	0043102a 	slt	v0,v0,v1
+  60:	1040fff1 	beqz	v0,28 <calc_factorial+0x28>
   64:	00000000 	sll	zero,zero,0x0
-  68:	0043102a 	slt	v0,v0,v1
-  6c:	1040ffee 	beqz	v0,28 <calc_factorial+0x28>
-  70:	00000000 	sll	zero,zero,0x0
         factorial_number = factorial_number * i;
     }
+    //printf("%d\n", factorial_number);
 
     return(factorial_number);
-  74:	87c20004 	lh	v0,4(s8)
+  68:	8fc20004 	lw	v0,4(s8)
 }
-  78:	03c0e821 	addu	sp,s8,zero
-  7c:	8fbe000c 	lw	s8,12(sp)
-  80:	27bd0010 	addiu	sp,sp,16
-  84:	03e00008 	jr	ra
-  88:	00000000 	sll	zero,zero,0x0
+  6c:	03c0e821 	addu	sp,s8,zero
+  70:	8fbe000c 	lw	s8,12(sp)
+  74:	27bd0010 	addiu	sp,sp,16
+  78:	03e00008 	jr	ra
+  7c:	00000000 	sll	zero,zero,0x0
 
-0000008c <main>:
+00000080 <main>:
 
 int main()
 {
-  8c:	27bdffe0 	addiu	sp,sp,-32
-  90:	afbf001c 	sw	ra,28(sp)
-  94:	afbe0018 	sw	s8,24(sp)
-  98:	03a0f021 	addu	s8,sp,zero
+  80:	27bdffe0 	addiu	sp,sp,-32
+  84:	afbf001c 	sw	ra,28(sp)
+  88:	afbe0018 	sw	s8,24(sp)
+  8c:	03a0f021 	addu	s8,sp,zero
     int main_result = 0;
-  9c:	afc00010 	sw	zero,16(s8)
+  90:	afc00010 	sw	zero,16(s8)
     int c;
 
     c = calc_factorial (number);
-  a0:	8f820000 	lw	v0,0(s8)
+  94:	8f820000 	lw	v0,0(gp)
+  98:	00000000 	sll	zero,zero,0x0
+  9c:	00402021 	addu	a0,v0,zero
+  a0:	0c000000 	jal	0 <calc_factorial>
   a4:	00000000 	sll	zero,zero,0x0
-  a8:	00402021 	addu	a0,v0,zero
-  ac:	0c000000 	jal	0 <calc_factorial>
-  b0:	00000000 	sll	zero,zero,0x0
-  b4:	afc20014 	sw	v0,20(s8)
+  a8:	afc20014 	sw	v0,20(s8)
 
     main_result += (output != c);
-  b8:	8f830000 	lw	v1,0(s8)
-  bc:	8fc20014 	lw	v0,20(s8)
-  c0:	00000000 	sll	zero,zero,0x0
-  c4:	00621026 	xor	v0,v1,v0
-  c8:	0002102b 	sltu	v0,zero,v0
-  cc:	8fc30010 	lw	v1,16(s8)
-  d0:	00000000 	sll	zero,zero,0x0
-  d4:	00621021 	addu	v0,v1,v0
-  d8:	afc20010 	sw	v0,16(s8)
+  ac:	8f830000 	lw	v1,0(gp)
+  b0:	8fc20014 	lw	v0,20(s8)
+  b4:	00000000 	sll	zero,zero,0x0
+  b8:	00621026 	xor	v0,v1,v0
+  bc:	0002102b 	sltu	v0,zero,v0
+  c0:	8fc30010 	lw	v1,16(s8)
+  c4:	00000000 	sll	zero,zero,0x0
+  c8:	00621021 	addu	v0,v1,v0
+  cc:	afc20010 	sw	v0,16(s8)
     
     //printf ("%d\n", main_result);
 
     return main_result;
-  dc:	8fc20010 	lw	v0,16(s8)
+  d0:	8fc20010 	lw	v0,16(s8)
 }
-  e0:	03c0e821 	addu	sp,s8,zero
-  e4:	8fbf001c 	lw	ra,28(sp)
-  e8:	8fbe0018 	lw	s8,24(sp)
-  ec:	27bd0020 	addiu	sp,sp,32
-  f0:	03e00008 	jr	ra
-  f4:	00000000 	sll	zero,zero,0x0
+  d4:	03c0e821 	addu	sp,s8,zero
+  d8:	8fbf001c 	lw	ra,28(sp)
+  dc:	8fbe0018 	lw	s8,24(sp)
+  e0:	27bd0020 	addiu	sp,sp,32
+  e4:	03e00008 	jr	ra
+  e8:	00000000 	sll	zero,zero,0x0

@@ -113,7 +113,7 @@ START_CCORE
         a = b;
         b = sum[i];
     }
-    
+END_CCORE    
     for (i = 0; i < 10; i++){
  12c:	afc00008 	sw	zero,8(s8)
  130:	08000066 	j	198 <main+0x198>
@@ -160,7 +160,7 @@ START_CCORE
         //printf ("%d\n", main_result);
     
   return main_result;
-END_CCORE
+
  1ac:	8fc2000c 	lw	v0,12(s8)
  1b0:	0160e821 	addu	sp,t3,zero
 }

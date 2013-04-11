@@ -63,7 +63,7 @@ START_CCORE
         a = b;
         b = sum[i];
     }
-    
+END_CCORE    
     for (i = 0; i < 10; i++){
         main_result += (output[i] != sum[i]);
   60:	8fa30000 	lw	v1,0(sp)
@@ -116,7 +116,7 @@ START_CCORE
         main_result += (output[i] != sum[i]);
   f4:	00641821 	addu	v1,v1,a0
   f8:	0002102b 	sltu	v0,zero,v0
-END_CCORE
+
     }
         //printf ("%d\n", main_result);
     
