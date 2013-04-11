@@ -53,6 +53,7 @@ int main () {
         sum = 0;
         for (k = 0; k < ncoeff; k++) {
             sum = sum + coeff[k] * data[k+n];
+START_CCORE
   48:	8c6c0000 	lw	t4,0(v1)
   4c:	8c4b0000 	lw	t3,0(v0)
   50:	00000000 	sll	zero,zero,0x0
@@ -153,6 +154,7 @@ int main () {
     
     return main_result;
 }
+END_CCORE
   d4:	03e00008 	jr	ra
   d8:	27bd00e0 	addiu	sp,sp,224
 

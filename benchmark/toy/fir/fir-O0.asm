@@ -42,6 +42,7 @@ int main () {
         int y[50];
 
     for (n = 0; n < ndata; n++) {
+START_CCORE
   48:	afc0000c 	sw	zero,12(s8)
   4c:	08000043 	j	10c <main+0x10c>
   50:	00000000 	sll	zero,zero,0x0
@@ -161,6 +162,7 @@ int main () {
  194:	28420032 	slti	v0,v0,50
  198:	1440ffe5 	bnez	v0,130 <main+0x130>
  19c:	00000000 	sll	zero,zero,0x0
+END_CCORE
         main_result += (output[i] != y[i]);
     }
     //printf ("%d\n", main_result);
