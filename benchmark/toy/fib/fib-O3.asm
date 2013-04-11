@@ -123,6 +123,7 @@ END_CCORE
   return main_result;
 }
   fc:	00431021 	addu	v0,v0,v1
+END_CCORE
  100:	8fbe0014 	lw	s8,20(sp)
  104:	03e00008 	jr	ra
  108:	27bd0018 	addiu	sp,sp,24

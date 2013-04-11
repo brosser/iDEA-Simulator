@@ -44,6 +44,7 @@ int main () {
                         0, 0, 0, 0}; // Padded line for y[49]
 
 int main () {
+START_CCORE
   48:	00061880 	sll	v1,a2,0x2
   4c:	01431821 	addu	v1,t2,v1
         int y[50];
@@ -177,6 +178,7 @@ int main () {
     for (i = 0; i < 50; i++){
   d4:	1467fff8 	bne	v1,a3,b8 <main+0xb8>
   d8:	00441021 	addu	v0,v0,a0
+END_CCORE
         main_result += (output[i] != y[i]);
     }
     //printf ("%d\n", main_result);

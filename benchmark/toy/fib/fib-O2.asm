@@ -120,6 +120,7 @@ END_CCORE
     for (i = 0; i < 10; i++){
   80:	1468fff7 	bne	v1,t0,60 <main+0x60>
   84:	24840004 	addiu	a0,a0,4
+END_CCORE
         main_result += (output[i] != sum[i]);
 
     }

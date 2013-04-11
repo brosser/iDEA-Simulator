@@ -27,7 +27,7 @@ class bcolors:
         #tabs = n*"\t"
         printstr = self.OKGREEN + "Passed \t| " + s + "\t" #+ tabs
         for stat in stats:
-            printstr += str(stat) + "\t\t"
+            printstr += str(stat) + "\t"
         printstr += self.ENDC
         print printstr
 

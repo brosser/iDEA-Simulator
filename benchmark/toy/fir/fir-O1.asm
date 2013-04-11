@@ -148,6 +148,7 @@ int main () {
     for (i = 0; i < 50; i++){
   cc:	1466fff7 	bne	v1,a2,ac <main+0xac>
   d0:	00441021 	addu	v0,v0,a0
+END_CCORE
         main_result += (output[i] != y[i]);
     }
     //printf ("%d\n", main_result);

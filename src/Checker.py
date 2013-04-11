@@ -21,8 +21,9 @@ class Checker:
 
         self.cycles = 0
         self.nops = 0
-        self.kernelCycles = 0
+        self.corecycles = 0
         self.cpi = 0
+        self.corenops = 0
 
     def runCheck(self):
         lineN = len(self.lines)-1
@@ -51,7 +52,7 @@ class Checker:
         lineN = len(self.lines)-1
         for line in reversed(self.lines):
             lineN -= 1
-            if re.match( '<Cycles> :' + '.*' , line): # Caveat: Debug sequence must not change.
+            if re.match( '<TotalCycles> :' + '.*' , line): # Caveat: Debug sequence must not change.
                 strp = line.strip()
                 s = strp.split(' ')
                 self.cycles = str(s[3])
@@ -63,7 +64,20 @@ class Checker:
                 strp = line.strip()
                 s = strp.split(' ')
                 self.cpi = str(s[3])
-        return "0"
+            if re.match( '<CoreCycles> :' + '.*' , line): # Caveat: Debug sequence must not change.
+                strp = line.strip()
+                s = strp.split(' ')
+                self.corecycles = str(s[3])
+            if re.match( '<CoreNOPs> :' + '.*' , line): # Caveat: Debug sequence must not change.
+                strp = line.strip()
+                s = strp.split(' ')
+                self.corenops = str(s[3])
+
+    def getCoreNops(self):
+        return (str(self.corenops)).replace(' ', '')[:-2].upper()
+
+    def getCoreCycles(self):
+        return (str(self.corecycles)).replace(' ', '')[:-2].upper()
 
     def getCycles(self):
         return (str(self.cycles)).replace(' ', '')[:-2].upper()
@@ -72,4 +86,4 @@ class Checker:
         return (str(self.nops)).replace(' ', '')[:-2].upper()
 
     def getCPI(self):
-        return str(round(float(self.cpi), 4))
+        return str(round(float(self.cpi), 3))

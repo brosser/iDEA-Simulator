@@ -34,6 +34,7 @@ int main () {
   24:	00000000 	sll	zero,zero,0x0
         // Pick up the window elements
         for (j = 0; j < 5; j++) {
+START_CCORE
   28:	afc00004 	sw	zero,4(s8)
   2c:	08000021 	j	84 <main+0x84>
   30:	00000000 	sll	zero,zero,0x0
@@ -246,6 +247,7 @@ int main () {
  270:	28420010 	slti	v0,v0,16
  274:	1440ffe5 	bnez	v0,20c <main+0x20c>
  278:	00000000 	sll	zero,zero,0x0
+END_CCORE
         main_result += (result[i] != output[i]);
         //printf("%i: %i\n", i, result[i]);
     }

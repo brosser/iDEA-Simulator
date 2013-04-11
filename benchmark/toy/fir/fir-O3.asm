@@ -19,7 +19,8 @@ int main () {
         for (k = 0; k < ncoeff; k++) {
             sum = sum + coeff[k] * data[k+n];
    4:	24020498 	addiu	v0,zero,1176
-            y[n] = sum;           
+            y[n] = sum;  
+START_CCORE         
    8:	afa20000 	sw	v0,0(sp)
    c:	24020458 	addiu	v0,zero,1112
   10:	afa20004 	sw	v0,4(sp)
@@ -155,6 +156,7 @@ int main () {
     for (i = 0; i < 50; i++){
  1c4:	1466fff8 	bne	v1,a2,1a8 <main+0x1a8>
  1c8:	00441021 	addu	v0,v0,a0
+END_CCORE
         main_result += (output[i] != y[i]);
     }
     //printf ("%d\n", main_result);

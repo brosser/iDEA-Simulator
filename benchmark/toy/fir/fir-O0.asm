@@ -47,6 +47,7 @@ START_CCORE
   4c:	08000043 	j	10c <main+0x10c>
   50:	00000000 	sll	zero,zero,0x0
         sum = 0;
+START_CCORE
   54:	afc00010 	sw	zero,16(s8)
         for (k = 0; k < ncoeff; k++) {
   58:	afc00008 	sw	zero,8(s8)
