@@ -155,6 +155,7 @@ END_CCORE
     
     return main_result;
 }
+END_CCORE
   d4:	03e00008 	jr	ra
   d8:	27bd00e0 	addiu	sp,sp,224
 

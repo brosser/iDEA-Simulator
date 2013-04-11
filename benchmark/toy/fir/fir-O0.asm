@@ -42,6 +42,7 @@ int main () {
         int y[50];
 
     for (n = 0; n < ndata; n++) {
+START_CCORE
   48:	afc0000c 	sw	zero,12(s8)
   4c:	08000043 	j	10c <main+0x10c>
   50:	00000000 	sll	zero,zero,0x0

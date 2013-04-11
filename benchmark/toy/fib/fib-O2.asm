@@ -122,6 +122,7 @@ START_CCORE
   84:	24840004 	addiu	a0,a0,4
 END_CCORE
         main_result += (output[i] != sum[i]);
+END_CCORE
     }
         //printf ("%d\n", main_result);
     
