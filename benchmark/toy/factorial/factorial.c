@@ -1,17 +1,18 @@
 #include <stdio.h>
 
-const int number = 3;
-const int output = 6;
+const int number = 8; // number of iterations
+const int output = 40320;
 
 int calc_factorial (int n)
 {
 
     int i;
-    short factorial_number = 1;
+    int factorial_number = 1;
 
     for (i=1; i <= n; ++i){
         factorial_number = factorial_number * i;
     }
+    //printf("%d\n", factorial_number);
 
     return(factorial_number);
 }

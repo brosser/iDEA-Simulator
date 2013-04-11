@@ -8,66 +8,66 @@ Disassembly of section .text:
 {
 
     int i;
-    short factorial_number = 1;
+    int factorial_number = 1;
 
     for (i=1; i <= n; ++i){
-   0:	1880000b 	blez	a0,30 <calc_factorial+0x30>
+   0:	1880000a 	blez	a0,2c <calc_factorial+0x2c>
    4:	24030001 	addiu	v1,zero,1
 
 int calc_factorial (int n)
 {
 
     int i;
-    short factorial_number = 1;
+    int factorial_number = 1;
    8:	24020001 	addiu	v0,zero,1
 
     for (i=1; i <= n; ++i){
         factorial_number = factorial_number * i;
-   c:	00620018 	mult	v1,v0
+   c:	00430018 	mult	v0,v1
   10:	00001012 	mflo	v0
-  14:	00021400 	sll	v0,v0,0x10
 {
 
     int i;
-    short factorial_number = 1;
+    int factorial_number = 1;
 
     for (i=1; i <= n; ++i){
-  18:	24630001 	addiu	v1,v1,1
-  1c:	0083282a 	slt	a1,a0,v1
-  20:	10a0fffa 	beqz	a1,c <calc_factorial+0xc>
-  24:	00021403 	sra	v0,v0,0x10
-  28:	03e00008 	jr	ra
-  2c:	00000000 	sll	zero,zero,0x0
+  14:	24630001 	addiu	v1,v1,1
+  18:	0083282a 	slt	a1,a0,v1
+  1c:	10a0fffc 	beqz	a1,10 <calc_factorial+0x10>
+  20:	00430018 	mult	v0,v1
+  24:	03e00008 	jr	ra
+  28:	00000000 	sll	zero,zero,0x0
         factorial_number = factorial_number * i;
     }
+    //printf("%d\n", factorial_number);
 
     return(factorial_number);
 }
-  30:	03e00008 	jr	ra
-  34:	24020001 	addiu	v0,zero,1
+  2c:	03e00008 	jr	ra
+  30:	24020001 	addiu	v0,zero,1
 
-00000038 <main>:
+00000034 <main>:
 
 int main()
 {
-  38:	27bdffe8 	addiu	sp,sp,-24
-  3c:	afbf0014 	sw	ra,20(sp)
+  34:	27bdffe8 	addiu	sp,sp,-24
+  38:	afbf0014 	sw	ra,20(sp)
     int main_result = 0;
     int c;
 
     c = calc_factorial (number);
-  40:	0c000000 	jal	0 <calc_factorial>
-  44:	24040003 	addiu	a0,zero,3
+  3c:	0c000000 	jal	0 <calc_factorial>
+  40:	24040008 	addiu	a0,zero,8
 
     main_result += (output != c);
-  48:	38420006 	xori	v0,v0,0x6
+  44:	38429d80 	xori	v0,v0,0x9d80
     
     //printf ("%d\n", main_result);
 
     return main_result;
 }
-  4c:	0002102b 	sltu	v0,zero,v0
-  50:	8fbf0014 	lw	ra,20(sp)
-  54:	00000000 	sll	zero,zero,0x0
-  58:	03e00008 	jr	ra
-  5c:	27bd0018 	addiu	sp,sp,24
+  48:	0002102b 	sltu	v0,zero,v0
+  4c:	8fbf0014 	lw	ra,20(sp)
+  50:	00000000 	sll	zero,zero,0x0
+  54:	03e00008 	jr	ra
+  58:	27bd0018 	addiu	sp,sp,24

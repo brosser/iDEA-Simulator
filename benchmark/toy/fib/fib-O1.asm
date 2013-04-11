@@ -85,7 +85,7 @@ START_CCORE
         a = b;
         b = sum[i];
     }
-    
+END_CCORE    
     for (i = 0; i < 10; i++){
   5c:	2408000a 	addiu	t0,zero,10
         main_result += (output[i] != sum[i]);
@@ -106,7 +106,7 @@ START_CCORE
   80:	24630001 	addiu	v1,v1,1
   84:	1468fff6 	bne	v1,t0,60 <main+0x60>
   88:	24840004 	addiu	a0,a0,4
-END_CCORE
+
         main_result += (output[i] != sum[i]);
     }
         //printf ("%d\n", main_result);
