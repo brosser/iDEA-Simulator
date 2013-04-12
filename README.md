@@ -14,14 +14,13 @@ The simulator runs a given assembly program and outputs simulation logfiles and 
 
 ### Justification
 * An instruction set simulator to model and accurately predict the behavior of instructions' execution.
-* Starts with a MIPS model, and will progressively modify according to the iDEA model (still no idea how).
 * Main motivations:
-	- to obtain instruction count.
+	- to obtain performance metrics such as instruction count and clock cycles.
 	- to identify hazards / data dependencies.
 	- to ensure logical and functional correctness.
+	- to predict the potential savings/ impact of hardware change. 
 	- to analyse opportunity for composite instructions.
-* Cycle-accurate simulator is not needed for now. If the simulator doesn't fulfill the requirements above, 
-* then we will move on to a cycle-accurate one. 
+* A cross between behavioural and cycle-accurate simulator.
 
 ### Sections of the Simulator
 * Assembler
