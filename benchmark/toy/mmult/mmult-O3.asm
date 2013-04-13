@@ -50,7 +50,6 @@ int main()
             sum = 0;
             for (k = 0; k < 5 ; k++) {
                 sum = sum + a[i][k] * b[k][j];
-START_CCORE
   24:	00a84021 	addu	t0,a1,t0
                             {51, 25, 51, 26, 52},
                             {71, 35, 71, 36, 72},
@@ -466,8 +465,8 @@ int main()
  1cc:	01cd6821 	addu	t5,t6,t5
         }
     }
-    
-    for (x = 0; x < 5; x++){
+
+	for (x = 0; x < 5; x++){
         for (y = 0; y < 5; y++) {
             main_result += (output[x][y] != c[x][y]);
  1d0:	8c580008 	lw	t8,8(v0)
@@ -593,9 +592,6 @@ int main()
     return main_result;
 }
  2b0:	00621021 	addu	v0,v1,v0
-END_CCORE
-   // Manually
-  2310: 0000000 addu v0,zero,zero
  2b4:	8fbe008c 	lw	s8,140(sp)
  2b8:	8fb70088 	lw	s7,136(sp)
  2bc:	8fb60084 	lw	s6,132(sp)

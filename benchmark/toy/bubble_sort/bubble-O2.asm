@@ -5,127 +5,243 @@ bubble.o:     file format elf32-bigmips
 Disassembly of section .text:
 
 00000000 <main>:
-#include <stdio.h>
-
-const int output[5] = {2, 4, 8, 9, 15};
-
 int main()
 {
-   0:	27bdffe8 	addiu	sp,sp,-24
-  int n = 5;
-  int i, c, d, sum, swap;
-  int main_result = 0;
-  int array[5] = {9, 8, 15, 4, 2};
-   4:	24020009 	addiu	v0,zero,9
-   8:	afa20000 	sw	v0,0(sp)
-   c:	24020008 	addiu	v0,zero,8
-  10:	afa20004 	sw	v0,4(sp)
-  14:	2402000f 	addiu	v0,zero,15
-  18:	afa20008 	sw	v0,8(sp)
-  1c:	24020004 	addiu	v0,zero,4
-  20:	afa2000c 	sw	v0,12(sp)
-  24:	24020002 	addiu	v0,zero,2
-  28:	afa20010 	sw	v0,16(sp)
-  2c:	24060004 	addiu	a2,zero,4
-#include <stdio.h>
-
-const int output[5] = {2, 4, 8, 9, 15};
-
+  unsigned int n = 50;
+  unsigned int i, c, d, sum, swap;
+  unsigned int main_result = 0;
+  unsigned int array[50] = {36, 38, 41, 24, 47, 50, 51, 32, 15, 65,
+   0:	3c020000 	lui	v0,0x0
+                        8, 8, 8, 9, 9, 11, 11, 12, 15, 15, 
+                        15, 17, 17, 18, 19, 20, 21, 21, 21, 21, 
+                        22, 22, 22, 24, 24, 25, 25, 31, 32, 35, 
+                        36, 38, 41, 45, 47, 50, 51, 54, 55, 65}; 
 int main()
 {
-  30:	00001821 	addu	v1,zero,zero
-  int main_result = 0;
-  int array[5] = {9, 8, 15, 4, 2};
+   4:	27bdff38 	addiu	sp,sp,-200
+  unsigned int n = 50;
+  unsigned int i, c, d, sum, swap;
+  unsigned int main_result = 0;
+  unsigned int array[50] = {36, 38, 41, 24, 47, 50, 51, 32, 15, 65,
+   8:	244200c8 	addiu	v0,v0,200
+   c:	03a01821 	addu	v1,sp,zero
+  10:	244400c0 	addiu	a0,v0,192
+  14:	8c480000 	lw	t0,0(v0)
+  18:	8c470004 	lw	a3,4(v0)
+  1c:	8c460008 	lw	a2,8(v0)
+  20:	8c45000c 	lw	a1,12(v0)
+  24:	24420010 	addiu	v0,v0,16
+  28:	ac680000 	sw	t0,0(v1)
+  2c:	ac670004 	sw	a3,4(v1)
+  30:	ac660008 	sw	a2,8(v1)
+  34:	ac65000c 	sw	a1,12(v1)
+  38:	1444fff6 	bne	v0,a0,14 <main+0x14>
+  3c:	24630010 	addiu	v1,v1,16
+  40:	8c440000 	lw	a0,0(v0)
+  44:	8c420004 	lw	v0,4(v0)
+  48:	ac640000 	sw	a0,0(v1)
+  4c:	ac620004 	sw	v0,4(v1)
+const unsigned int output[50] = { 0, 0, 1, 1, 2, 2, 3, 4, 5, 6, 
+                        8, 8, 8, 9, 9, 11, 11, 12, 15, 15, 
+                        15, 17, 17, 18, 19, 20, 21, 21, 21, 21, 
+                        22, 22, 22, 24, 24, 25, 25, 31, 32, 35, 
+                        36, 38, 41, 45, 47, 50, 51, 54, 55, 65}; 
+int main()
+  50:	03a03821 	addu	a3,sp,zero
+  54:	27a600c4 	addiu	a2,sp,196
+                    15, 21, 17, 18, 19, 20, 17, 21, 21, 21,
+                    22, 54, 22, 45, 24, 25, 25, 31, 22, 35,
+                    2, 0, 1, 1, 0, 2, 3, 4, 5, 6,
+                    8, 8, 8, 9, 9, 11, 55, 12, 15, 11};
 
     for (c = 0 ; c < ( n - 1 ); c++)
+START_CCORE
+  58:	03a01021 	addu	v0,sp,zero
       {
         for (d = 0 ; d < n - c - 1; d++)
-  34:	0066202a 	slt	a0,v1,a2
-  38:	1080000c 	beqz	a0,6c <main+0x6c>
-  3c:	03a01021 	addu	v0,sp,zero
+  5c:	10c2000c 	beq	a2,v0,90 <main+0x90>
+  60:	00000000 	sll	zero,zero,0x0
         {
           if (array[d] > array[d+1]) /* For decreasing order use < */
-  40:	8c440000 	lw	a0,0(v0)
-  44:	8c450004 	lw	a1,4(v0)
-  48:	00000000 	sll	zero,zero,0x0
-  4c:	00a4382a 	slt	a3,a1,a0
-  50:	10e00003 	beqz	a3,60 <main+0x60>
-  54:	24630001 	addiu	v1,v1,1
+  64:	8c430000 	lw	v1,0(v0)
+  68:	8c440004 	lw	a0,4(v0)
+  6c:	00000000 	sll	zero,zero,0x0
+  70:	0083282b 	sltu	a1,a0,v1
+  74:	10a00003 	beqz	a1,84 <main+0x84>
+  78:	00000000 	sll	zero,zero,0x0
           {
             swap       = array[d];
             array[d]   = array[d+1];
-  58:	ac450000 	sw	a1,0(v0)
+  7c:	ac440000 	sw	a0,0(v0)
             array[d+1] = swap;
-  5c:	ac440004 	sw	a0,4(v0)
-  int main_result = 0;
-  int array[5] = {9, 8, 15, 4, 2};
+  80:	ac430004 	sw	v1,4(v0)
+  84:	24420004 	addiu	v0,v0,4
+                    2, 0, 1, 1, 0, 2, 3, 4, 5, 6,
+                    8, 8, 8, 9, 9, 11, 55, 12, 15, 11};
 
     for (c = 0 ; c < ( n - 1 ); c++)
       {
         for (d = 0 ; d < n - c - 1; d++)
-  60:	0066202a 	slt	a0,v1,a2
-  64:	1480fff6 	bnez	a0,40 <main+0x40>
-  68:	24420004 	addiu	v0,v0,4
-  6c:	24c6ffff 	addiu	a2,a2,-1
-  int n = 5;
-  int i, c, d, sum, swap;
-  int main_result = 0;
-  int array[5] = {9, 8, 15, 4, 2};
+  88:	14c2fff6 	bne	a2,v0,64 <main+0x64>
+  8c:	00000000 	sll	zero,zero,0x0
+  90:	24c6fffc 	addiu	a2,a2,-4
+                    15, 21, 17, 18, 19, 20, 17, 21, 21, 21,
+                    22, 54, 22, 45, 24, 25, 25, 31, 22, 35,
+                    2, 0, 1, 1, 0, 2, 3, 4, 5, 6,
+                    8, 8, 8, 9, 9, 11, 55, 12, 15, 11};
 
     for (c = 0 ; c < ( n - 1 ); c++)
-  70:	14c0fff0 	bnez	a2,34 <main+0x34>
-  74:	00001821 	addu	v1,zero,zero
-  78:	3c070000 	lui	a3,0x0
-  7c:	00001021 	addu	v0,zero,zero
-  80:	24e70000 	addiu	a3,a3,0
+  94:	14c7fff0 	bne	a2,a3,58 <main+0x58>
+  98:	00001821 	addu	v1,zero,zero
+  9c:	3c070000 	lui	a3,0x0
+  a0:	00001021 	addu	v0,zero,zero
+  a4:	24e70000 	addiu	a3,a3,0
             array[d+1] = swap;
           }
         }
       }
 
-    for (i = 0; i < 5; i++){
-  84:	24060014 	addiu	a2,zero,20
- 
-#include <stdio.h>
+END_CCORE
 
-const int output[5] = {2, 4, 8, 9, 15};
-
+    for (i = 0; i < 50; i++){
+  a8:	240600c8 	addiu	a2,zero,200
+const unsigned int output[50] = { 0, 0, 1, 1, 2, 2, 3, 4, 5, 6, 
+                        8, 8, 8, 9, 9, 11, 11, 12, 15, 15, 
+                        15, 17, 17, 18, 19, 20, 21, 21, 21, 21, 
+                        22, 22, 22, 24, 24, 25, 25, 31, 32, 35, 
+                        36, 38, 41, 45, 47, 50, 51, 54, 55, 65}; 
 int main()
-  88:	00e32821 	addu	a1,a3,v1
-  8c:	03a32021 	addu	a0,sp,v1
+  ac:	00e32821 	addu	a1,a3,v1
+  b0:	03a32021 	addu	a0,sp,v1
           }
         }
       }
 
-    for (i = 0; i < 5; i++){
+    for (i = 0; i < 50; i++){
         main_result += (output[i] != array[i]);
-  90:	8ca50000 	lw	a1,0(a1)
-  94:	8c840000 	lw	a0,0(a0)
-  98:	24630004 	addiu	v1,v1,4
-  9c:	00a42026 	xor	a0,a1,a0
-  a0:	0004202b 	sltu	a0,zero,a0
+  b4:	8ca50000 	lw	a1,0(a1)
+  b8:	8c840000 	lw	a0,0(a0)
+  bc:	24630004 	addiu	v1,v1,4
+  c0:	00a42026 	xor	a0,a1,a0
+  c4:	0004202b 	sltu	a0,zero,a0
             array[d+1] = swap;
           }
         }
       }
 
-    for (i = 0; i < 5; i++){
-  a4:	1466fff8 	bne	v1,a2,88 <main+0x88>
-  a8:	00441021 	addu	v0,v0,a0
+    for (i = 0; i < 50; i++){
+  c8:	1466fff8 	bne	v1,a2,ac <main+0xac>
+  cc:	00441021 	addu	v0,v0,a0
         main_result += (output[i] != array[i]);
     }
         //printf ("%d\n", main_result);
 
   return main_result;
 }
-  ac:	03e00008 	jr	ra
-  b0:	27bd0018 	addiu	sp,sp,24
+  d0:	03e00008 	jr	ra
+  d4:	27bd00c8 	addiu	sp,sp,200
 
 Disassembly of section .rodata:
 
 00000000 <output>:
-   0:	00000002 	srl	zero,zero,0x0
-   4:	00000004 	sllv	zero,zero,zero
-   8:	00000008 	jr	zero
-   c:	00000009 	jalr	zero,zero
-  10:	0000000f 	0xf
+	...
+   8:	00000001 	0x1
+   c:	00000001 	0x1
+  10:	00000002 	srl	zero,zero,0x0
+  14:	00000002 	srl	zero,zero,0x0
+  18:	00000003 	sra	zero,zero,0x0
+  1c:	00000004 	sllv	zero,zero,zero
+  20:	00000005 	0x5
+  24:	00000006 	srlv	zero,zero,zero
+  28:	00000008 	jr	zero
+  2c:	00000008 	jr	zero
+  30:	00000008 	jr	zero
+  34:	00000009 	jalr	zero,zero
+  38:	00000009 	jalr	zero,zero
+  3c:	0000000b 	0xb
+  40:	0000000b 	0xb
+  44:	0000000c 	syscall
+  48:	0000000f 	0xf
+  4c:	0000000f 	0xf
+  50:	0000000f 	0xf
+  54:	00000011 	mthi	zero
+  58:	00000011 	mthi	zero
+  5c:	00000012 	mflo	zero
+  60:	00000013 	mtlo	zero
+  64:	00000014 	0x14
+  68:	00000015 	0x15
+  6c:	00000015 	0x15
+  70:	00000015 	0x15
+  74:	00000015 	0x15
+  78:	00000016 	0x16
+  7c:	00000016 	0x16
+  80:	00000016 	0x16
+  84:	00000018 	mult	zero,zero
+  88:	00000018 	mult	zero,zero
+  8c:	00000019 	multu	zero,zero
+  90:	00000019 	multu	zero,zero
+  94:	0000001f 	0x1f
+  98:	00000020 	add	zero,zero,zero
+  9c:	00000023 	negu	zero,zero
+  a0:	00000024 	and	zero,zero,zero
+  a4:	00000026 	xor	zero,zero,zero
+  a8:	00000029 	0x29
+  ac:	0000002d 	0x2d
+  b0:	0000002f 	0x2f
+  b4:	00000032 	0x32
+  b8:	00000033 	0x33
+  bc:	00000036 	0x36
+  c0:	00000037 	0x37
+  c4:	00000041 	0x41
+
+000000c8 <C.0.3070>:
+  c8:	00000024 	and	zero,zero,zero
+  cc:	00000026 	xor	zero,zero,zero
+  d0:	00000029 	0x29
+  d4:	00000018 	mult	zero,zero
+  d8:	0000002f 	0x2f
+  dc:	00000032 	0x32
+  e0:	00000033 	0x33
+  e4:	00000020 	add	zero,zero,zero
+  e8:	0000000f 	0xf
+  ec:	00000041 	0x41
+  f0:	0000000f 	0xf
+  f4:	00000015 	0x15
+  f8:	00000011 	mthi	zero
+  fc:	00000012 	mflo	zero
+ 100:	00000013 	mtlo	zero
+ 104:	00000014 	0x14
+ 108:	00000011 	mthi	zero
+ 10c:	00000015 	0x15
+ 110:	00000015 	0x15
+ 114:	00000015 	0x15
+ 118:	00000016 	0x16
+ 11c:	00000036 	0x36
+ 120:	00000016 	0x16
+ 124:	0000002d 	0x2d
+ 128:	00000018 	mult	zero,zero
+ 12c:	00000019 	multu	zero,zero
+ 130:	00000019 	multu	zero,zero
+ 134:	0000001f 	0x1f
+ 138:	00000016 	0x16
+ 13c:	00000023 	negu	zero,zero
+ 140:	00000002 	srl	zero,zero,0x0
+ 144:	00000000 	sll	zero,zero,0x0
+ 148:	00000001 	0x1
+ 14c:	00000001 	0x1
+ 150:	00000000 	sll	zero,zero,0x0
+ 154:	00000002 	srl	zero,zero,0x0
+ 158:	00000003 	sra	zero,zero,0x0
+ 15c:	00000004 	sllv	zero,zero,zero
+ 160:	00000005 	0x5
+ 164:	00000006 	srlv	zero,zero,zero
+ 168:	00000008 	jr	zero
+ 16c:	00000008 	jr	zero
+ 170:	00000008 	jr	zero
+ 174:	00000009 	jalr	zero,zero
+ 178:	00000009 	jalr	zero,zero
+ 17c:	0000000b 	0xb
+ 180:	00000037 	0x37
+ 184:	0000000c 	syscall
+ 188:	0000000f 	0xf
+ 18c:	0000000b 	0xb

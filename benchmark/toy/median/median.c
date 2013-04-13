@@ -1,4 +1,6 @@
 #include <stdio.h>
+// iteration 95 16x5 + 3x5
+
 // Good tutorial on median filter: http://www.librow.com/articles/article-1
 // window size 5
 // sample size N = 20

@@ -33,7 +33,6 @@ const int output[16] = {3, 4, 5, 6, 7,
                         18}; /*N - window_size - 1*/
 
 int main () {
-START_CCORE
   10:	258f0040 	addiu	t7,t4,64
         // Pick up the window elements
         for (j = 0; j < 5; j++) {
@@ -48,6 +47,7 @@ START_CCORE
         // Pick up the window elements
         for (j = 0; j < 5; j++) {
             window[j] = signal[i - 2 + j];        
+START_CCORE
   18:	8d860000 	lw	a2,0(t4)
   1c:	8d850004 	lw	a1,4(t4)
   20:	8d840008 	lw	a0,8(t4)
@@ -159,6 +159,8 @@ int main () {
         result[i - 2] = window[2];    
     }
 
+END_CCORE
+
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
         main_result += (result[i] != output[i]);
   cc:	8fa40014 	lw	a0,20(sp)
@@ -223,7 +225,6 @@ int main () {
  1b8:	38630012 	xori	v1,v1,0x12
  1bc:	00821021 	addu	v0,a0,v0
  1c0:	0003182b 	sltu	v1,zero,v1
-END_CCORE
         //printf("%i: %i\n", i, result[i]);
     }
     //printf("%i\n", main_result);

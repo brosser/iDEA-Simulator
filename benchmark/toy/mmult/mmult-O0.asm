@@ -24,11 +24,11 @@ int main()
   10:	afc00018 	sw	zero,24(s8)
 
     for (i = 0; i < 5; i++) {
+START_CCORE
   14:	afc00000 	sw	zero,0(s8)
   18:	08000053 	j	14c <main+0x14c>
   1c:	00000000 	sll	zero,zero,0x0
         for (j = 0; j < 5; j++) {
-START_CCORE
   20:	afc00004 	sw	zero,4(s8)
   24:	0800004a 	j	128 <main+0x128>
   28:	00000000 	sll	zero,zero,0x0
@@ -135,6 +135,7 @@ START_CCORE
             }
         }
     }
+END_CCORE
     
     for (x = 0; x < 5; x++){
  160:	afc0000c 	sw	zero,12(s8)
@@ -206,16 +207,13 @@ START_CCORE
  230:	28420005 	slti	v0,v0,5
  234:	1440ffcd 	bnez	v0,16c <main+0x16c>
  238:	00000000 	sll	zero,zero,0x0
-END_CCORE
         }
     }
+
     //printf("%d\n", main_result);
 
     return main_result;
  23c:	8fc20018 	lw	v0,24(s8)
-
- // Manually
- 64:  24820000  addu v0,zero,zero
 }
  240:	03c0e821 	addu	sp,s8,zero
  244:	8fbe0084 	lw	s8,132(sp)
@@ -266,11 +264,7 @@ Disassembly of section .rodata:
   8c:	00000001 	0x1
   90:	00000001 	0x1
   94:	00000001 	0x1
-  98: 00000000  0x0
-  9c: 00000000  0x0
-  a0: 00000000  0x0
-  a4: 00000000  0x0
-  a8: 00000000  0x0
+	...
   ac:	00000001 	0x1
   b0:	00000001 	0x1
   b4:	00000001 	0x1

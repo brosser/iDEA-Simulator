@@ -5,22 +5,22 @@ fib.o:     file format elf32-bigmips
 Disassembly of section .text:
 
 00000000 <main>:
- * program.
- */
-const int output[10] = { 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
+                                    24157817, 39088169, 63245986, 102334155, 165580141, 
+                                    267914296, 433494437, 701408733, 1134903170, 1836311903/*, 
+                                    2971215073, 512559680, 3483774753, 3996334433, 3185141890*/ }; // warning: this decimal constant is unsigned only in ISO C90
 
 int main ()
 {
    0:	27bdffe8 	addiu	sp,sp,-24
    4:	afbe0014 	sw	s8,20(sp)
    8:	03a0f021 	addu	s8,sp,zero
-  int n = 10; // 50
+  int n = 45;
   int a = 0;
   int b = 1;
   int i;
   
   volatile int sum[n];
-   c:	27bdffd0 	addiu	sp,sp,-48
+   c:	27bdff40 	addiu	sp,sp,-192
   10:	03a02821 	addu	a1,sp,zero
   
   int main_result = 0;
@@ -30,7 +30,7 @@ int main ()
 {
   /* Notice that we need to declare our variables, and their type */
 
-  int n = 10; // 50
+  int n = 45;
   int a = 0;
   int b = 1;
   18:	24040001 	addiu	a0,zero,1
@@ -38,7 +38,7 @@ int main ()
 {
   /* Notice that we need to declare our variables, and their type */
 
-  int n = 10; // 50
+  int n = 45;
   int a = 0;
   1c:	00003021 	addu	a2,zero,zero
   
@@ -48,7 +48,7 @@ int main ()
     
     for ( i = 0; i < n; i++)			
   20:	0800000b 	j	2c <main+0x2c>
-  24:	2407000a 	addiu	a3,zero,10
+  24:	2407002d 	addiu	a3,zero,45
     {							 
         sum[i] = a + b;
         a = b;
@@ -93,9 +93,11 @@ START_CCORE
         a = b;
         b = sum[i];
     }
-END_CCORE    
-    for (i = 0; i < 10; i++){
-  5c:	2408000a 	addiu	t0,zero,10
+
+ END_CCORE
+    
+    for (i = 0; i < n; i++){
+  5c:	2408002d 	addiu	t0,zero,45
         main_result += (output[i] != sum[i]);
   60:	00033080 	sll	a2,v1,0x2
   64:	00a63021 	addu	a2,a1,a2
@@ -106,7 +108,7 @@ END_CCORE
         b = sum[i];
     }
     
-    for (i = 0; i < 10; i++){
+    for (i = 0; i < n; i++){
   70:	24630001 	addiu	v1,v1,1
         main_result += (output[i] != sum[i]);
   74:	00e63026 	xor	a2,a3,a2
@@ -117,12 +119,10 @@ END_CCORE
         b = sum[i];
     }
     
-    for (i = 0; i < 10; i++){
+    for (i = 0; i < n; i++){
   80:	1468fff7 	bne	v1,t0,60 <main+0x60>
   84:	24840004 	addiu	a0,a0,4
-END_CCORE
-        main_result += (output[i] != sum[i]);
-
+        //printf("%u, ", sum[i]);
     }
         //printf ("%d\n", main_result);
     
@@ -146,3 +146,38 @@ Disassembly of section .rodata:
   1c:	00000022 	neg	zero,zero
   20:	00000037 	0x37
   24:	00000059 	0x59
+  28:	00000090 	0x90
+  2c:	000000e9 	0xe9
+  30:	00000179 	0x179
+  34:	00000262 	0x262
+  38:	000003db 	0x3db
+  3c:	0000063d 	0x63d
+  40:	00000a18 	0xa18
+  44:	00001055 	0x1055
+  48:	00001a6d 	0x1a6d
+  4c:	00002ac2 	srl	a1,zero,0xb
+  50:	0000452f 	0x452f
+  54:	00006ff1 	0x6ff1
+  58:	0000b520 	0xb520
+  5c:	00012511 	0x12511
+  60:	0001da31 	0x1da31
+  64:	0002ff42 	srl	ra,v0,0x1d
+  68:	0004d973 	0x4d973
+  6c:	0007d8b5 	0x7d8b5
+  70:	000cb228 	0xcb228
+  74:	00148add 	0x148add
+  78:	00213d05 	0x213d05
+  7c:	0035c7e2 	0x35c7e2
+  80:	005704e7 	0x5704e7
+  84:	008cccc9 	0x8cccc9
+  88:	00e3d1b0 	0xe3d1b0
+  8c:	01709e79 	0x1709e79
+  90:	02547029 	0x2547029
+  94:	03c50ea2 	0x3c50ea2
+  98:	06197ecb 	0x6197ecb
+  9c:	09de8d6d 	j	77a35b4 <output+0x77a35b4>
+  a0:	0ff80c38 	jal	fe030e0 <output+0xfe030e0>
+  a4:	19d699a5 	0x19d699a5
+  a8:	29cea5dd 	slti	t6,t6,-23075
+  ac:	43a53f82 	c0	0x1a53f82
+  b0:	6d73e55f 	0x6d73e55f

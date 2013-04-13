@@ -7,18 +7,19 @@ Disassembly of section .text:
 00000000 <calc_factorial>:
 {
 
-    int i;
-    int factorial_number = 1;
+    unsigned int i;
+    unsigned int factorial_number = 1;
 
     for (i=1; i <= n; ++i){
-   0:	1880000a 	blez	a0,2c <calc_factorial+0x2c>
+   0:	1080000a 	beqz	a0,2c <calc_factorial+0x2c>
    4:	24030001 	addiu	v1,zero,1
 
-int calc_factorial (int n)
+unsigned int calc_factorial (unsigned int n)
 {
 
-    int i;
-    int factorial_number = 1;
+    unsigned int i;
+    unsigned int factorial_number = 1;
+START_CCODE
    8:	24020001 	addiu	v0,zero,1
 
     for (i=1; i <= n; ++i){
@@ -27,14 +28,15 @@ int calc_factorial (int n)
   10:	00001012 	mflo	v0
 {
 
-    int i;
-    int factorial_number = 1;
+    unsigned int i;
+    unsigned int factorial_number = 1;
 
     for (i=1; i <= n; ++i){
   14:	24630001 	addiu	v1,v1,1
-  18:	0083282a 	slt	a1,a0,v1
+  18:	0083282b 	sltu	a1,a0,v1
   1c:	10a0fffc 	beqz	a1,10 <calc_factorial+0x10>
   20:	00430018 	mult	v0,v1
+END_CCORE
   24:	03e00008 	jr	ra
   28:	00000000 	sll	zero,zero,0x0
         factorial_number = factorial_number * i;
@@ -52,19 +54,19 @@ int main()
 {
   34:	27bdffe8 	addiu	sp,sp,-24
   38:	afbf0014 	sw	ra,20(sp)
-    int main_result = 0;
-    int c;
+    unsigned int main_result = 0;
+    unsigned int c;
 
     c = calc_factorial (number);
   3c:	0c000000 	jal	0 <calc_factorial>
   40:	24040008 	addiu	a0,zero,8
 
     main_result += (output != c);
-  44:	38429d80 	xori	v0,v0,0x9d80
     
     //printf ("%d\n", main_result);
 
     return main_result;
+  44:	38429d80 	xori	v0,v0,0x9d80
 }
   48:	0002102b 	sltu	v0,zero,v0
   4c:	8fbf0014 	lw	ra,20(sp)

@@ -1,13 +1,14 @@
 #include <stdio.h>
+// iteration 8
 
-const int number = 8; // number of iterations
-const int output = 40320;
+const unsigned int number = 8; // number of iterations
+const unsigned int output = 40320;
 
-int calc_factorial (int n)
+unsigned int calc_factorial (unsigned int n)
 {
 
-    int i;
-    int factorial_number = 1;
+    unsigned int i;
+    unsigned int factorial_number = 1;
 
     for (i=1; i <= n; ++i){
         factorial_number = factorial_number * i;
@@ -19,8 +20,8 @@ int calc_factorial (int n)
 
 int main()
 {
-    int main_result = 0;
-    int c;
+    unsigned int main_result = 0;
+    unsigned int c;
 
     c = calc_factorial (number);
 

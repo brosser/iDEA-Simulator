@@ -59,8 +59,8 @@ int main () {
   24:	240e0010 	addiu	t6,zero,16
         // Pick up the window elements
         for (j = 0; j < 5; j++) {
-            window[j] = signal[i - 2 + j];
-START_CCORE        
+            window[j] = signal[i - 2 + j];        
+START_CCODE
   28:	8c640000 	lw	a0,0(v1)
   2c:	00000000 	sll	zero,zero,0x0
   30:	ac440000 	sw	a0,0(v0)
@@ -203,11 +203,12 @@ int main () {
         // Get the result
         result[i - 2] = window[2];    
     }
+END_CCORE
 
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
   f8:	24060040 	addiu	a2,zero,64
 
-     // Manually inserted by Fred
+  // Manually inserted by Fred
   f10: 0000000 addiu a3,a3,0x50
 
 const int output[16] = {3, 4, 5, 6, 7,
@@ -218,10 +219,10 @@ const int output[16] = {3, 4, 5, 6, 7,
 int main () {
   fc:	01032821 	addu	a1,t0,v1
  100:	00e32021 	addu	a0,a3,v1
-
         // Get the result
         result[i - 2] = window[2];    
     }
+
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
         main_result += (result[i] != output[i]);
  104:	8ca50000 	lw	a1,0(a1)
@@ -237,10 +238,9 @@ int main () {
 
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
 
-    // Manually Changed by Fred
+ // Manually Changed by Fred
  11c:	1466fff7 	bne	v1,a2,100 <main+0xfc>
  120:	00441021 	addu	v0,v0,a0
-END_CCORE
         //printf("%i: %i\n", i, result[i]);
     }
     //printf("%i\n", main_result);

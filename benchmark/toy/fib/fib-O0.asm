@@ -5,9 +5,9 @@ fib.o:     file format elf32-bigmips
 Disassembly of section .text:
 
 00000000 <main>:
- * program.
- */
-const int output[10] = { 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
+                                    24157817, 39088169, 63245986, 102334155, 165580141, 
+                                    267914296, 433494437, 701408733, 1134903170, 1836311903/*, 
+                                    2971215073, 512559680, 3483774753, 3996334433, 3185141890*/ }; // warning: this decimal constant is unsigned only in ISO C90
 
 int main ()
 {
@@ -18,8 +18,8 @@ int main ()
   10:	01405821 	addu	t3,t2,zero
   /* Notice that we need to declare our variables, and their type */
 
-  int n = 10; // 50
-  14:	240a000a 	addiu	t2,zero,10
+  int n = 45;
+  14:	240a002d 	addiu	t2,zero,45
   18:	afca0010 	sw	t2,16(s8)
   int a = 0;
   1c:	afc00000 	sw	zero,0(s8)
@@ -62,14 +62,13 @@ int main ()
   
   int main_result = 0;
   a0:	afc0000c 	sw	zero,12(s8)
-    
+START_CCORE    
     for ( i = 0; i < n; i++)			
   a4:	afc00008 	sw	zero,8(s8)
   a8:	08000045 	j	114 <main+0x114>
   ac:	00000000 	sll	zero,zero,0x0
     {							 
         sum[i] = a + b;
-START_CCORE
   b0:	8fc30000 	lw	v1,0(s8)
   b4:	8fc20004 	lw	v0,4(s8)
   b8:	00000000 	sll	zero,zero,0x0
@@ -113,8 +112,9 @@ START_CCORE
         a = b;
         b = sum[i];
     }
-END_CCORE    
-    for (i = 0; i < 10; i++){
+ END_CCORE
+    
+    for (i = 0; i < n; i++){
  12c:	afc00008 	sw	zero,8(s8)
  130:	08000066 	j	198 <main+0x198>
  134:	00000000 	sll	zero,zero,0x0
@@ -144,31 +144,31 @@ END_CCORE
         b = sum[i];
     }
     
-    for (i = 0; i < 10; i++){
+    for (i = 0; i < n; i++){
  188:	8fc20008 	lw	v0,8(s8)
  18c:	00000000 	sll	zero,zero,0x0
  190:	24420001 	addiu	v0,v0,1
  194:	afc20008 	sw	v0,8(s8)
- 198:	8fc20008 	lw	v0,8(s8)
- 19c:	00000000 	sll	zero,zero,0x0
- 1a0:	2842000a 	slti	v0,v0,10
- 1a4:	1440ffe4 	bnez	v0,138 <main+0x138>
- 1a8:	00000000 	sll	zero,zero,0x0
-
+ 198:	8fc30008 	lw	v1,8(s8)
+ 19c:	8fc20010 	lw	v0,16(s8)
+ 1a0:	00000000 	sll	zero,zero,0x0
+ 1a4:	0062102a 	slt	v0,v1,v0
+ 1a8:	1440ffe3 	bnez	v0,138 <main+0x138>
+ 1ac:	00000000 	sll	zero,zero,0x0
         main_result += (output[i] != sum[i]);
+        //printf("%u, ", sum[i]);
     }
         //printf ("%d\n", main_result);
     
   return main_result;
-
- 1ac:	8fc2000c 	lw	v0,12(s8)
- 1b0:	0160e821 	addu	sp,t3,zero
+ 1b0:	8fc2000c 	lw	v0,12(s8)
+ 1b4:	0160e821 	addu	sp,t3,zero
 }
- 1b4:	03c0e821 	addu	sp,s8,zero
- 1b8:	8fbe0024 	lw	s8,36(sp)
- 1bc:	27bd0028 	addiu	sp,sp,40
- 1c0:	03e00008 	jr	ra
- 1c4:	00000000 	sll	zero,zero,0x0
+ 1b8:	03c0e821 	addu	sp,s8,zero
+ 1bc:	8fbe0024 	lw	s8,36(sp)
+ 1c0:	27bd0028 	addiu	sp,sp,40
+ 1c4:	03e00008 	jr	ra
+ 1c8:	00000000 	sll	zero,zero,0x0
 
 Disassembly of section .rodata:
 
@@ -183,3 +183,38 @@ Disassembly of section .rodata:
   1c:	00000022 	neg	zero,zero
   20:	00000037 	0x37
   24:	00000059 	0x59
+  28:	00000090 	0x90
+  2c:	000000e9 	0xe9
+  30:	00000179 	0x179
+  34:	00000262 	0x262
+  38:	000003db 	0x3db
+  3c:	0000063d 	0x63d
+  40:	00000a18 	0xa18
+  44:	00001055 	0x1055
+  48:	00001a6d 	0x1a6d
+  4c:	00002ac2 	srl	a1,zero,0xb
+  50:	0000452f 	0x452f
+  54:	00006ff1 	0x6ff1
+  58:	0000b520 	0xb520
+  5c:	00012511 	0x12511
+  60:	0001da31 	0x1da31
+  64:	0002ff42 	srl	ra,v0,0x1d
+  68:	0004d973 	0x4d973
+  6c:	0007d8b5 	0x7d8b5
+  70:	000cb228 	0xcb228
+  74:	00148add 	0x148add
+  78:	00213d05 	0x213d05
+  7c:	0035c7e2 	0x35c7e2
+  80:	005704e7 	0x5704e7
+  84:	008cccc9 	0x8cccc9
+  88:	00e3d1b0 	0xe3d1b0
+  8c:	01709e79 	0x1709e79
+  90:	02547029 	0x2547029
+  94:	03c50ea2 	0x3c50ea2
+  98:	06197ecb 	0x6197ecb
+  9c:	09de8d6d 	j	77a35b4 <output+0x77a35b4>
+  a0:	0ff80c38 	jal	fe030e0 <output+0xfe030e0>
+  a4:	19d699a5 	0x19d699a5
+  a8:	29cea5dd 	slti	t6,t6,-23075
+  ac:	43a53f82 	c0	0x1a53f82
+  b0:	6d73e55f 	0x6d73e55f
