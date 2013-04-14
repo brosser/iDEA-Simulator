@@ -1,4 +1,3 @@
-
 mmult.o:     file format elf32-bigmips
 
 
@@ -131,12 +130,11 @@ START_CCORE
  154:	28420005 	slti	v0,v0,5
  158:	1440ffb1 	bnez	v0,20 <main+0x20>
  15c:	00000000 	sll	zero,zero,0x0
+END_CCORE
                 c[i][j]=sum;
             }
         }
     }
-END_CCORE
-    
     for (x = 0; x < 5; x++){
  160:	afc0000c 	sw	zero,12(s8)
  164:	0800008a 	j	228 <main+0x228>
