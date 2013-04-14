@@ -11,7 +11,7 @@ const int output[16] = {3, 4, 5, 6, 7,
                         18}; /*N - window_size - 1*/
 
 int main () {
-   0:	27bdff78 	addiu	sp,sp,-136
+   0:                        27bdff78 	addiu	sp,sp,-136
    4:	afbe0084 	sw	s8,132(sp)
    8:	03a0f021 	addu	s8,sp,zero
 
