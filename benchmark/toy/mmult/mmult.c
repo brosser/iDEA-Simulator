@@ -22,7 +22,7 @@ const int output[5][5] = {  {11, 5, 11, 6, 12},
 
 int main()
 {
-    int c[5][5]; 
+    int volatile c[5][5]; 
     int i, j, k;
     int x, y;
     int sum = 0;

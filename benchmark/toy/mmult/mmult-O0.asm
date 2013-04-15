@@ -14,7 +14,7 @@ int main()
    0:	27bdff78 	addiu	sp,sp,-136
    4:	afbe0084 	sw	s8,132(sp)
    8:	03a0f021 	addu	s8,sp,zero
-    int c[5][5]; 
+    int volatile c[5][5]; 
     int i, j, k;
     int x, y;
     int sum = 0;
@@ -207,16 +207,13 @@ END_CCORE
  230:	28420005 	slti	v0,v0,5
  234:	1440ffcd 	bnez	v0,16c <main+0x16c>
  238:	00000000 	sll	zero,zero,0x0
-
         }
     }
+
     //printf("%d\n", main_result);
 
     return main_result;
  23c:	8fc20018 	lw	v0,24(s8)
-
- // Manually
- 64:  24820000  addu v0,zero,zero
 }
  240:	03c0e821 	addu	sp,s8,zero
  244:	8fbe0084 	lw	s8,132(sp)
@@ -267,11 +264,7 @@ Disassembly of section .rodata:
   8c:	00000001 	0x1
   90:	00000001 	0x1
   94:	00000001 	0x1
-  98: 00000000  0x0
-  9c: 00000000  0x0
-  a0: 00000000  0x0
-  a4: 00000000  0x0
-  a8: 00000000  0x0
+	...
   ac:	00000001 	0x1
   b0:	00000001 	0x1
   b4:	00000001 	0x1

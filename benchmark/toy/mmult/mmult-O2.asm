@@ -5,189 +5,210 @@ mmult.o:     file format elf32-bigmips
 Disassembly of section .text:
 
 00000000 <main>:
+    int x, y;
+    int sum = 0;
+
+    int main_result = 0;
+
+    for (i = 0; i < 5; i++) {
+   0:	3c0d0000 	lui	t5,0x0
+   4:	25ad0000 	addiu	t5,t5,0
+   8:	3c0c0000 	lui	t4,0x0
                             {51, 25, 51, 26, 52},
                             {71, 35, 71, 36, 72},
                             {91, 45, 91, 46, 92}};
 
 int main()
 {
-   0:	3c0c0000 	lui	t4,0x0
-   4:	3c0a0000 	lui	t2,0x0
-   8:	27bdff98 	addiu	sp,sp,-104
+   c:	27bdff98 	addiu	sp,sp,-104
     int x, y;
     int sum = 0;
 
     int main_result = 0;
 
     for (i = 0; i < 5; i++) {
-   c:	00005821 	addu	t3,zero,zero
-  10:	258c0000 	addiu	t4,t4,0
-  14:	254a0000 	addiu	t2,t2,0
+  10:	25a60014 	addiu	a2,t5,20
+  14:	00004021 	addu	t0,zero,zero
+  18:	258c0000 	addiu	t4,t4,0
         for (j = 0; j < 5; j++) {
-            sum = 0;
-            for (k = 0; k < 5 ; k++) {
-  18:	24060005 	addiu	a2,zero,5
-                            {31, 15, 31, 16, 32},
-                            {51, 25, 51, 26, 52},
-                            {71, 35, 71, 36, 72},
-                            {91, 45, 91, 46, 92}};
+  1c:	240b0005 	addiu	t3,zero,5
 
-int main()
 START_CCORE
-  1c:	000b4880 	sll	t1,t3,0x2
-  20:	000b1100 	sll	v0,t3,0x4
-  24:	01224821 	addu	t1,t1,v0
-  28:	03a94021 	addu	t0,sp,t1
-  2c:	00003821 	addu	a3,zero,zero
-  30:	01894821 	addu	t1,t4,t1
-  34:	00071880 	sll	v1,a3,0x2
-  38:	01202021 	addu	a0,t1,zero
-  3c:	01431821 	addu	v1,t2,v1
-  40:	00002821 	addu	a1,zero,zero
-  44:	00001021 	addu	v0,zero,zero
-
-  // Manually inserted by Fred Apr 6
-  46: 00000000  addiu v1,v1,0x64
-
-    for (i = 0; i < 5; i++) {
-        for (j = 0; j < 5; j++) {
-            sum = 0;
-            for (k = 0; k < 5 ; k++) {
-                sum = sum + a[i][k] * b[k][j];
-  48:	8c8d0000 	lw	t5,0(a0)
-  4c:	8c6e0000 	lw	t6,0(v1)
-    int main_result = 0;
-
-    for (i = 0; i < 5; i++) {
-        for (j = 0; j < 5; j++) {
-            sum = 0;
-            for (k = 0; k < 5 ; k++) {
-  50:	24420001 	addiu	v0,v0,1
-                sum = sum + a[i][k] * b[k][j];
-  54:	01cd0018 	mult	t6,t5
-    int main_result = 0;
-
-    for (i = 0; i < 5; i++) {
-        for (j = 0; j < 5; j++) {
-            sum = 0;
-            for (k = 0; k < 5 ; k++) {
-  58:	24840004 	addiu	a0,a0,4
-  5c:	24630014 	addiu	v1,v1,20
-                sum = sum + a[i][k] * b[k][j];
-  60:	00006812 	mflo	t5
-    int main_result = 0;
-
-    for (i = 0; i < 5; i++) {
-        for (j = 0; j < 5; j++) {
-            sum = 0;
-            for (k = 0; k < 5 ; k++) {
- // Manually changed by Fred Apr 6
-  64:	1446fff8 	bne	v0,a2,4c <main+0x48>
-  68:	00ad2821 	addu	a1,a1,t5
-    int sum = 0;
-
-    int main_result = 0;
-
-    for (i = 0; i < 5; i++) {
-        for (j = 0; j < 5; j++) {
-  6c:	24e70001 	addiu	a3,a3,1
-            sum = 0;
-            for (k = 0; k < 5 ; k++) {
-  70:	ad050000 	sw	a1,0(t0)
-    int sum = 0;
-
-    int main_result = 0;
-
-    for (i = 0; i < 5; i++) {
-        for (j = 0; j < 5; j++) {
-  74:	14e2ffef 	bne	a3,v0,34 <main+0x34>
-  78:	25080004 	addiu	t0,t0,4
-    int x, y;
-    int sum = 0;
-
-    int main_result = 0;
-
-    for (i = 0; i < 5; i++) {
-  7c:	256b0001 	addiu	t3,t3,1
-  80:	1567ffe7 	bne	t3,a3,20 <main+0x20>
-  84:	000b4880 	sll	t1,t3,0x2
-  88:	3c0a0000 	lui	t2,0x0
-  8c:	00004821 	addu	t1,zero,zero
-  90:	00001021 	addu	v0,zero,zero
-  94:	254a0000 	addiu	t2,t2,0
-            }
-        }
-    }
-	
-END_CCORE    
-
-    for (x = 0; x < 5; x++){
-        for (y = 0; y < 5; y++) {
-  98:	24080005 	addiu	t0,zero,5
+  20:	00084880 	sll	t1,t0,0x2
+  24:	00085100 	sll	t2,t0,0x4
                             {31, 15, 31, 16, 32},
                             {51, 25, 51, 26, 52},
                             {71, 35, 71, 36, 72},
                             {91, 45, 91, 46, 92}};
 
 int main()
-  9c:	00091900 	sll	v1,t1,0x4
-  a0:	00092080 	sll	a0,t1,0x2
-  a4:	00832021 	addu	a0,a0,v1
-  a8:	01442821 	addu	a1,t2,a0
-  ac:	00001821 	addu	v1,zero,zero
-  b0:	03a42021 	addu	a0,sp,a0
+  28:	012a5021 	addu	t2,t1,t2
+  2c:	00003821 	addu	a3,zero,zero
+  30:	01aa5021 	addu	t2,t5,t2
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            sum = 0;
+            for (k = 0; k < 5 ; k++) {
+                sum = sum + a[i][k] * b[k][j];
+                c[i][j]=sum;
+  34:	01284821 	addu	t1,t1,t0
+  38:	01272821 	addu	a1,t1,a3
+                            {31, 15, 31, 16, 32},
+                            {51, 25, 51, 26, 52},
+                            {71, 35, 71, 36, 72},
+                            {91, 45, 91, 46, 92}};
 
-  // Manually inserted by Fred Apr 6
-  910: 00000000  addiu a1,a1,0xc8
+int main()
+  3c:	00072080 	sll	a0,a3,0x2
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            sum = 0;
+            for (k = 0; k < 5 ; k++) {
+                sum = sum + a[i][k] * b[k][j];
+                c[i][j]=sum;
+  40:	00052880 	sll	a1,a1,0x2
+                            {31, 15, 31, 16, 32},
+                            {51, 25, 51, 26, 52},
+                            {71, 35, 71, 36, 72},
+                            {91, 45, 91, 46, 92}};
+
+int main()
+  44:	01401021 	addu	v0,t2,zero
+  48:	01842021 	addu	a0,t4,a0
+  4c:	00001821 	addu	v1,zero,zero
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            sum = 0;
+            for (k = 0; k < 5 ; k++) {
+                sum = sum + a[i][k] * b[k][j];
+                c[i][j]=sum;
+  50:	03a52821 	addu	a1,sp,a1
+
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            sum = 0;
+            for (k = 0; k < 5 ; k++) {
+                sum = sum + a[i][k] * b[k][j];
+  54:	8c4e0000 	lw	t6,0(v0)
+  58:	8c8f0000 	lw	t7,0(a0)
+                c[i][j]=sum;
+  5c:	24420004 	addiu	v0,v0,4
+
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            sum = 0;
+            for (k = 0; k < 5 ; k++) {
+                sum = sum + a[i][k] * b[k][j];
+  60:	01ee0018 	mult	t7,t6
+                c[i][j]=sum;
+  64:	24840014 	addiu	a0,a0,20
+
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            sum = 0;
+            for (k = 0; k < 5 ; k++) {
+                sum = sum + a[i][k] * b[k][j];
+  68:	00007012 	mflo	t6
+  6c:	006e1821 	addu	v1,v1,t6
+                c[i][j]=sum;
+  70:	aca30000 	sw	v1,0(a1)
+    int main_result = 0;
+
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            sum = 0;
+            for (k = 0; k < 5 ; k++) {
+  74:	14c2fff7 	bne	a2,v0,54 <main+0x54>
+  78:	00000000 	sll	zero,zero,0x0
+    int sum = 0;
+
+    int main_result = 0;
+
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+  7c:	24e70001 	addiu	a3,a3,1
+  80:	14ebffee 	bne	a3,t3,3c <main+0x3c>
+  84:	01272821 	addu	a1,t1,a3
+    int x, y;
+    int sum = 0;
+
+    int main_result = 0;
+
+    for (i = 0; i < 5; i++) {
+  88:	25080001 	addiu	t0,t0,1
+  8c:	1507ffe4 	bne	t0,a3,20 <main+0x20>
+  90:	24c60014 	addiu	a2,a2,20
+  94:	3c0a0000 	lui	t2,0x0
+  98:	00003821 	addu	a3,zero,zero
+  9c:	00001021 	addu	v0,zero,zero
+  a0:	254a0000 	addiu	t2,t2,0
+            }
+        }
+    }
+END_CCORE
+    
+    for (x = 0; x < 5; x++){
+        for (y = 0; y < 5; y++) {
+  a4:	24090005 	addiu	t1,zero,5
+                            {31, 15, 31, 16, 32},
+                            {51, 25, 51, 26, 52},
+                            {71, 35, 71, 36, 72},
+                            {91, 45, 91, 46, 92}};
+
+int main()
+  a8:	00074080 	sll	t0,a3,0x2
+  ac:	00072100 	sll	a0,a3,0x4
+  b0:	01042021 	addu	a0,t0,a0
+  b4:	01442021 	addu	a0,t2,a0
+  b8:	00001821 	addu	v1,zero,zero
         }
     }
     
     for (x = 0; x < 5; x++){
         for (y = 0; y < 5; y++) {
             main_result += (output[x][y] != c[x][y]);
-  b4:	8ca70000 	lw	a3,0(a1)
-  b8:	8c860000 	lw	a2,0(a0)
+  bc:	01074021 	addu	t0,t0,a3
+  c0:	01032821 	addu	a1,t0,v1
+  c4:	00052880 	sll	a1,a1,0x2
+  c8:	03a52821 	addu	a1,sp,a1
+  cc:	8c860000 	lw	a2,0(a0)
+  d0:	8ca50000 	lw	a1,0(a1)
             }
         }
     }
     
     for (x = 0; x < 5; x++){
         for (y = 0; y < 5; y++) {
-  bc:	24630001 	addiu	v1,v1,1
+  d4:	24630001 	addiu	v1,v1,1
             main_result += (output[x][y] != c[x][y]);
-  c0:	00e63026 	xor	a2,a3,a2
-  c4:	0006302b 	sltu	a2,zero,a2
-  c8:	00461021 	addu	v0,v0,a2
+  d8:	00c52826 	xor	a1,a2,a1
+  dc:	0005282b 	sltu	a1,zero,a1
+  e0:	00451021 	addu	v0,v0,a1
             }
         }
     }
     
     for (x = 0; x < 5; x++){
         for (y = 0; y < 5; y++) {
-  cc:	24a50004 	addiu	a1,a1,4
-
-  // Manually changed by Fred Apr 6
-  d0:	1468fff8 	bne	v1,t0,bc <main+0xb4>
-  d4:	24840004 	addiu	a0,a0,4
+  e4:	1469fff6 	bne	v1,t1,c0 <main+0xc0>
+  e8:	24840004 	addiu	a0,a0,4
                 c[i][j]=sum;
             }
         }
     }
     
     for (x = 0; x < 5; x++){
-  d8:	25290001 	addiu	t1,t1,1
-  
-  // Manually changed by Fred Apr 6
-  dc:	1523ffef 	bne	t1,v1,a4 <main+0x9c>
-  e0:	00000000 	sll	zero,zero,0x0
+  ec:	24e70001 	addiu	a3,a3,1
+  f0:	14e3ffed 	bne	a3,v1,a8 <main+0xa8>
+  f4:	00000000 	sll	zero,zero,0x0
     }
 
     //printf("%d\n", main_result);
 
     return main_result;
 }
-  e4:	03e00008 	jr	ra
-  e8:	27bd0068 	addiu	sp,sp,104
+  f8:	03e00008 	jr	ra
+  fc:	27bd0068 	addiu	sp,sp,104
 
 Disassembly of section .rodata:
 
