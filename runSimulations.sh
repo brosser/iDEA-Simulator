@@ -11,6 +11,18 @@ do
 	echo -e "\t\t\t\t [  $I Stage Pipeline  ]"
 	echo -e "Result \t\t Benchmark\t\t      Cycles\tNOPs\tCPI\tCore\tCoreNOPs"
 	echo -e "----------------------------------------------------------------------------------------"
+	# Bubble
+    python src/run-simulator.py -q -p $I ./benchmark/toy/bubble/bubble-O0.asm
+	python src/run-simulator.py -q -p $I ./benchmark/toy/bubble/bubble-O1.asm
+	python src/run-simulator.py -q -p $I ./benchmark/toy/bubble/bubble-O2.asm
+	python src/run-simulator.py -q -p $I ./benchmark/toy/bubble/bubble-O3.asm
+
+	# Factorial
+	python src/run-simulator.py -q -p $I ./benchmark/toy/factorial/factorial-O0.asm
+	python src/run-simulator.py -q -p $I ./benchmark/toy/factorial/factorial-O1.asm
+	python src/run-simulator.py -q -p $I ./benchmark/toy/factorial/factorial-O2.asm
+	python src/run-simulator.py -q -p $I ./benchmark/toy/factorial/factorial-O3.asm
+
 	# Fib
 	python src/run-simulator.py -q -p $I ./benchmark/toy/fib/fib-O0.asm
 	python src/run-simulator.py -q -p $I ./benchmark/toy/fib/fib-O1.asm

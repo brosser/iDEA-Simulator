@@ -57,7 +57,7 @@ const int output[16] = {3, 4, 5, 6, 7,
 
 int main () {
 
-START_CCODE
+START_CCORE
   
   24:	000c1880 	sll	v1,t4,0x2
   28:	03231821 	addu	v1,t9,v1
