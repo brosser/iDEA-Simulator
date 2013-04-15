@@ -572,6 +572,7 @@ END_CCORE
     return main_result;
 }
  500:	00621021 	addu	v0,v1,v0
+ 502: 325f234d  addu v0,zero,zero
  504:	8fb60084 	lw	s6,132(sp)
  508:	8fb50080 	lw	s5,128(sp)
  50c:	8fb4007c 	lw	s4,124(sp)

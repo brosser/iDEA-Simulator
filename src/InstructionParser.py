@@ -236,11 +236,11 @@ class InstructionParser(object):
                     if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz']) :
                         targetval = int(i.immed)
                         vstr = 'immed'
-                    elif(i.op == 'j', 'jal'):
+                    elif(i.op in ['j', 'jal']):
                         targetval = int(i.target)
                         vstr = 'target'
-                    else:
-                        targetval = 0
+                    #else:
+                       # targetval = 0
                 if(targetval >= (self.nopInserts[k])*4):
                     targetval += 4
                     i.values[vstr] = targetval
@@ -257,7 +257,7 @@ class InstructionParser(object):
                 if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz']) :
                     if(int(i.immed) not in targetvals):
                         targetvals.append(int(i.immed))
-                elif(i.op == 'j', 'jal'):
+                elif(i.op in ['j', 'jal']):
                     if(int(i.target) not in targetvals):
                         targetvals.append(int(i.target))
 
@@ -283,7 +283,7 @@ class InstructionParser(object):
                     if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz']) :
                         targetval = int(i.immed)
                         vstr = 'immed'
-                    elif(i.op == 'j', 'jal'):
+                    elif(i.op in ['j', 'jal']):
                         targetval = int(i.target)
                         vstr = 'target'
                     else:
@@ -304,7 +304,7 @@ class InstructionParser(object):
                 if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz']) :
                     targetval = int(i.immed)
                     vstr = 'immed'
-                elif(i.op == 'j', 'jal'):
+                elif(i.op in ['j', 'jal']):
                     targetval = int(i.target)
                     vstr = 'target'
                 else:

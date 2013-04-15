@@ -89,8 +89,16 @@ int main()
             sum = 0;
             for (k = 0; k < 5 ; k++) {
                 sum = sum + a[i][k] * b[k][j];
+
+// Manually inserted by Fred, Apr. 15
+  88: 88888888  addiu a0,a0,0x64
+ 
   54:	8c4e0000 	lw	t6,0(v0)
   58:	8c8f0000 	lw	t7,0(a0)
+
+// Manually inserted by Fred, Apr. 15
+  88: 88888888  subi a0,a0,0x64
+
                 c[i][j]=sum;
   5c:	24420004 	addiu	v0,v0,4
 
@@ -171,7 +179,15 @@ int main()
   c0:	01032821 	addu	a1,t0,v1
   c4:	00052880 	sll	a1,a1,0x2
   c8:	03a52821 	addu	a1,sp,a1
+
+  // Manually inserted by Fred, Apr. 15
+  88: 88888888  addiu a0,a0,0xc8
+
   cc:	8c860000 	lw	a2,0(a0)
+
+  // Manually inserted by Fred, Apr. 15
+  88: 88888888  subi a0,a0,0xc8
+
   d0:	8ca50000 	lw	a1,0(a1)
             }
         }
@@ -190,7 +206,10 @@ int main()
     
     for (x = 0; x < 5; x++){
         for (y = 0; y < 5; y++) {
-  e4:	1469fff6 	bne	v1,t1,c0 <main+0xc0>
+
+  // Manually
+  e4:	1469fff6 	bne	v1,t1,c8 <main+0xc0>
+
   e8:	24840004 	addiu	a0,a0,4
                 c[i][j]=sum;
             }
@@ -199,7 +218,10 @@ int main()
     
     for (x = 0; x < 5; x++){
   ec:	24e70001 	addiu	a3,a3,1
-  f0:	14e3ffed 	bne	a3,v1,a8 <main+0xa8>
+
+  // Manually
+  f0:	14e3ffed 	bne	a3,v1,b0 <main+0xa8>
+
   f4:	00000000 	sll	zero,zero,0x0
     }
 

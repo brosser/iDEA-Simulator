@@ -60,7 +60,7 @@ int main () {
         // Pick up the window elements
         for (j = 0; j < 5; j++) {
             window[j] = signal[i - 2 + j];        
-START_CCODE
+START_CCORE
   28:	8c640000 	lw	a0,0(v1)
   2c:	00000000 	sll	zero,zero,0x0
   30:	ac440000 	sw	a0,0(v0)

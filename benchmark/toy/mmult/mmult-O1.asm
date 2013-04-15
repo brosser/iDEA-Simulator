@@ -37,7 +37,7 @@ int main()
 
     for (i = 0; i < 5; i++) {
         for (j = 0; j < 5; j++) {
-  20:	08000022 	j	88 <main+0x88>
+  20:	08000022 	j	8c <main+0x88>
   24:	24080005 	addiu	t0,zero,5
             sum = 0;
             for (k = 0; k < 5 ; k++) {
@@ -67,7 +67,7 @@ START_CCORE
     for (i = 0; i < 5; i++) {
         for (j = 0; j < 5; j++) {
   50:	24e70001 	addiu	a3,a3,1
-  54:	10e80009 	beq	a3,t0,7c <main+0x7c>
+  54:	10e80009 	beq	a3,t0,80 <main+0x7c>
   58:	00000000 	sll	zero,zero,0x0
                             {31, 15, 31, 16, 32},
                             {51, 25, 51, 26, 52},
@@ -77,6 +77,10 @@ START_CCORE
 int main()
   5c:	01601021 	addu	v0,t3,zero
   60:	00072080 	sll	a0,a3,0x2
+
+  // Manually inserted by Fred Apr. 15
+  88: 88888888  addiu a0,a0,0x64
+
   64:	01842021 	addu	a0,t4,a0
   68:	00001821 	addu	v1,zero,zero
     for (i = 0; i < 5; i++) {
@@ -96,7 +100,7 @@ int main()
 
     for (i = 0; i < 5; i++) {
   7c:	25290001 	addiu	t1,t1,1
-  80:	11280019 	beq	t1,t0,e8 <main+0xe8>
+  80:	11280019 	beq	t1,t0,ec <main+0xe8>
   84:	24c60014 	addiu	a2,a2,20
                             {31, 15, 31, 16, 32},
                             {51, 25, 51, 26, 52},
@@ -117,6 +121,7 @@ int main()
                 c[i][j]=sum;
   9c:	08000017 	j	5c <main+0x5c>
   a0:	01495021 	addu	t2,t2,t1
+END_CCORE
         }
     }
     
@@ -139,7 +144,7 @@ int main()
     for (x = 0; x < 5; x++){
         for (y = 0; y < 5; y++) {
   c8:	24630001 	addiu	v1,v1,1
-  cc:	1469fff5 	bne	v1,t1,a4 <main+0xa4>
+  cc:	1469fff5 	bne	v1,t1,a8 <main+0xa4>
   d0:	24840004 	addiu	a0,a0,4
                 c[i][j]=sum;
             }
@@ -148,16 +153,15 @@ int main()
     
     for (x = 0; x < 5; x++){
   d4:	24e70001 	addiu	a3,a3,1
-  d8:	14e90008 	bne	a3,t1,fc <main+0xfc>
+  d8:	14e90008 	bne	a3,t1,100 <main+0xfc>
   dc:	00000000 	sll	zero,zero,0x0
-END_CCORE
     }
 
     //printf("%d\n", main_result);
 
     return main_result;
 }
-  e0:	08000047 	j	11c <main+0x11c>
+  e0:	08000047 	j	124 <main+0x11c>
   e4:	27bd0068 	addiu	sp,sp,104
     int x, y;
     int sum = 0;
@@ -192,6 +196,10 @@ int main()
  100:	00071900 	sll	v1,a3,0x4
  104:	00832021 	addu	a0,a0,v1
  108:	01442021 	addu	a0,t2,a0
+
+ // Manually inserted by Fred, Apr 15
+ 888: 88888888  addiu a0,a0,0xc8
+
  10c:	00001821 	addu	v1,zero,zero
         }
     }
@@ -200,7 +208,7 @@ int main()
         for (y = 0; y < 5; y++) {
             main_result += (output[x][y] != c[x][y]);
  110:	00074080 	sll	t0,a3,0x2
- 114:	08000029 	j	a4 <main+0xa4>
+ 114:	08000029 	j	a8 <main+0xa4>
  118:	01074021 	addu	t0,t0,a3
     }
 

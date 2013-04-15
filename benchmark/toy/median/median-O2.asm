@@ -16,6 +16,7 @@ int main () {
 
     int main_result = 0;
     
+START_CCORE
     // Move window through all elements of input signal
     for (i = 2; i < N - 2; i++) {
    4:	27af0014 	addiu	t7,sp,20
@@ -57,7 +58,7 @@ const int output[16] = {3, 4, 5, 6, 7,
 
 int main () {
 
-START_CCODE
+
   
   24:	000c1880 	sll	v1,t4,0x2
   28:	03231821 	addu	v1,t9,v1
@@ -188,7 +189,7 @@ int main () {
         // Get the result
         result[i - 2] = window[2];    
     }
-END_CORE
+END_CCORE
 
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
   d8:	24060040 	addiu	a2,zero,64

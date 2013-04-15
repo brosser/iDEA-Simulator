@@ -25,18 +25,27 @@ int main()
 
     for (i = 0; i < 5; i++) {
   14:	afc00000 	sw	zero,0(s8)
-  18:	08000053 	j	14c <main+0x14c>
+
+  // Manually
+  18:	08000053 	j	150 <main+0x14c>
+
   1c:	00000000 	sll	zero,zero,0x0
         for (j = 0; j < 5; j++) {
 START_CCORE
   20:	afc00004 	sw	zero,4(s8)
-  24:	0800004a 	j	128 <main+0x128>
+
+  // Manually
+  24:	0800004a 	j	12c <main+0x128>
+
   28:	00000000 	sll	zero,zero,0x0
             sum = 0;
   2c:	afc00014 	sw	zero,20(s8)
             for (k = 0; k < 5 ; k++) {
   30:	afc00008 	sw	zero,8(s8)
-  34:	08000041 	j	104 <main+0x104>
+
+  // Manually
+  34:	08000041 	j	108 <main+0x104>
+
   38:	00000000 	sll	zero,zero,0x0
                 sum = sum + a[i][k] * b[k][j];
   3c:	3c040000 	lui	a0,0x0
@@ -64,6 +73,10 @@ START_CCORE
   94:	00021880 	sll	v1,v0,0x2
   98:	24820000 	addiu	v0,a0,0
   9c:	00621021 	addu	v0,v1,v0
+
+// Manually inserted by Fred, Apr. 15
+  88: 88888888  addiu v0,v0,0x64
+
   a0:	8c420000 	lw	v0,0(v0)
   a4:	00000000 	sll	zero,zero,0x0
   a8:	00a20018 	mult	a1,v0
@@ -138,11 +151,17 @@ START_CCORE
     
     for (x = 0; x < 5; x++){
  160:	afc0000c 	sw	zero,12(s8)
- 164:	0800008a 	j	228 <main+0x228>
+
+ // Manually +4 +8
+ 164:	0800008a 	j	234 <main+0x228>
+
  168:	00000000 	sll	zero,zero,0x0
         for (y = 0; y < 5; y++) {
  16c:	afc00010 	sw	zero,16(s8)
- 170:	08000081 	j	204 <main+0x204>
+
+ // Manually +4 +8
+ 170:	08000081 	j	210 <main+0x204>
+
  174:	00000000 	sll	zero,zero,0x0
 END_CCORE
             main_result += (output[x][y] != c[x][y]);
@@ -158,7 +177,15 @@ END_CCORE
  19c:	00021880 	sll	v1,v0,0x2
  1a0:	24820000 	addiu	v0,a0,0
  1a4:	00621021 	addu	v0,v1,v0
+
+ // Manually inserted by Fred, Apr. 15
+ 888: 88888888  addiu v0,v0,0xc8
+
  1a8:	8c440000 	lw	a0,0(v0)
+ 
+// Manually inserted by Fred, Apr. 15
+ 888: 88888888  subi v0,v0,0xc8
+
  1ac:	8fc3000c 	lw	v1,12(s8)
  1b0:	00000000 	sll	zero,zero,0x0
  1b4:	00601021 	addu	v0,v1,zero
@@ -190,7 +217,10 @@ END_CCORE
  204:	8fc20010 	lw	v0,16(s8)
  208:	00000000 	sll	zero,zero,0x0
  20c:	28420005 	slti	v0,v0,5
- 210:	1440ffd9 	bnez	v0,178 <main+0x178>
+
+ // Manually
+ 210:	1440ffd9 	bnez	v0,17c <main+0x178>
+
  214:	00000000 	sll	zero,zero,0x0
                 c[i][j]=sum;
             }
@@ -205,7 +235,10 @@ END_CCORE
  228:	8fc2000c 	lw	v0,12(s8)
  22c:	00000000 	sll	zero,zero,0x0
  230:	28420005 	slti	v0,v0,5
- 234:	1440ffcd 	bnez	v0,16c <main+0x16c>
+
+  // Manually
+ 234:	1440ffcd 	bnez	v0,170 <main+0x16c>
+
  238:	00000000 	sll	zero,zero,0x0
         }
     }

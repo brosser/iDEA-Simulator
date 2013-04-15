@@ -35,4 +35,16 @@ do
 	python src/run-simulator.py -q -p $I ./benchmark/toy/mmult/mmult-O2.asm
 	python src/run-simulator.py -q -p $I ./benchmark/toy/mmult/mmult-O3.asm
 
+	# Bubble Sort
+	#python src/run-simulator.py -q -p $I ./benchmark/toy/bubble_sort/bubble-O0.asm
+	#python src/run-simulator.py -q -p $I ./benchmark/toy/bubble_sort/bubble-O1.asm
+	#python src/run-simulator.py -q -p $I ./benchmark/toy/bubble_sort/bubble-O2.asm
+	#python src/run-simulator.py -q -p $I ./benchmark/toy/bubble_sort/bubble-O3.asm
+
+	# Factorial
+	python src/run-simulator.py -q -p $I ./benchmark/toy/factorial/factorial-O0.asm
+	python src/run-simulator.py -q -p $I ./benchmark/toy/factorial/factorial-O1.asm
+	python src/run-simulator.py -q -p $I ./benchmark/toy/factorial/factorial-O2.asm
+	python src/run-simulator.py -q -p $I ./benchmark/toy/factorial/factorial-O3.asm
+
 done
