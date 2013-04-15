@@ -11,7 +11,7 @@ Disassembly of section .text:
     unsigned int factorial_number = 1;
 
     for (i=1; i <= n; ++i){
-START_CCODE
+START_CCORE
    0:	1080000b 	beqz	a0,30 <calc_factorial+0x30>
    4:	24030001 	addiu	v1,zero,1
    8:	24020001 	addiu	v0,zero,1

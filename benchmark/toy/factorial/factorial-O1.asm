@@ -19,7 +19,7 @@ unsigned int calc_factorial (unsigned int n)
 
     unsigned int i;
     unsigned int factorial_number = 1;
-START_CCODE
+START_CCORE
    8:	24020001 	addiu	v0,zero,1
 
     for (i=1; i <= n; ++i){
