@@ -314,8 +314,11 @@ class InstructionParser(object):
         print "\n<Processed Instructions>"
         addr = 0x0
         for i in instructions:
+            #if(i.op != 'nop'):
             print hex(addr), ": ", i
             addr += 0x4
+
+        print "<End of Preprocessing>"
 
         return instructions
 

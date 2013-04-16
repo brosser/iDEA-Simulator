@@ -52,6 +52,11 @@ def main() :
 					dest="wbcycles",
 					default=-1,
 					help="set number of Writeback (WB) Stage cycles")
+	parser.add_option("-m",# "--WBStages",
+					type="int",
+					dest="startAddr",
+					default=0x0,
+					help="set execution start address")
 
 	(options, args) = parser.parse_args()
 
@@ -146,7 +151,8 @@ def main() :
 	lines = iparser.parseLines(lines, (options.pipeline-options.ifcycles), options.ifcycles, coreInstr)
 	pipelineInfo = [options.pipeline, options.ifcycles, options.idcycles, options.excycles, options.wbcycles]
 
-	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose, options.quiet, pipelineInfo)
+	#pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose, options.quiet, pipelineInfo)
+	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, options.startAddr, oldstdout, options.verbose, options.quiet, pipelineInfo)
 	
 	if(not options.quiet):
 		print "> Starting Simulation..."
