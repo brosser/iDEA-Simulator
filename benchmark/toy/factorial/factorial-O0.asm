@@ -34,7 +34,7 @@ int main()
   48:	24020001 	addiu	v0,zero,1
   4c:	afc20028 	sw	v0,40(s8)
 	unsigned int i, j;
-
+START_CCORE
 	for (j=0; j < number; j++) {
   50:	afc00008 	sw	zero,8(s8)
   54:	08000037 	j	dc <main+0xdc>
@@ -136,6 +136,7 @@ int main()
  168:	0062102b 	sltu	v0,v1,v0
  16c:	1440ffe4 	bnez	v0,100 <main+0x100>
  170:	00000000 	sll	zero,zero,0x0
+END_CCORE
 		main_result += (output[j] != c[j]);
 	}
 	

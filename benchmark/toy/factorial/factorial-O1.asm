@@ -32,6 +32,7 @@ int main()
 	for (j=0; j < number; j++) {
 		for (i=0; i < j; i++){
 			c[j] = c[j] * (i+1);
+START_CCORE
   38:	24420001 	addiu	v0,v0,1
   3c:	00e20018 	mult	a3,v0
   40:	00003812 	mflo	a3
@@ -102,7 +103,7 @@ int main()
 			c[j] = c[j] * (i+1);
 		}
 	}
-	
+END_CCORE	
 	for (j=0; j < number; j++) {
 		main_result += (output[j] != c[j]);
   98:	8ca50000 	lw	a1,0(a1)

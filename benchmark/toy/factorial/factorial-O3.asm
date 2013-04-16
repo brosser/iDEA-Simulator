@@ -33,7 +33,7 @@ int main()
   34:	1080000b 	beqz	a0,64 <main+0x64>
   38:	00001021 	addu	v0,zero,zero
 // iteration 8
-
+START_CCORE
 const unsigned int number = 8; // number of iterations
 const unsigned int output[] = {1,1,2,6,24,120,720,5040,40320};
 
@@ -80,7 +80,7 @@ int main()
 			c[j] = c[j] * (i+1);
 		}
 	}
-	
+END_CCORE	
 	for (j=0; j < number; j++) {
 		main_result += (output[j] != c[j]);
   74:	8fa40000 	lw	a0,0(sp)

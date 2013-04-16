@@ -36,7 +36,7 @@ int main()
 
 const unsigned int number = 8; // number of iterations
 const unsigned int output[] = {1,1,2,6,24,120,720,5040,40320};
-
+START_CCORE
 int main()
   3c:	8ca70000 	lw	a3,0(a1)
     unsigned int c[] = {1,1,1,1,1,1,1,1};
@@ -85,7 +85,7 @@ int main()
 			c[j] = c[j] * (i+1);
 		}
 	}
-	
+END_CCORE	
 	for (j=0; j < number; j++) {
   84:	24060020 	addiu	a2,zero,32
 // iteration 8
