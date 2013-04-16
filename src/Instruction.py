@@ -154,6 +154,3 @@ class Nop(Instruction):
     def __str__(self):
         return 'nop'  
     pass
-    
-#nop singleton
-#Nop = Nop()

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# Use to load input files and options and run the simulation
 
 import elf32parser
 import PipelineSimulator
@@ -166,9 +167,6 @@ def main() :
 
 	# Run simulation
 	pipelinesim.run()
-
-	# Print out line by line
-	#print lines
 
 	elapsedTime = (time.clock() - startTime)
 

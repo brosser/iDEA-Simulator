@@ -28,8 +28,12 @@ int main()
   28:	240200c8 	addiu	v0,zero,200
   2c:	00602821 	addu	a1,v1,zero
   30:	00403021 	addu	a2,v0,zero
-  34:	0c000000 	jal	0 <main>
-  38:	00000000 	sll	zero,zero,0x0
+
+  // Manually by Fred, Apr. 16
+  38: 00000000  sll zero,zero,0x0
+  38: 00000000  sll zero,zero,0x0
+  //34:	0c000000 	jal	0 <main>
+  //38:	00000000 	sll	zero,zero,0x0
                     15, 21, 17, 18, 19, 20, 17, 21, 21, 21,
                     22, 54, 22, 45, 24, 25, 25, 31, 22, 35,
                     2, 0, 1, 1, 0, 2, 3, 4, 5, 6,
@@ -144,7 +148,10 @@ END_CCORE
 
     for (i = 0; i < 50; i++){
  178:	afc00010 	sw	zero,16(s8)
- 17c:	08000079 	j	1e4 <main+0x1e4>
+
+  // Manually changed by Fred, Apr. 16
+ 17c:	08000079 	j	1e8 <main+0x1e4>
+
  180:	00000000 	sll	zero,zero,0x0
         main_result += (output[i] != array[i]);
  184:	3c020000 	lui	v0,0x0
@@ -153,6 +160,8 @@ END_CCORE
  190:	00031880 	sll	v1,v1,0x2
  194:	24420000 	addiu	v0,v0,0
  198:	00621021 	addu	v0,v1,v0
+  // Manually inserted by Fred, Apr. 16
+ 888: 88888888  addiu v0, v0, 0xc8
  19c:	8c430000 	lw	v1,0(v0)
  1a0:	8fc20010 	lw	v0,16(s8)
  1a4:	00000000 	sll	zero,zero,0x0
@@ -190,6 +199,7 @@ END_CCORE
  1f8:	8fc2001c 	lw	v0,28(s8)
 }
  1fc:	03c0e821 	addu	sp,s8,zero
+ 1ff: 24420001  addiu v0,zero,0
  200:	8fbf00f4 	lw	ra,244(sp)
  204:	8fbe00f0 	lw	s8,240(sp)
  208:	27bd00f8 	addiu	sp,sp,248

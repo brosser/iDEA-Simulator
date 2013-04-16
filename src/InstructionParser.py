@@ -107,7 +107,6 @@ class InstructionParser(object):
         if s[0] in ["jr", "jalr"]:
             return Instruction(op=s[0], s1 = s[1], regRead = 1, aluop=0, branch=1)
         if(s[0] == "nop" or (s[0] == "sll" and s[1] == "$r0")):
-            #return Nop
             return Instruction(op='nop')
         if(s[0] in ["mult", "multu"]):
             return Instruction(op=s[0], dest=s[1], s1=s[1], s2=s[2], regRead=1, regWrite=1, aluop=1)
@@ -124,7 +123,6 @@ class InstructionParser(object):
         memwrite = s[0] in ['sw', 'sb', 'sh', 'sbu', 'shu']
         if (memread or memwrite):
             import re 
-            #regex = re.compile("(\d+)\((\$r\d+)\)")
             regex = re.compile("(-?\d+)\((\$r\d+)\)")
             match = regex.match(s[2])
             immedval = match.group(1) 
@@ -137,9 +135,6 @@ class InstructionParser(object):
             return Instruction(op=s[0], s1=s[1] , s2= s[2], immed = s[3], regRead = 1, aluop = 1, branch=1)
         elif( s[0] in ['beqz', 'bnez', 'blez', 'bgtz', 'bltz', 'bgez'] ) :
             return Instruction(op=s[0], s1=s[1], s2 = None, immed=s[2], regRead = 1, aluop = 1, branch=1)
-
-                                                        # HEX
-            #return Instruction(op=s[0], s1=s[1], immed= int(str(s[2]), 16), regRead = 1, aluop = 1, branch=1)
         # Pseudoinstructions
         if( s[0] == "move" ) :
             return Instruction(op="addi", dest=s[1], s1=s[2], immed=0, regRead=1, regWrite=1, aluop=1)
@@ -189,8 +184,6 @@ class InstructionParser(object):
                 match3 = (prev.dest == curr.dest and prev.dest is not None)
                 matchsw1 = ((curr.writeMem) and ((prev.writeMem and (curr.s2 == prev.s2) and (imd <= 4)))) 
                 matchsw2 = ((prev.readMem and (curr.s2 == prev.s1) and (imd <= 4)))
-                #prevIsJump = prev.op in ['j', 'jr', 'jal', 'jalr']
-                #prevIsBranch = prev.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz']
                 currIsJump = curr.op in ['j', 'jr', 'jal', 'jalr']
                 currIsBranch = curr.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz']
                 if (currIsJump or currIsBranch):
@@ -314,7 +307,6 @@ class InstructionParser(object):
         print "\n<Processed Instructions>"
         addr = 0x0
         for i in instructions:
-            #if(i.op != 'nop'):
             print hex(addr), ": ", i
             addr += 0x4
 

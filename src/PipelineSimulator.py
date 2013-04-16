@@ -57,8 +57,8 @@ class PipelineSimulator(object):
         self.EXReg1 = None
         self.EXReg2 = None
         
-        #self.pipeline is a list<PipelineStage>
-        #with the mapping of:
+        # self.pipeline is a list<PipelineStage>
+        # with the mapping of:
         #   0 = Fetch
         #   1 = Write Back
         #   2 = Read
@@ -100,13 +100,6 @@ class PipelineSimulator(object):
             if(not self.quiet):
                 print "\t> Stage " + str(i+1) + "\tWB" + str(i+1-self.nIFit-self.nIDit-self.nEXit), ": Writeback"          
 
-        """
-        self.pipeline[1] = WriteStage(Nop, self)
-        self.pipeline[2] = ReadStage(Nop, self)
-        self.pipeline[3] = ExecStage(Nop, self) 
-        self.pipeline[4] = DataStage(Nop, self)
-        """
-
         if(not self.quiet):
             print "> Initializing Registers"
         # ex: {'$r0' : 0, '$r1' : 0 ... '$r31' : 0 }
@@ -124,7 +117,6 @@ class PipelineSimulator(object):
 
         # programCounter to state where in the instruction collection
         # we are. to find correct spot in instruction memory  
-        #self.programCounter = 0x0
         self.programCounter = mainAddr
 
         # set up the data memory construct, a list index starting at 0 and continuing to 0xffc
@@ -160,23 +152,10 @@ class PipelineSimulator(object):
     
     def step(self):
         self.cycles +=1
-        #shift the instructions to the next logical place
-        #technically we do the Fetch instruction here, which is why 
-        #FetchStage.advance() does nothing
+        # Shift the instructions to the next logical place
+        # technically we do the Fetch instruction here, which is why 
+        # FetchStage.advance() does nothing
         
-        #MUST KEEP THIS ORDER (writeback before read)
-        """
-        self.pipeline[1] = WriteStage(self.pipeline[4].instr,self)
-        if self.stall:
-            self.pipeline[4] = DataStage(Nop,self)
-            self.stall = False
-        else :
-            self.pipeline[4] = DataStage(self.pipeline[3].instr,self)
-            self.pipeline[3] = ExecStage(self.pipeline[2].instr,self)
-            self.pipeline[2] = ReadStage(self.pipeline[0].instr,self)
-            self.pipeline[0] = FetchStage(Nop, self)
-        """
-
         for i in range(self.nIFit+self.nIDit+self.nEXit+self.nWBit, self.nIFit+self.nIDit+self.nEXit+1, -1):
             self.pipeline[i-1] = DummyWriteStage(self.pipeline[i-2].instr, self)  
         self.pipeline[self.nIFit+self.nIDit+self.nEXit] = WriteStage(self.pipeline[self.nIFit+self.nIDit+self.nEXit-1].instr, self)  
@@ -239,7 +218,8 @@ class PipelineSimulator(object):
             and self.pipeline[1].instr.result is not None
                 and self.pipeline[1].instr.dest == regName ):
                     return self.pipeline[1].instr.result
-        else :#this value used to be False, but python treats False and 0 the same
+        else :
+            #this value used to be False, but python treats False and 0 the same
             return "NOVAL" 
 
     def getForwardValBranch(self, regName):
@@ -258,7 +238,8 @@ class PipelineSimulator(object):
             and self.pipeline[1].instr.result is not None
                 and self.pipeline[1].instr.dest == regName ):
                     return self.pipeline[1].instr.result
-        else :#this value used to be False, but python treats False and 0 the same
+        else :
+            #this value used to be False, but python treats False and 0 the same
             return "NOVAL" 
 
     # Print current cycle number to terminal
@@ -270,7 +251,6 @@ class PipelineSimulator(object):
     def debug_lite(self):
         print "###################### PC = " + str(hex(self.programCounter)) + " ######################"
         print "Cycles: ", str(self.cycles)
-        #self.printStageCollection() 
         self.printPipeline()
         self.printRegFile(True)
         #self.printDataMemory()
@@ -278,8 +258,7 @@ class PipelineSimulator(object):
         print "<Updated Registers> : ", self.changedRegs, " = ", self.changedRegsVal, "\n"
 
     def debug(self):
-        print "\n######################## Debug ###########################"
-        #self.printStageCollection()     
+        print "\n######################## Debug ###########################"    
         self.printRegFile(False)
         self.printPipeline()   
         self.printInstructionMemory()
@@ -306,7 +285,6 @@ class PipelineSimulator(object):
         for k,v in sorted(self.dataMemory.iteritems()):
             if k in self.accessedDataMem and k is not None and v != 0:
                 print hex(int(str(k), 10)), ":" , v
-
                 
     def printPipeline(self):
         print "\n<Pipeline>"
@@ -346,9 +324,7 @@ class PipelineSimulator(object):
                 if(not compact):
                     print k, ":" , v
                 regstr +=  str(k) + ": " + str(v) + "\t"
-        #print "hi: ", self.hi
         regstr +=  "hi: " + str(self.hi) + "\t"
-        #print "lo: ", self.lo
         regstr +=  "lo: " + str(self.lo) 
         if(compact):
             print regstr
@@ -438,7 +414,7 @@ class ReadStage(PipelineStage):
         if(self.instr.regRead):
             self.instr.source1RegValue = int(self.simulator.registers[self.instr.s1])
             if (self.instr.immed and
-                #these instructions require special treatment
+                # These instructions require special treatment
                 (self.instr.op not in ['lw', 'sw', 'bne', 'beq', 'beqz', 'bnez', 'blez', 
                     'bgtz', 'bltz', 'bgez'])):
                 self.instr.source2RegValue = int(self.instr.immed)
@@ -451,7 +427,6 @@ class ReadStage(PipelineStage):
         # Update PC
         if self.instr.op == 'jal':
             # Save return address in $ra = $r31
-            
             self.simulator.registers["$r31"] = self.simulator.programCounter
             self.simulator.changedRegs.append("$r31")
             self.simulator.changedRegsVal.append(hex(self.simulator.programCounter))
@@ -461,8 +436,6 @@ class ReadStage(PipelineStage):
                 print "Jump to address", hex(targetval)
             # Set the o  instructions currently in the pipeline to a Nop
             # Branch Delay Slot or Stall
-            #if(self.simulator.UseBranchDelaySlot == False):
-            #    self.simulator.pipeline[0] = FetchStage(Nop, self)      
             if(self.simulator.nIFit >= 2):
                 self.simulator.pipeline[0] = FetchStage(Instruction(op='nop', coreInstr=True), self)
             if(self.simulator.nIFit == 3):
@@ -476,8 +449,6 @@ class ReadStage(PipelineStage):
                 print "Jump to address", hex(targetval)
             # Set the o  instructions currently in the pipeline to a Nop
             # Branch Delay Slot or Stall
-            #if(self.simulator.UseBranchDelaySlot == False):
-            #    self.simulator.pipeline[0] = FetchStage(Nop, self)
             if(self.simulator.nIFit >= 2):
                 self.simulator.pipeline[0] = FetchStage(Instruction(op='nop', coreInstr=True), self)
             if(self.simulator.nIFit == 3):
@@ -488,8 +459,6 @@ class ReadStage(PipelineStage):
                 print "Jump to address", hex(self.instr.source1RegValue)
             self.simulator.programCounter = self.instr.source1RegValue
             # Branch Delay Slot or Stall
-            #if(self.simulator.UseBranchDelaySlot == False):
-            #    self.simulator.pipeline[0] = FetchStage(Nop, self)
             if(self.simulator.nIFit >= 2):
                 self.simulator.pipeline[0] = FetchStage(Instruction(op='nop', coreInstr=True), self)
             if(self.simulator.nIFit == 3):
@@ -503,9 +472,7 @@ class ReadStage(PipelineStage):
                 print "Jump to address", hex(self.instr.source1RegValue)
             self.simulator.changedRegsVal.append(hex(self.simulator.programCounter))
             self.simulator.programCounter = self.instr.source1RegValue
-            # Branch Delay slot or  or Stall
-            #if(self.simulator.UseBranchDelaySlot == False):
-            #    self.simulator.pipeline[0] = FetchStage(Nop, self)
+            # Branch Delay slot or Stall
             if(self.simulator.nIFit >= 2):
                 self.simulator.pipeline[0] = FetchStage(Instruction(op='nop', coreInstr=True), self)
             if(self.simulator.nIFit == 3):
@@ -707,9 +674,6 @@ class ExecStage(PipelineStage):
         if(self.simulator.nIFit == 3):
             self.simulator.pipeline[2] = FetchStage(Instruction(op='nop', coreInstr=True), self)
 
-        #self.simulator.pipeline[0] = FetchStage(Nop, self)
-        #if(self.simulator.UseBranchDelaySlot == False):
-        #    self.simulator.pipeline[2] = FetchStage(Nop, self)
         self.simulator.branched = True
 
 
@@ -730,9 +694,7 @@ class WriteStage(PipelineStage):
         self.simulator.changedRegs = []
         self.simulator.changedRegsVal = []
         if self.instr.regWrite:
-            if self.instr.dest == '$r0':
-                #Edit: don't raise exception just ignore it
-                #raise Exception('Cannot assign to register $r0')    
+            if self.instr.dest == '$r0':    
                 pass
             if (self.instr.op in ['mult', 'multu', 'div', 'divu']):
                 pass

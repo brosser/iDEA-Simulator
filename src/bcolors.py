@@ -1,3 +1,6 @@
+# Debug colour output formatting
+# Fredrik Brosser 2012-04-10
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -24,8 +27,7 @@ class bcolors:
             if (len(s) < i):
                 n += 1
             i -= 8
-        #tabs = n*"\t"
-        printstr = self.OKGREEN + "Passed \t| " + s + "\t" #+ tabs
+        printstr = self.OKGREEN + "Passed \t| " + s + "\t"
         for stat in stats:
             printstr += str(stat) + "\t"
         printstr += self.ENDC

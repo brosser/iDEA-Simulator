@@ -1,4 +1,4 @@
-# elf32-bigmips to MIPS-Simulator format converter
+# Modelling elf32-bigmips instructions
 # Fredrik Brosser 2013-02-15
 
 import sys
