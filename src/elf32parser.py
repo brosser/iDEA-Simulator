@@ -41,7 +41,7 @@ class elf32parser:
 
 			# Find assembly instructions (ignoring whitespace lines, C-code and assembler directives)
 			# Normal instruction
-			if('.rodata:' in line):
+			if('.rodata:' in line or 'Disassembly of section .data:' in line):
 				self.parseDataMem = True
 			# Mark "computation core" instructions
 			if('START_CCORE' in line and self.coreInstr is False):

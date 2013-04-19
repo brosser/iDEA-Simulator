@@ -565,7 +565,7 @@ class ExecStage(PipelineStage):
                 else:
                     self.instr.result = eval("%d %s %d" % (int((self.instr.source1RegValue)), 
                             self.simulator.alu_operations[self.instr.op], 
-                            int((self.instr.source2RegValue))))
+                            int((self.instr.source2RegValue))))                        
 
         if(self.instr.op == "li"):
             self.simulator.dataMemory[self.instr.source1RegValue] = self.instr.immed
@@ -630,11 +630,11 @@ class ExecStage(PipelineStage):
             # Read Word
             if self.instr.op == 'lw':
                 if(addr in self.simulator.dataMemory):
-                    self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
+                    self.instr.result = self.simulator.dataMemory[addr] #& 0xFFFFFFFF
                 else:
                     print "MEMORY ACCESS ERROR", self.instr
                     print "ON ADDRESS ", hex(addr)
-                    self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
+                    self.instr.result = self.simulator.dataMemory[addr] #& 0xFFFFFFFF
 
             # Read Half-word
             elif self.instr.op in ['lh', 'lhu']:
@@ -658,8 +658,8 @@ class ExecStage(PipelineStage):
                     print "MEMORY ACCESS ERROR", self.instr
                     self.instr.result = self.simulator.dataMemory[addr] & (0xFF000000>>(byteoffset*2))
 
-        if(self.instr.result is not None):
-            self.instr.result = self.instr.result & 0xFFFFFFFF
+        #if(self.instr.result is not None):
+        #    self.instr.result = self.instr.result & 0xFFFFFFFF
 
     def doBranch(self):
         targetval = int(self.instr.immed)
@@ -699,7 +699,7 @@ class WriteStage(PipelineStage):
             if (self.instr.op in ['mult', 'multu', 'div', 'divu']):
                 pass
             elif self.instr.dest:
-                self.simulator.registers[self.instr.dest] = self.instr.result & 0xFFFFFFFF
+                self.simulator.registers[self.instr.dest] = self.instr.result #& 0xFFFFFFFF
                 self.simulator.changedRegs.append(self.instr.dest)
                 self.simulator.changedRegsVal.append(self.instr.result)
                 
