@@ -29,7 +29,7 @@ class bcolors:
             i -= 8
         printstr = self.OKGREEN + "Passed \t| " + s + "\t"
         for stat in stats:
-            printstr += str(stat) + "\t"
+            printstr += str(stat) + "\t"  
         printstr += self.ENDC
         print printstr
 
