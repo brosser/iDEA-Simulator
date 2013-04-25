@@ -23,6 +23,11 @@ def main() :
 					dest="verbose",
 					default=False,
 					help="log cycle by cycle debug information")
+	parser.add_option("-c", "--core", 
+					action="store_true",
+					dest="core",
+					default=False,
+					help="show only core cycles")
 	parser.add_option("-q", "--quiet", 
 					action="store_true",
 					dest="quiet",
@@ -186,7 +191,10 @@ def main() :
 	else:
 		success = checker.runCheck()
 		if(success):
-			B.printPass(args[0], [checker.getCycles(), checker.getNOPs(), checker.getCPI(), checker.getCoreCycles(), checker.getCoreNops()])
+			if(options.core):
+				B.printCoreOnly(checker.getCoreCycles())
+			else:
+				B.printPass(args[0], [checker.getCycles(), checker.getNOPs(), checker.getCPI(), checker.getCoreCycles(), checker.getCoreNops()])
 		else:
 			B.printFail(args[0], "")
 

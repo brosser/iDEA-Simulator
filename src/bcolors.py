@@ -33,6 +33,10 @@ class bcolors:
         printstr += self.ENDC
         print printstr
 
+    def printCoreOnly(self, ccore):
+        printstr = self.OKGREEN + str(ccore) + self.ENDC
+        print printstr
+
     def printFail(self, s, errorMsg):
 	   print self.FAIL + "Failed \t|\t " + s + "\t" + errorMsg + self.ENDC
 
