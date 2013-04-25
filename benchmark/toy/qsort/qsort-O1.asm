@@ -19,7 +19,7 @@ int main() {
 
   beg[0]=0; end[0]=100;
    4:	afa00000 	sw	zero,0(sp)
-   8:	24020064 	addiu	v0,zero,100
+   8:	24020064 	addiu	v0,zero,250
    c:	afa20190 	sw	v0,400(sp)
 				235, 666, 1290, 101, 523, 823, 111, 214, 62, 9}; 
 
@@ -230,8 +230,7 @@ int main() {
       arr[L]=piv; 
 	  beg[i+1]=L+1; 
 	  end[i+1]=end[i]; 
-	  end[i++]=L;
- 1ac:	00804821 	addu	t1,a0,zero
+   1ac:	00804821 	addu	t1,a0,zero
   int i = 0;
   int beg[100], end[100];
 
@@ -240,6 +239,7 @@ int main() {
   while (i>=0) {
  1b0:	0521ff9b 	bgez	t1,20 <main+0x20>
  1b4:	00091880 	sll	v1,t1,0x2
+ 1b6: 00102c10  addiu v0,zero,0 
 	}
     else {
       i--; 
