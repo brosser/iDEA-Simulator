@@ -2,6 +2,7 @@
 // ./fib.exe > output
 
 // iteration 45
+// sample size 45
 
 /**
  * You'll notice that we need to include a header file that
@@ -32,7 +33,8 @@ const int output[45] = {            1, 2, 3, 5, 8,
 int main ()
 {
   /* Notice that we need to declare our variables, and their type */
-
+    
+  //int counter = 0;
   int n = 45;
   int a = 0;
   int b = 1;
@@ -47,6 +49,8 @@ int main ()
         sum[i] = a + b;
         a = b;
         b = sum[i];
+
+        //counter = counter + 1;
     }
     
     for (i = 0; i < n; i++){
@@ -54,6 +58,7 @@ int main ()
         //printf("%u, ", sum[i]);
     }
         //printf ("%d\n", main_result);
+        //printf("%d\n", counter);
     
   return main_result;
 }

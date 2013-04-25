@@ -2,7 +2,8 @@
 // gcc -o fir fir.c
 // ./fir.exe
 
-// iteration 50
+// iteration 250
+// sample size 50
 
 const int data[54] = {   45, 1, 22, 53, 10, 12, 13, 25, 33, 14, 
                         12, 36, 12, 2, 24, 15, 5, 3, 42, 13,
@@ -19,6 +20,7 @@ const int output[50] =  {   1176, 1112, 716, 720, 816, 970, 911, 846, 865, 800,
 
 int main () {
 
+    //int counter = 0;
     int i;
     int main_result = 0;
 
@@ -34,7 +36,9 @@ int main () {
         sum = 0;
         for (k = 0; k < ncoeff; k++) {
             sum = sum + coeff[k] * data[k+n];
-            y[n] = sum;           
+            y[n] = sum;  
+
+            //counter = counter + 1;         
         }
     }
     
@@ -42,6 +46,7 @@ int main () {
         main_result += (output[i] != y[i]);
     }
     //printf ("%d\n", main_result);
+    //printf ("%d\n", counter);
     
     return main_result;
 }

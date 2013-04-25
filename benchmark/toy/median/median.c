@@ -1,9 +1,9 @@
 #include <stdio.h>
-// iteration 95 16x5 + 3x5
+// iteration 144 
+// sample size 20
 
 // Good tutorial on median filter: http://www.librow.com/articles/article-1
 // window size 5
-// sample size N = 20
 const int signal[20] = {1, 2, 3, 4, 5,
                         6, 7, 8, 9, 10,
                         11, 12, 13, 14, 15,
@@ -15,6 +15,8 @@ const int output[16] = {3, 4, 5, 6, 7,
                         18}; /*N - window_size - 1*/
 
 int main () {
+
+    //int counter = 0;
 
     int i, j, k;
     int min, temp;
@@ -34,8 +36,11 @@ int main () {
         for (j = 0; j < 3; j++) {
             min = j;
             for (k = j + 1; k < 5; k++) {
-                if (window[k] < window[min])
+                if (window[k] < window[min]) {
                     min = k;
+                }
+
+                //counter = counter + 1;
             }
             // Put found minimum element in temp
             temp = window[j];
@@ -50,6 +55,7 @@ int main () {
         main_result += (result[i] != output[i]);
         //printf("%i: %i\n", i, result[i]);
     }
+    //printf("%d\n", counter);
     //printf("%i\n", main_result);
     
 return main_result;
