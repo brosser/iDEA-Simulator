@@ -1,5 +1,6 @@
 /* Bubble sort code */
- 
+// iteration 1225
+// sample size 50 
 #include <stdio.h>
 
 const int output[50] = {0, 0, 1, 1, 2, 2, 3, 4, 5, 6, 
@@ -9,6 +10,7 @@ const int output[50] = {0, 0, 1, 1, 2, 2, 3, 4, 5, 6,
                         36, 38, 41, 45, 47, 50, 51, 54, 55, 65}; 
 int main()
 {
+  //int counter = 0;
   int n = 50;
   int i, c, d, sum, swap;
   int main_result = 0;
@@ -28,6 +30,7 @@ int main()
             array[d]   = array[d+1];
             array[d+1] = swap;
           }
+          //counter = counter + 1;
         }
       }
 
@@ -37,7 +40,8 @@ int main()
 
         //printf("%d, ", array[i]);
     }
-        printf ("%d\n", main_result);
+        //printf ("%d\n", main_result);
+        //printf("%d\n", counter);
 
   return main_result;
 }

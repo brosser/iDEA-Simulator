@@ -1,6 +1,7 @@
 #include<stdio.h>
 
-// iteration 125 5x5x5
+// iteration 125 
+// sample size 5x5
 
 const int a[5][5] = { {1, 2, 3, 4, 5},
                     {6, 7, 8, 9, 10},
@@ -22,6 +23,8 @@ const int output[5][5] = {  {11, 5, 11, 6, 12},
 
 int main()
 {
+    //int counter = 0;
+
     int volatile c[5][5]; 
     int i, j, k;
     int x, y;
@@ -35,6 +38,8 @@ int main()
             for (k = 0; k < 5 ; k++) {
                 sum = sum + a[i][k] * b[k][j];
                 c[i][j]=sum;
+
+                //counter = counter + 1;
             }
         }
     }
@@ -46,6 +51,7 @@ int main()
         }
     }
 
+    //printf("%d\n", counter);
     //printf("%d\n", main_result);
 
     return main_result;
