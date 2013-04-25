@@ -257,7 +257,9 @@ class InstructionParser(object):
         for k in range (0, len(instructions)-1):
             p = k*0x4 # Address
             if(p in targetvals):
-                for q in range(0, self.nNOPs-self.IFiterations):
+                #for q in range(0, self.nNOPs-self.IFiterations):
+                # CHANGES APR 25
+                for q in range(0, self.nNOPs):
                     self.nopInserts.append(k)
 
         print "TARGETVALS: "
@@ -302,7 +304,9 @@ class InstructionParser(object):
                     vstr = 'target'
                 else:
                     targetval = 0
-                i.values[vstr] = (targetval-((self.nNOPs-self.IFiterations)*0x4)) 
+                # CHANGES APR 25
+                #i.values[vstr] = (targetval-((self.nNOPs-self.IFiterations)*0x4))
+                i.values[vstr] = (targetval-((self.nNOPs)*0x4))
 
         print "\n<Processed Instructions>"
         addr = 0x0
