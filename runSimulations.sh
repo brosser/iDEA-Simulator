@@ -48,7 +48,7 @@ do
 	python src/run-simulator.py -q -p $I ./benchmark/toy/factorial/factorial-O3.asm
 
 	# Quick Sort
-	#python src/run-simulator.py -q -p $I ./benchmark/toy/qsort/qsort-O0.asm
+	python src/run-simulator.py -q -p $I ./benchmark/toy/qsort/qsort-O0.asm
 	python src/run-simulator.py -q -p $I ./benchmark/toy/qsort/qsort-O1.asm
 	python src/run-simulator.py -q -p $I ./benchmark/toy/qsort/qsort-O2.asm
 	python src/run-simulator.py -q -p $I ./benchmark/toy/qsort/qsort-O3.asm
