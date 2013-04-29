@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+# to run: sh graphPlots.sh benchmark
 
 filename="runSimulations.log"
 benchmark=$1
