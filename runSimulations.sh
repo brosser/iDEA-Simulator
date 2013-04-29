@@ -31,8 +31,8 @@ do
 		 echo -ne "- EX "
 		done
 		echo -e "- WB "
-		echo -e "Result \t\t Benchmark\t\t      Cycles\tNOPs\tCPI\tCore\tCoreNOPs"
-		echo -e "----------------------------------------------------------------------------------------"
+		echo -e "# Result \t\t Benchmark\t\t      Cycles\tNOPs\tCPI\tCore\tCoreNOPs"
+		echo -e "-----------------------------------------------------------------------------------------------"
 		# Fib
 		echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 ./benchmark/toy/fib/fib-O0.asm
 		echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 ./benchmark/toy/fib/fib-O1.asm
@@ -70,10 +70,16 @@ do
 		echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 ./benchmark/toy/factorial/factorial-O3.asm
 
 		# Quick Sort
-		#echo -en "$I "; python src/run-simulator.py -q -p $I ./benchmark/toy/qsort/qsort-O0.asm
-		#echo -en "$I "; python src/run-simulator.py -q -p $I ./benchmark/toy/qsort/qsort-O1.asm
+		echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 ./benchmark/toy/qsort/qsort-O0.asm
+		echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 ./benchmark/toy/qsort/qsort-O1.asm
 		echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 ./benchmark/toy/qsort/qsort-O2.asm
 		echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 ./benchmark/toy/qsort/qsort-O3.asm
+
+		# CRC
+		echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 ./benchmark/toy/crc/crc-O0.asm
+		echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 ./benchmark/toy/crc/crc-O1.asm
+		echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 ./benchmark/toy/crc/crc-O2.asm
+		echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 ./benchmark/toy/crc/crc-O3.asm
 
 	done
 done

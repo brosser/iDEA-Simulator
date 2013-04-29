@@ -27,6 +27,8 @@ int main() {
   beg[0]=0; end[0]=100;
    8:	24020064 	addiu	v0,zero,100
 
+START_CCORE
+
   while (i>=0) {
     L=beg[i]; R=end[i]-1;
     if (L<R) {
@@ -327,6 +329,8 @@ int main() {
 	  beg[i+1]=L+1; 
  1b8:	0800004a 	j	128 <main+0x128>
  1bc:	25a50001 	addiu	a1,t5,1
+
+END_CCORE
 
 Disassembly of section .data:
 
