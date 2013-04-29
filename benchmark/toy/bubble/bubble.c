@@ -12,7 +12,7 @@ int main()
 {
   //int counter = 0;
   int n = 50;
-  int i, c, d, sum, swap;
+  int i, c, d, swap;
   int main_result = 0;
   int array[50] = {36, 38, 41, 24, 47, 50, 51, 32, 15, 65,
                     15, 21, 17, 18, 19, 20, 17, 21, 21, 21,
