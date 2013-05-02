@@ -32,7 +32,12 @@ def main() :
 					action="store_true",
 					dest="quiet",
 					default=False,
-					help="supress terminal output")
+					help="less terminal output")
+	parser.add_option("-m", "--mute", 
+					action="store_true",
+					dest="mute",
+					default=False,
+					help="no summary output")
 	parser.add_option("-p",# "--pipeline",
 					type="int",
 					dest="pipeline",
@@ -58,7 +63,7 @@ def main() :
 					dest="wbcycles",
 					default=-1,
 					help="set number of Writeback (WB) Stage cycles")
-	parser.add_option("-m",# "--WBStages",
+	parser.add_option("-s",# "--WBStages",
 					type="int",
 					dest="startAddr",
 					default=0x0,
@@ -188,7 +193,7 @@ def main() :
 	success = False
 	if(not options.quiet):
 		checker.runCheck()
-	else:
+	elif(not options.mute):
 		success = checker.runCheck()
 		if(success):
 			if(options.core):

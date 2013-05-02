@@ -4,6 +4,9 @@
 # $ chmod +x runSimulations.sh
 # $ ./runSimulations.sh
 
+# Instructions to check for
+instructions=( "lw" "sw" "nop" "j" "bne" "beq" "bnez" "addi" "add" "addiu" )
+
 # All benchmarks
 benchmarks=(
 "./benchmark/toy/fib/fib-O0.asm"
@@ -67,15 +70,26 @@ do
 		 echo -ne "- EX "
 		done
 		echo -e "- WB "
-		echo -e "# Result \t\t Benchmark\t\t      Cycles\tNOPs\tCPI\tCore\tCoreNOPs"
-		echo -e "-----------------------------------------------------------------------------------------------"
-		
-		# Run all benchmarks
+
+		# Header
+		echo -e "Instruction \t Number"
+		echo -e "--------------------------------------------------"
+
+
 		for b in "${benchmarks[@]}"
 		do
 			:
-			echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 $b
+			echo -e "${txtbld}$(tput setaf 2) $b :"
+			python src/run-simulator.py -m -q -v -p $I -f $F -d 1 -e $E -w 1 $b
+			for i in "${instructions[@]}"
+			do
+			   :
+			   n=`grep $i simrun.sim | wc -l`
+			   let n/=5
+			   echo -e "$(tput sgr0) $i \t\t $n"
+			done
 		done
+
 	done
 done
 } | tee -a runSimulations.log

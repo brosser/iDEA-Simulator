@@ -4,16 +4,16 @@
 # $ chmod +x runSimulations.sh
 # $ ./runSimulations.sh
 
-# All benchmarks
+instructions=( "lw" "sw" "addi" "add" "addiu" )
 benchmarks=(
 "./benchmark/toy/fib/fib-O0.asm"
 "./benchmark/toy/fib/fib-O1.asm"
 "./benchmark/toy/fib/fib-O2.asm"
 "./benchmark/toy/fib/fib-O3.asm"
-"./benchmark/toy/fir/fir-O0.asm"
-"./benchmark/toy/fir/fir-O1.asm"
-"./benchmark/toy/fir/fir-O2.asm"
-"./benchmark/toy/fir/fir-O3.asm"
+"./benchmark/toy/fib/fir-O0.asm"
+"./benchmark/toy/fib/fir-O1.asm"
+"./benchmark/toy/fib/fir-O2.asm"
+"./benchmark/toy/fib/fir-O3.asm"
 "./benchmark/toy/median/median-O0.asm"
 "./benchmark/toy/median/median-O1.asm"
 "./benchmark/toy/median/median-O2.asm"
@@ -67,15 +67,24 @@ do
 		 echo -ne "- EX "
 		done
 		echo -e "- WB "
-		echo -e "# Result \t\t Benchmark\t\t      Cycles\tNOPs\tCPI\tCore\tCoreNOPs"
-		echo -e "-----------------------------------------------------------------------------------------------"
-		
-		# Run all benchmarks
+
+		# Header
+		echo -en "Instruction \t Number \t Percentage"
+		echo -en "--------------------------------------------------"
+
+
 		for b in "${benchmarks[@]}"
 		do
 			:
-			echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 $b
+			python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 $b
+			for i in "${instructions[@]}"
+			do
+			   :
+			   let n=grep $i simrun.sim | wc -l
+			   echo -e "$i \t $n"
+			done
 		done
+
 	done
 done
 } | tee -a runSimulations.log
