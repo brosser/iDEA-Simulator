@@ -199,7 +199,8 @@ def main() :
 			if(options.core):
 				B.printCoreOnly(checker.getCoreCycles())
 			else:
-				B.printPass(args[0], [checker.getCycles(), checker.getNOPs(), checker.getCPI(), checker.getCoreCycles(), checker.getCoreNops()])
+				pNOPs = str(round(float(str(float(checker.getCoreNops())/(float(checker.getCoreCycles()))))*100, 1))
+				B.printPass(args[0], [checker.getCycles(), checker.getNOPs(), checker.getCPI(), checker.getCoreCycles(), checker.getCoreNops(), pNOPs])
 		else:
 			B.printFail(args[0], "")
 

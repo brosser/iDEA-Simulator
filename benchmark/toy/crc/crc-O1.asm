@@ -82,7 +82,8 @@ int main() {
    unsigned int DoInvert;
    
    for (i=0; i<8; ++i)  CRC[i] = 0;                    // Init before calculation
-   
+ 
+START_CCORE   
    for (i=0; i<400; ++i)
   6c:	144dfff1 	bne	v0,t5,34 <main+0x34>
   70:	00662026 	xor	a0,v1,a2
@@ -118,7 +119,7 @@ int main() {
   b8:	24420004 	addiu	v0,v0,4
       CRC[0] = DoInvert;
       }
-     
+END_CCORE     
 	
 	
    for (i=0; i<8; ++i) {

@@ -46,7 +46,7 @@ int main() {
    unsigned int DoInvert;
    
    for (i=0; i<8; ++i)  CRC[i] = 0;                    // Init before calculation
-   
+START_CCORE   
    for (i=0; i<400; ++i)
   34:	00e06021 	addu	t4,a3,zero
   38:	01405821 	addu	t3,t2,zero
@@ -115,7 +115,7 @@ int main() {
       }
      
 	
-	
+END_CCORE	
    for (i=0; i<8; ++i) {
   a4:	8c820000 	lw	v0,0(a0)
   a8:	2463fffc 	addiu	v1,v1,-4

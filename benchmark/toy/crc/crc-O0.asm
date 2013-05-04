@@ -40,6 +40,7 @@ int main() {
   4c:	1440fff3 	bnez	v0,1c <main+0x1c>
   50:	00000000 	sll	zero,zero,0x0
    
+START_CCORE
    for (i=0; i<400; ++i)
   54:	afc00004 	sw	zero,4(s8)
   58:	08000046 	j	118 <main+0x118>
@@ -143,7 +144,7 @@ int main() {
  180:	ac43000c 	sw	v1,12(v0)
       CRC[0] = DoInvert;
       }
-     
+END_CCORE     
 	
 	
    for (i=0; i<8; ++i) {

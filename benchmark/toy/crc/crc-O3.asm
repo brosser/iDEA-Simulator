@@ -46,7 +46,8 @@ int main() {
    unsigned int DoInvert;
    
    for (i=0; i<8; ++i)  CRC[i] = 0;                    // Init before calculation
-   
+
+START_CCORE   
    for (i=0; i<400; ++i)
   34:	01402821 	addu	a1,t2,zero
   38:	01803021 	addu	a2,t4,zero
@@ -90,7 +91,7 @@ int main() {
       }
      
 	
-	
+END_CCORE	
    for (i=0; i<8; ++i) {
         Result[7-i] = CRC[i] ? '1' : '0'; // Convert binary to ASCII
   70:	24020031 	addiu	v0,zero,49
