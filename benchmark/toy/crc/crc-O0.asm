@@ -1,193 +1,516 @@
 
-crc8int.o:     file format elf32-bigmips
+crc32int.o:     file format elf32-bigmips
 
 
 Disassembly of section .text:
 
 00000000 <main>:
-// Conversion algorithms: http://archive.online-convert.com/
 
-//#include <stdio.h>
- 
-int main ()
-{
-   0:	27bdfee0 	addiu	sp,sp,-288
-   4:	afbf011c 	sw	ra,284(sp)
-   8:	afbe0118 	sw	s8,280(sp)
-   c:	03a0f021 	addu	s8,sp,zero
-	long CRC7_POLY = 0x91;
-  10:	24020091 	addiu	v0,zero,145
-  14:	afc2001c 	sw	v0,28(s8)
-    long length = 50;
-  18:	24020032 	addiu	v0,zero,250
-  1c:	afc20020 	sw	v0,32(s8)
-    long i, j;
-    long message[61] = {0x83, 0x01, 0x00, 0x25, 0x23, 0xff, 0x01, 0xa0, 0xca, 0x20,
-  20:	3c020000 	lui	v0,0x0
-  24:	27c40024 	addiu	a0,s8,36
-  28:	24430000 	addiu	v1,v0,0
-  2c:	240200f4 	addiu	v0,zero,244
-  30:	00602821 	addu	a1,v1,zero
-  34:	00403021 	addu	a2,v0,zero
-  3c:	00000000 	sll	zero,zero,0x0
-	0x15, 0x00, 0x17, 0x45, 0x2f, 0x65, 0x42, 0x12, 0x93, 0xa4,
-	0x52, 0x23, 0x90, 0xa6, 0x1f, 0x66, 0xbc, 0x04, 0x33, 0xd6,
-	0xa4, 0x42, 0x15, 0x05, 0x3f, 0xd0, 0x9c, 0x02, 0x43, 0x9c,
-	0xa2, 0x00, 0x00, 0x30, 0x74, 0xa1, 0xbb, 0x15, 0x75, 0x1a, 0x01};
-	
-    long crc = 0x0;
-  40:	afc00018 	sw	zero,24(s8)
- 
-START_CCORE
+const unsigned int Data[] = {1,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,1,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,1,1,0,1,0,1,1,0,1,1,0,1,1,1,0,1,0,1,0,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,1,0,0,0,1,1,1,0,1,0,1,0,1,1,0,0,1,1,0,1,0,1,1,1,1,1,1,1,0,1,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,1,1,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,1,1,0,1,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,0,1,1,1,0,1,0,0,0,0,0,1,0,1,1,1,0,1,0,1,0,1,1,1,1,1,0,0,0,1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,1,1,0,1,0,1,0,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,0,1,1,1,1,0,0,1,0,0,0,0,1,0,1,0,0,1,0,0,0,0,0,0,1,0,0,1,0,1,0,0,1,1,1,0,1,1,0,0,1,1,0,0,1,1,0,0,1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,1,1,0,0,1,1,0,0,1,0,0,0,1,0,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,0,0,1,1,0,0,1,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0};
 
-    for (i = 0; i < length; i++)
-  44:	afc00010 	sw	zero,16(s8)
-  48:	0800003d 	j	f4 <main+0xf4>
-  4c:	00000000 	sll	zero,zero,0x0
-    {
-        crc ^= message[i];
-  50:	8fc20010 	lw	v0,16(s8)
-  54:	00000000 	sll	zero,zero,0x0
-  58:	00021080 	sll	v0,v0,0x2
-  5c:	27c30010 	addiu	v1,s8,16
-  60:	00621021 	addu	v0,v1,v0
-  64:	8c420014 	lw	v0,20(v0)
-  68:	8fc30018 	lw	v1,24(s8)
-  6c:	00000000 	sll	zero,zero,0x0
-  70:	00621026 	xor	v0,v1,v0
-  74:	afc20018 	sw	v0,24(s8)
-            for (j = 0; j < 8; j++)
-  78:	afc00014 	sw	zero,20(s8)
-  7c:	08000034 	j	d0 <main+0xd0>
-  80:	00000000 	sll	zero,zero,0x0
-            {
-                if (crc & 1)
-  84:	8fc20018 	lw	v0,24(s8)
-  88:	00000000 	sll	zero,zero,0x0
-  8c:	30420001 	andi	v0,v0,0x1
-  90:	304200ff 	andi	v0,v0,0xff
-  94:	10400006 	beqz	v0,b0 <main+0xb0>
-  98:	00000000 	sll	zero,zero,0x0
-                    crc ^= CRC7_POLY;
-  9c:	8fc30018 	lw	v1,24(s8)
-  a0:	8fc2001c 	lw	v0,28(s8)
-  a4:	00000000 	sll	zero,zero,0x0
-  a8:	00621026 	xor	v0,v1,v0
-  ac:	afc20018 	sw	v0,24(s8)
-                crc >>= 1;
-  b0:	8fc20018 	lw	v0,24(s8)
-  b4:	00000000 	sll	zero,zero,0x0
-  b8:	00021043 	sra	v0,v0,0x1
-  bc:	afc20018 	sw	v0,24(s8)
-    long crc = 0x0;
- 
-    for (i = 0; i < length; i++)
-    {
-        crc ^= message[i];
-            for (j = 0; j < 8; j++)
-  c0:	8fc20014 	lw	v0,20(s8)
-  c4:	00000000 	sll	zero,zero,0x0
-  c8:	24420001 	addiu	v0,v0,1
-  cc:	afc20014 	sw	v0,20(s8)
-  d0:	8fc20014 	lw	v0,20(s8)
-  d4:	00000000 	sll	zero,zero,0x0
-  d8:	28420008 	slti	v0,v0,8
-  dc:	1440ffe9 	bnez	v0,84 <main+0x84>
-  e0:	00000000 	sll	zero,zero,0x0
-	0xa4, 0x42, 0x15, 0x05, 0x3f, 0xd0, 0x9c, 0x02, 0x43, 0x9c,
-	0xa2, 0x00, 0x00, 0x30, 0x74, 0xa1, 0xbb, 0x15, 0x75, 0x1a, 0x01};
-	
-    long crc = 0x0;
- 
-    for (i = 0; i < length; i++)
-  e4:	8fc20010 	lw	v0,16(s8)
+  
+  
+int main() {
+   0:	27bdffa8 	addiu	sp,sp,-88
+   4:	afbe0054 	sw	s8,84(sp)
+   8:	03a0f021 	addu	s8,sp,zero
+   unsigned int main_result = 0;
+   c:	afc00000 	sw	zero,0(s8)
+   //unsigned int Data[] = "1110000100000000110010101111111010101011101011011011101010111110000001000100001100100011101010110011010111111101000100100100000011010010000101000110100000010010010000010010010000010010000110111010000010111010101111100010000101001101111010101101101111101110111100100001010010000001001010011101100110011001000100100100101010011001100100010100110011001100100110010001001001000000000000010010010000000000";
+   unsigned int CRC[8];
+   int  i;
+   unsigned int DoInvert;
+   
+   for (i=0; i<8; ++i)  CRC[i] = 0;                    // Init before calculation
+  10:	afc00004 	sw	zero,4(s8)
+  14:	08000010 	j	40 <main+0x40>
+  18:	00000000 	sll	zero,zero,0x0
+  1c:	8fc20004 	lw	v0,4(s8)
+  20:	00000000 	sll	zero,zero,0x0
+  24:	00021080 	sll	v0,v0,0x2
+  28:	03c21021 	addu	v0,s8,v0
+  2c:	ac40002c 	sw	zero,44(v0)
+  30:	8fc20004 	lw	v0,4(s8)
+  34:	00000000 	sll	zero,zero,0x0
+  38:	24420001 	addiu	v0,v0,1
+  3c:	afc20004 	sw	v0,4(s8)
+  40:	8fc20004 	lw	v0,4(s8)
+  44:	00000000 	sll	zero,zero,0x0
+  48:	28420008 	slti	v0,v0,8
+  4c:	1440fff3 	bnez	v0,1c <main+0x1c>
+  50:	00000000 	sll	zero,zero,0x0
+   
+   for (i=0; i<400; ++i)
+  54:	afc00004 	sw	zero,4(s8)
+  58:	08000046 	j	118 <main+0x118>
+  5c:	00000000 	sll	zero,zero,0x0
+      {
+      DoInvert = (Data[i]==1) ^ CRC[7];         // XOR required?
+  60:	3c020000 	lui	v0,0x0
+  64:	8fc30004 	lw	v1,4(s8)
+  68:	00000000 	sll	zero,zero,0x0
+  6c:	00031880 	sll	v1,v1,0x2
+  70:	24420000 	addiu	v0,v0,0
+  74:	00621021 	addu	v0,v1,v0
+  78:	8c420000 	lw	v0,0(v0)
+  7c:	00000000 	sll	zero,zero,0x0
+  80:	38420001 	xori	v0,v0,0x1
+  84:	2c430001 	sltiu	v1,v0,1
+  88:	8fc20048 	lw	v0,72(s8)
+  8c:	00000000 	sll	zero,zero,0x0
+  90:	00621026 	xor	v0,v1,v0
+  94:	afc20008 	sw	v0,8(s8)
+
+      CRC[7] = CRC[6];
+  98:	8fc20044 	lw	v0,68(s8)
+  9c:	00000000 	sll	zero,zero,0x0
+  a0:	afc20048 	sw	v0,72(s8)
+      CRC[6] = CRC[5];
+  a4:	8fc20040 	lw	v0,64(s8)
+  a8:	00000000 	sll	zero,zero,0x0
+  ac:	afc20044 	sw	v0,68(s8)
+      CRC[5] = CRC[4] ^ DoInvert;
+  b0:	8fc3003c 	lw	v1,60(s8)
+  b4:	8fc20008 	lw	v0,8(s8)
+  b8:	00000000 	sll	zero,zero,0x0
+  bc:	00621026 	xor	v0,v1,v0
+  c0:	afc20040 	sw	v0,64(s8)
+      CRC[4] = CRC[3] ^ DoInvert;
+  c4:	8fc30038 	lw	v1,56(s8)
+  c8:	8fc20008 	lw	v0,8(s8)
+  cc:	00000000 	sll	zero,zero,0x0
+  d0:	00621026 	xor	v0,v1,v0
+  d4:	afc2003c 	sw	v0,60(s8)
+      CRC[3] = CRC[2];
+  d8:	8fc20034 	lw	v0,52(s8)
+  dc:	00000000 	sll	zero,zero,0x0
+  e0:	afc20038 	sw	v0,56(s8)
+      CRC[2] = CRC[1];
+  e4:	8fc20030 	lw	v0,48(s8)
   e8:	00000000 	sll	zero,zero,0x0
-  ec:	24420001 	addiu	v0,v0,1
-  f0:	afc20010 	sw	v0,16(s8)
-  f4:	8fc30010 	lw	v1,16(s8)
-  f8:	8fc20020 	lw	v0,32(s8)
-  fc:	00000000 	sll	zero,zero,0x0
- 100:	0062102a 	slt	v0,v1,v0
- 104:	1440ffd2 	bnez	v0,50 <main+0x50>
- 108:	00000000 	sll	zero,zero,0x0
-            }
-    }
+  ec:	afc20034 	sw	v0,52(s8)
+      CRC[1] = CRC[0];
+  f0:	8fc2002c 	lw	v0,44(s8)
+  f4:	00000000 	sll	zero,zero,0x0
+  f8:	afc20030 	sw	v0,48(s8)
+      CRC[0] = DoInvert;
+  fc:	8fc20008 	lw	v0,8(s8)
+ 100:	00000000 	sll	zero,zero,0x0
+ 104:	afc2002c 	sw	v0,44(s8)
+   int  i;
+   unsigned int DoInvert;
+   
+   for (i=0; i<8; ++i)  CRC[i] = 0;                    // Init before calculation
+   
+   for (i=0; i<400; ++i)
+ 108:	8fc20004 	lw	v0,4(s8)
+ 10c:	00000000 	sll	zero,zero,0x0
+ 110:	24420001 	addiu	v0,v0,1
+ 114:	afc20004 	sw	v0,4(s8)
+ 118:	8fc20004 	lw	v0,4(s8)
+ 11c:	00000000 	sll	zero,zero,0x0
+ 120:	28420190 	slti	v0,v0,400
+ 124:	1440ffce 	bnez	v0,60 <main+0x60>
+ 128:	00000000 	sll	zero,zero,0x0
+      CRC[0] = DoInvert;
+      }
+     
+	
+	
+   for (i=0; i<8; ++i) {
+ 12c:	afc00004 	sw	zero,4(s8)
+ 130:	08000065 	j	194 <main+0x194>
+ 134:	00000000 	sll	zero,zero,0x0
+        Result[7-i] = CRC[i] ? '1' : '0'; // Convert binary to ASCII
+ 138:	24030007 	addiu	v1,zero,7
+ 13c:	8fc20004 	lw	v0,4(s8)
+ 140:	00000000 	sll	zero,zero,0x0
+ 144:	00622023 	subu	a0,v1,v0
+ 148:	8fc20004 	lw	v0,4(s8)
+ 14c:	00000000 	sll	zero,zero,0x0
+ 150:	00021080 	sll	v0,v0,0x2
+ 154:	03c21021 	addu	v0,s8,v0
+ 158:	8c42002c 	lw	v0,44(v0)
+ 15c:	00000000 	sll	zero,zero,0x0
+ 160:	10400004 	beqz	v0,174 <main+0x174>
+ 164:	00000000 	sll	zero,zero,0x0
+ 168:	24030031 	addiu	v1,zero,49
+ 16c:	0800005e 	j	178 <main+0x178>
+ 170:	00000000 	sll	zero,zero,0x0
+ 174:	24030030 	addiu	v1,zero,48
+ 178:	00041080 	sll	v0,a0,0x2
+ 17c:	03c21021 	addu	v0,s8,v0
+ 180:	ac43000c 	sw	v1,12(v0)
+      CRC[0] = DoInvert;
+      }
+     
+	
+	
+   for (i=0; i<8; ++i) {
+ 184:	8fc20004 	lw	v0,4(s8)
+ 188:	00000000 	sll	zero,zero,0x0
+ 18c:	24420001 	addiu	v0,v0,1
+ 190:	afc20004 	sw	v0,4(s8)
+ 194:	8fc20004 	lw	v0,4(s8)
+ 198:	00000000 	sll	zero,zero,0x0
+ 19c:	28420008 	slti	v0,v0,8
+ 1a0:	1440ffe5 	bnez	v0,138 <main+0x138>
+ 1a4:	00000000 	sll	zero,zero,0x0
+        Result[7-i] = CRC[i] ? '1' : '0'; // Convert binary to ASCII
+   }
+   Result[8] = 0;    
+ 1a8:	afc0002c 	sw	zero,44(s8)
+   // Set string terminator
+   // Output and self-checking             
+   // printf("CRC: ");
+   
+   for (i=0; i<8; ++i) {
+ 1ac:	afc00004 	sw	zero,4(s8)
+ 1b0:	08000097 	j	25c <main+0x25c>
+ 1b4:	00000000 	sll	zero,zero,0x0
+		// printf("%d", Result[i]-48);
+		if(i==3 || i==4 || i==7)
+ 1b8:	8fc30004 	lw	v1,4(s8)
+ 1bc:	24020003 	addiu	v0,zero,3
+ 1c0:	10620009 	beq	v1,v0,1e8 <main+0x1e8>
+ 1c4:	00000000 	sll	zero,zero,0x0
+ 1c8:	8fc30004 	lw	v1,4(s8)
+ 1cc:	24020004 	addiu	v0,zero,4
+ 1d0:	10620005 	beq	v1,v0,1e8 <main+0x1e8>
+ 1d4:	00000000 	sll	zero,zero,0x0
+ 1d8:	8fc30004 	lw	v1,4(s8)
+ 1dc:	24020007 	addiu	v0,zero,7
+ 1e0:	1462000f 	bne	v1,v0,220 <main+0x220>
+ 1e4:	00000000 	sll	zero,zero,0x0
+			main_result += (Result[i]==1);
+ 1e8:	8fc20004 	lw	v0,4(s8)
+ 1ec:	00000000 	sll	zero,zero,0x0
+ 1f0:	00021080 	sll	v0,v0,0x2
+ 1f4:	03c21021 	addu	v0,s8,v0
+ 1f8:	8c42000c 	lw	v0,12(v0)
+ 1fc:	00000000 	sll	zero,zero,0x0
+ 200:	38420001 	xori	v0,v0,0x1
+ 204:	2c420001 	sltiu	v0,v0,1
+ 208:	8fc30000 	lw	v1,0(s8)
+ 20c:	00000000 	sll	zero,zero,0x0
+ 210:	00621021 	addu	v0,v1,v0
+ 214:	afc20000 	sw	v0,0(s8)
+ 218:	08000093 	j	24c <main+0x24c>
+ 21c:	00000000 	sll	zero,zero,0x0
+		else
+			main_result += (Result[i]==0);
+ 220:	8fc20004 	lw	v0,4(s8)
+ 224:	00000000 	sll	zero,zero,0x0
+ 228:	00021080 	sll	v0,v0,0x2
+ 22c:	03c21021 	addu	v0,s8,v0
+ 230:	8c42000c 	lw	v0,12(v0)
+ 234:	00000000 	sll	zero,zero,0x0
+ 238:	2c420001 	sltiu	v0,v0,1
+ 23c:	8fc30000 	lw	v1,0(s8)
+ 240:	00000000 	sll	zero,zero,0x0
+ 244:	00621021 	addu	v0,v1,v0
+ 248:	afc20000 	sw	v0,0(s8)
+   Result[8] = 0;    
+   // Set string terminator
+   // Output and self-checking             
+   // printf("CRC: ");
+   
+   for (i=0; i<8; ++i) {
+ 24c:	8fc20004 	lw	v0,4(s8)
+ 250:	00000000 	sll	zero,zero,0x0
+ 254:	24420001 	addiu	v0,v0,1
+ 258:	afc20004 	sw	v0,4(s8)
+ 25c:	8fc20004 	lw	v0,4(s8)
+ 260:	00000000 	sll	zero,zero,0x0
+ 264:	28420008 	slti	v0,v0,8
+ 268:	1440ffd3 	bnez	v0,1b8 <main+0x1b8>
+ 26c:	00000000 	sll	zero,zero,0x0
+			main_result += (Result[i]==1);
+		else
+			main_result += (Result[i]==0);
+   }
     
-	//printf("%d %x h\n", i, crc);
+   return main_result;
+ 270:	8fc20000 	lw	v0,0(s8)
 
-	return 0;
- 10c:	00001021 	addu	v0,zero,zero
-}
-
-END_CCORE
-
- 110:	03c0e821 	addu	sp,s8,zero
- 114:	8fbf011c 	lw	ra,284(sp)
- 118:	8fbe0118 	lw	s8,280(sp)
- 11c:	27bd0120 	addiu	sp,sp,288
- 120:	03e00008 	jr	ra
- 124:	00000000 	sll	zero,zero,0x0
+}    
+ 274:	03c0e821 	addu	sp,s8,zero
+ 278:	8fbe0054 	lw	s8,84(sp)
+ 27c:	27bd0058 	addiu	sp,sp,88
+ 280:	03e00008 	jr	ra
+ 284:	00000000 	sll	zero,zero,0x0
 
 Disassembly of section .rodata:
 
-00000000 <C.0.1987>:
-   0:	00000083 	sra	zero,zero,0x2
+00000000 <Data>:
+   0:	00000001 	0x1
    4:	00000001 	0x1
-   8:	00000000 	sll	zero,zero,0x0
-   c:	00000025 	or	zero,zero,zero
-  10:	00000023 	negu	zero,zero
-  14:	000000ff 	0xff
-  18:	00000001 	0x1
-  1c:	000000a0 	0xa0
-  20:	000000ca 	0xca
-  24:	00000020 	add	zero,zero,zero
-  28:	00000028 	0x28
-  2c:	00000015 	0x15
-  30:	00000097 	0x97
-  34:	00000031 	0x31
-  38:	000000af 	0xaf
-  3c:	00000099 	0x99
-  40:	0000001f 	0x1f
-  44:	00000042 	srl	zero,zero,0x1
-  48:	00000053 	0x53
-  4c:	00000023 	negu	zero,zero
-  50:	00000015 	0x15
-  54:	00000000 	sll	zero,zero,0x0
-  58:	00000017 	0x17
-  5c:	00000045 	0x45
-  60:	0000002f 	0x2f
-  64:	00000065 	0x65
-  68:	00000042 	srl	zero,zero,0x1
-  6c:	00000012 	mflo	zero
-  70:	00000093 	0x93
-  74:	000000a4 	0xa4
-  78:	00000052 	0x52
-  7c:	00000023 	negu	zero,zero
-  80:	00000090 	0x90
-  84:	000000a6 	0xa6
-  88:	0000001f 	0x1f
-  8c:	00000066 	0x66
-  90:	000000bc 	0xbc
-  94:	00000004 	sllv	zero,zero,zero
-  98:	00000033 	0x33
-  9c:	000000d6 	0xd6
-  a0:	000000a4 	0xa4
-  a4:	00000042 	srl	zero,zero,0x1
-  a8:	00000015 	0x15
-  ac:	00000005 	0x5
-  b0:	0000003f 	0x3f
-  b4:	000000d0 	0xd0
-  b8:	0000009c 	0x9c
-  bc:	00000002 	srl	zero,zero,0x0
-  c0:	00000043 	sra	zero,zero,0x1
-  c4:	0000009c 	0x9c
-  c8:	000000a2 	0xa2
+   8:	00000001 	0x1
 	...
-  d4:	00000030 	0x30
-  d8:	00000074 	0x74
-  dc:	000000a1 	0xa1
-  e0:	000000bb 	0xbb
-  e4:	00000015 	0x15
-  e8:	00000075 	0x75
-  ec:	0000001a 	div	zero,zero,zero
+  1c:	00000001 	0x1
+	...
+  40:	00000001 	0x1
+  44:	00000001 	0x1
+	...
+  50:	00000001 	0x1
+  54:	00000000 	sll	zero,zero,0x0
+  58:	00000001 	0x1
+  5c:	00000000 	sll	zero,zero,0x0
+  60:	00000001 	0x1
+  64:	00000001 	0x1
+  68:	00000001 	0x1
+  6c:	00000001 	0x1
+  70:	00000001 	0x1
+  74:	00000001 	0x1
+  78:	00000001 	0x1
+  7c:	00000000 	sll	zero,zero,0x0
+  80:	00000001 	0x1
+  84:	00000000 	sll	zero,zero,0x0
+  88:	00000001 	0x1
+  8c:	00000000 	sll	zero,zero,0x0
+  90:	00000001 	0x1
+  94:	00000000 	sll	zero,zero,0x0
+  98:	00000001 	0x1
+  9c:	00000001 	0x1
+  a0:	00000001 	0x1
+  a4:	00000000 	sll	zero,zero,0x0
+  a8:	00000001 	0x1
+  ac:	00000000 	sll	zero,zero,0x0
+  b0:	00000001 	0x1
+  b4:	00000001 	0x1
+  b8:	00000000 	sll	zero,zero,0x0
+  bc:	00000001 	0x1
+  c0:	00000001 	0x1
+  c4:	00000000 	sll	zero,zero,0x0
+  c8:	00000001 	0x1
+  cc:	00000001 	0x1
+  d0:	00000001 	0x1
+  d4:	00000000 	sll	zero,zero,0x0
+  d8:	00000001 	0x1
+  dc:	00000000 	sll	zero,zero,0x0
+  e0:	00000001 	0x1
+  e4:	00000000 	sll	zero,zero,0x0
+  e8:	00000001 	0x1
+  ec:	00000001 	0x1
   f0:	00000001 	0x1
+  f4:	00000001 	0x1
+  f8:	00000001 	0x1
+	...
+ 114:	00000001 	0x1
+	...
+ 124:	00000001 	0x1
+	...
+ 138:	00000001 	0x1
+ 13c:	00000001 	0x1
+	...
+ 148:	00000001 	0x1
+	...
+ 158:	00000001 	0x1
+ 15c:	00000001 	0x1
+ 160:	00000001 	0x1
+ 164:	00000000 	sll	zero,zero,0x0
+ 168:	00000001 	0x1
+ 16c:	00000000 	sll	zero,zero,0x0
+ 170:	00000001 	0x1
+ 174:	00000000 	sll	zero,zero,0x0
+ 178:	00000001 	0x1
+ 17c:	00000001 	0x1
+	...
+ 188:	00000001 	0x1
+ 18c:	00000001 	0x1
+ 190:	00000000 	sll	zero,zero,0x0
+ 194:	00000001 	0x1
+ 198:	00000000 	sll	zero,zero,0x0
+ 19c:	00000001 	0x1
+ 1a0:	00000001 	0x1
+ 1a4:	00000001 	0x1
+ 1a8:	00000001 	0x1
+ 1ac:	00000001 	0x1
+ 1b0:	00000001 	0x1
+ 1b4:	00000001 	0x1
+ 1b8:	00000000 	sll	zero,zero,0x0
+ 1bc:	00000001 	0x1
+	...
+ 1cc:	00000001 	0x1
+	...
+ 1d8:	00000001 	0x1
+	...
+ 1e4:	00000001 	0x1
+	...
+ 200:	00000001 	0x1
+ 204:	00000001 	0x1
+ 208:	00000000 	sll	zero,zero,0x0
+ 20c:	00000001 	0x1
+	...
+ 218:	00000001 	0x1
+	...
+ 22c:	00000001 	0x1
+ 230:	00000000 	sll	zero,zero,0x0
+ 234:	00000001 	0x1
+	...
+ 244:	00000001 	0x1
+ 248:	00000001 	0x1
+ 24c:	00000000 	sll	zero,zero,0x0
+ 250:	00000001 	0x1
+	...
+ 26c:	00000001 	0x1
+	...
+ 278:	00000001 	0x1
+	...
+ 284:	00000001 	0x1
+	...
+ 29c:	00000001 	0x1
+	...
+ 2a8:	00000001 	0x1
+	...
+ 2b4:	00000001 	0x1
+	...
+ 2cc:	00000001 	0x1
+	...
+ 2d8:	00000001 	0x1
+	...
+ 2ec:	00000001 	0x1
+ 2f0:	00000001 	0x1
+ 2f4:	00000000 	sll	zero,zero,0x0
+ 2f8:	00000001 	0x1
+ 2fc:	00000001 	0x1
+ 300:	00000001 	0x1
+ 304:	00000000 	sll	zero,zero,0x0
+ 308:	00000001 	0x1
+	...
+ 320:	00000001 	0x1
+ 324:	00000000 	sll	zero,zero,0x0
+ 328:	00000001 	0x1
+ 32c:	00000001 	0x1
+ 330:	00000001 	0x1
+ 334:	00000000 	sll	zero,zero,0x0
+ 338:	00000001 	0x1
+ 33c:	00000000 	sll	zero,zero,0x0
+ 340:	00000001 	0x1
+ 344:	00000000 	sll	zero,zero,0x0
+ 348:	00000001 	0x1
+ 34c:	00000001 	0x1
+ 350:	00000001 	0x1
+ 354:	00000001 	0x1
+ 358:	00000001 	0x1
+	...
+ 368:	00000001 	0x1
+	...
+ 37c:	00000001 	0x1
+ 380:	00000000 	sll	zero,zero,0x0
+ 384:	00000001 	0x1
+	...
+ 390:	00000001 	0x1
+ 394:	00000001 	0x1
+ 398:	00000000 	sll	zero,zero,0x0
+ 39c:	00000001 	0x1
+ 3a0:	00000001 	0x1
+ 3a4:	00000001 	0x1
+ 3a8:	00000001 	0x1
+ 3ac:	00000000 	sll	zero,zero,0x0
+ 3b0:	00000001 	0x1
+ 3b4:	00000000 	sll	zero,zero,0x0
+ 3b8:	00000001 	0x1
+ 3bc:	00000000 	sll	zero,zero,0x0
+ 3c0:	00000001 	0x1
+ 3c4:	00000001 	0x1
+ 3c8:	00000000 	sll	zero,zero,0x0
+ 3cc:	00000001 	0x1
+ 3d0:	00000001 	0x1
+ 3d4:	00000000 	sll	zero,zero,0x0
+ 3d8:	00000001 	0x1
+ 3dc:	00000001 	0x1
+ 3e0:	00000001 	0x1
+ 3e4:	00000001 	0x1
+ 3e8:	00000001 	0x1
+ 3ec:	00000000 	sll	zero,zero,0x0
+ 3f0:	00000001 	0x1
+ 3f4:	00000001 	0x1
+ 3f8:	00000001 	0x1
+ 3fc:	00000000 	sll	zero,zero,0x0
+ 400:	00000001 	0x1
+ 404:	00000001 	0x1
+ 408:	00000001 	0x1
+ 40c:	00000001 	0x1
+	...
+ 418:	00000001 	0x1
+	...
+ 42c:	00000001 	0x1
+ 430:	00000000 	sll	zero,zero,0x0
+ 434:	00000001 	0x1
+	...
+ 440:	00000001 	0x1
+	...
+ 45c:	00000001 	0x1
+	...
+ 468:	00000001 	0x1
+ 46c:	00000000 	sll	zero,zero,0x0
+ 470:	00000001 	0x1
+	...
+ 47c:	00000001 	0x1
+ 480:	00000001 	0x1
+ 484:	00000001 	0x1
+ 488:	00000000 	sll	zero,zero,0x0
+ 48c:	00000001 	0x1
+ 490:	00000001 	0x1
+	...
+ 49c:	00000001 	0x1
+ 4a0:	00000001 	0x1
+	...
+ 4ac:	00000001 	0x1
+ 4b0:	00000001 	0x1
+	...
+ 4bc:	00000001 	0x1
+	...
+ 4cc:	00000001 	0x1
+	...
+ 4d8:	00000001 	0x1
+	...
+ 4e4:	00000001 	0x1
+	...
+ 4f0:	00000001 	0x1
+ 4f4:	00000000 	sll	zero,zero,0x0
+ 4f8:	00000001 	0x1
+ 4fc:	00000000 	sll	zero,zero,0x0
+ 500:	00000001 	0x1
+	...
+ 50c:	00000001 	0x1
+ 510:	00000001 	0x1
+	...
+ 51c:	00000001 	0x1
+ 520:	00000001 	0x1
+	...
+ 52c:	00000001 	0x1
+	...
+ 53c:	00000001 	0x1
+ 540:	00000000 	sll	zero,zero,0x0
+ 544:	00000001 	0x1
+	...
+ 550:	00000001 	0x1
+ 554:	00000001 	0x1
+	...
+ 560:	00000001 	0x1
+ 564:	00000001 	0x1
+	...
+ 570:	00000001 	0x1
+ 574:	00000001 	0x1
+	...
+ 580:	00000001 	0x1
+	...
+ 58c:	00000001 	0x1
+ 590:	00000001 	0x1
+	...
+ 59c:	00000001 	0x1
+	...
+ 5ac:	00000001 	0x1
+	...
+ 5b8:	00000001 	0x1
+	...
+ 5c4:	00000001 	0x1
+	...
+ 5fc:	00000001 	0x1
+	...
+ 608:	00000001 	0x1
+	...
+ 614:	00000001 	0x1
+	...
