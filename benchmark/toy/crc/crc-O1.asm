@@ -119,8 +119,6 @@ int main() {
   b8:	24420004 	addiu	v0,v0,4
       CRC[0] = DoInvert;
       }
-END_CCORE     
-	
 	
    for (i=0; i<8; ++i) {
   bc:	1446fff9 	bne	v0,a2,a4 <main+0xa4>
@@ -130,6 +128,8 @@ END_CCORE
   cc:	00001021 	addu	v0,zero,zero
    // Output and self-checking             
    // printf("CRC: ");
+
+END_CCORE    
    
    for (i=0; i<8; ++i) {
 		// printf("%d", Result[i]-48);
@@ -139,7 +139,8 @@ END_CCORE
    // Set string terminator
    // Output and self-checking             
    // printf("CRC: ");
-   
+ 
+     
    for (i=0; i<8; ++i) {
   d4:	24060008 	addiu	a2,zero,8
 		// printf("%d", Result[i]-48);
