@@ -37,7 +37,9 @@ int main()
 
     for (i = 0; i < 5; i++) {
         for (j = 0; j < 5; j++) {
-  20:	08000022 	j	8c <main+0x88>
+
+  // Changed offset due to composite instruction
+  20:	08000022 	j	84 <main+0x88>
   24:	24080005 	addiu	t0,zero,5
             sum = 0;
             for (k = 0; k < 5 ; k++) {
@@ -48,9 +50,21 @@ START_CCORE
   30:	00000000 	sll	zero,zero,0x0
   
 
-  34:	01ee0018 	mult	t7,t6
-  38:	00007012 	mflo	t6
-  3c:	006e1821 	addu	v1,v1,t6
+
+
+  
+  // Making use of composite MAC instruction
+  //
+  //34: 01ee0018  mult  t7,t6
+  //38: 00007012  mflo  t6
+  //3c: 006e1821  addu  v1,v1,t6
+
+  // Multiply-Accumulate (MAC)
+  // v1 = v1 + (t7 * t6)
+  34: 88888888 mac v1, t7, t6
+
+  // End of composite instruction 
+
                 c[i][j]=sum;
   40:	aca30000 	sw	v1,0(a1)
   44:	24420004 	addiu	v0,v0,4
@@ -69,7 +83,9 @@ START_CCORE
     for (i = 0; i < 5; i++) {
         for (j = 0; j < 5; j++) {
   50:	24e70001 	addiu	a3,a3,1
-  54:	10e80009 	beq	a3,t0,80 <main+0x7c>
+
+  // Changed offset due to composite instruction
+  54:	10e80009 	beq	a3,t0,78 <main+0x7c>
   58:	00000000 	sll	zero,zero,0x0
                             {31, 15, 31, 16, 32},
                             {51, 25, 51, 26, 52},
@@ -102,7 +118,9 @@ int main()
 
     for (i = 0; i < 5; i++) {
   7c:	25290001 	addiu	t1,t1,1
-  80:	11280019 	beq	t1,t0,ec <main+0xe8>
+
+  // Changed offset due to composite instruction
+  80:	11280019 	beq	t1,t0,e4 <main+0xe8>
   84:	24c60014 	addiu	a2,a2,20
                             {31, 15, 31, 16, 32},
                             {51, 25, 51, 26, 52},
@@ -121,7 +139,9 @@ int main()
             for (k = 0; k < 5 ; k++) {
                 sum = sum + a[i][k] * b[k][j];
                 c[i][j]=sum;
-  9c:	08000017 	j	5c <main+0x5c>
+
+  // Changed offset due to composite instruction
+  9c:	08000017 	j	54 <main+0x5c>
   a0:	01495021 	addu	t2,t2,t1
 END_CCORE
         }
@@ -146,7 +166,9 @@ END_CCORE
     for (x = 0; x < 5; x++){
         for (y = 0; y < 5; y++) {
   c8:	24630001 	addiu	v1,v1,1
-  cc:	1469fff5 	bne	v1,t1,a8 <main+0xa4>
+
+  // Changed offset due to composite instruction
+  cc:	1469fff5 	bne	v1,t1,a0 <main+0xa4>
   d0:	24840004 	addiu	a0,a0,4
                 c[i][j]=sum;
             }
@@ -155,7 +177,9 @@ END_CCORE
     
     for (x = 0; x < 5; x++){
   d4:	24e70001 	addiu	a3,a3,1
-  d8:	14e90008 	bne	a3,t1,100 <main+0xfc>
+
+  // Changed offset due to composite instruction
+  d8:	14e90008 	bne	a3,t1,f8 <main+0xfc>
   dc:	00000000 	sll	zero,zero,0x0
     }
 
@@ -163,7 +187,8 @@ END_CCORE
 
     return main_result;
 }
-  e0:	08000047 	j	124 <main+0x11c>
+  // Changed offset due to composite instruction
+  e0:	08000047 	j	11c <main+0x11c>
   e4:	27bd0068 	addiu	sp,sp,104
     int x, y;
     int sum = 0;
@@ -210,7 +235,9 @@ int main()
         for (y = 0; y < 5; y++) {
             main_result += (output[x][y] != c[x][y]);
  110:	00074080 	sll	t0,a3,0x2
- 114:	08000029 	j	a8 <main+0xa4>
+
+ // Changed offset due to composite instruction
+ 114:	08000029 	j	a0 <main+0xa4>
  118:	01074021 	addu	t0,t0,a3
     }
 
