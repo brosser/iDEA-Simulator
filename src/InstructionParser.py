@@ -15,7 +15,8 @@ class InstructionParser(object):
                       'addu', 'subu', 'sltu', 'xor',
                       'sll', 'srl', 'sra', 'sllv', 'srlv', 'srav',
                       'jr', 'nop', 'mult', 'multu', 'div', 'divu',
-                    'mflo', 'mfhi', 'mtlo', 'mthi'],
+                    'mflo', 'mfhi', 'mtlo', 'mthi',
+                    'mac'],
             'itype': ['addi', 'subi', 'ori', 'lw', 'sw', 'lh', 'lb', 'sh', 'sb', 'lhu', 'lbu', 'shu', 'sbu',
                         'addiu', 'slti', 'sltiu', 'andi', 'xori', 'lui', 'li',
                         'bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz',
@@ -116,6 +117,8 @@ class InstructionParser(object):
             return Instruction(op=s[0], dest=s[1], s1=None, s2=None, regWrite=1, aluop=1)
         if(s[0] in ['sll', 'srl', 'sra']):
             return Instruction(op=s[0], dest=s[1], s1=s[2], shamt=s[3], regRead=1, regWrite=1, aluop=1)
+        if(s[0] in ['mac']):
+            return Instruction(op=s[0], dest=s[1], s1=s[2], s2=s[3], s3=s[1], regRead=1, regWrite=1, aluop=1)
         return Instruction(op=s[0], dest=s[1], s1=s[2], s2=s[3], regRead=1, regWrite=1, aluop=1)
 
     def createITypeInstruction(self, s):

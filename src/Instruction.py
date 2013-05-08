@@ -24,12 +24,14 @@ class Instruction(object):
         
         self.source1RegValue = None 
         self.source2RegValue = None
+        self.source3RegValue = None
         self.sourceAddr = None
         self.values = {
                        'op': None,
                        'dest': None,
                        's1': None,
                        's2': None,
+                       's3': None,
                        'immed': None,
                        'shamt': None,
                        'target': None
@@ -68,6 +70,11 @@ class Instruction(object):
     def s2(self):
         """ Get this Instruction's second source register """
         return self.values['s2']
+
+    @property
+    def s3(self):
+        """ Get this Instruction's third source register (used for example in MAC)"""
+        return self.values['s3']
 
     @property
     def shamt(self):

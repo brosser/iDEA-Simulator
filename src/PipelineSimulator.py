@@ -424,6 +424,9 @@ class ReadStage(PipelineStage):
             elif self.instr.s2:
                 self.instr.source2RegValue = int(self.simulator.registers[self.instr.s2])
 
+            if self.instr.s3:
+                self.instr.source3RegValue = int(self.simulator.registers[self.instr.s3])
+
         # Update PC
         if self.instr.op == 'jal':
             # Save return address in $ra = $r31
@@ -551,6 +554,8 @@ class ExecStage(PipelineStage):
                 self.instr.result = int(self.instr.source1RegValue) << int(self.instr.shamt)
             elif self.instr.op in ['srl', 'sra']:
                 self.instr.result = int(self.instr.source1RegValue) >> int(self.instr.shamt)
+            elif self.instr.op in ['mac']:
+                self.instr.result = int(self.instr.source3RegValue) + (int(self.instr.source1RegValue)*int(self.instr.source2RegValue))
             else :         
                 if (self.instr.op in ['slt', 'sltu']):
                     a = int(self.instr.source1RegValue)
