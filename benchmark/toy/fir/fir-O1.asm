@@ -91,6 +91,8 @@ int main () {
   88:	01431821 	addu	v1,t2,v1
   8c:	08000012 	j	48 <main+0x48>
   90:	00002021 	addu	a0,zero,zero
+
+END_CCORE
     int ndata = 50;
     int ncoeff = 5;
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
@@ -112,7 +114,6 @@ int main () {
             y[n] = sum;           
         }
     }
-END_CCORE
 
     for (i = 0; i < 50; i++){
   a8:	240600c8 	addiu	a2,zero,200

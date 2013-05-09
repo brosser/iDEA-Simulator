@@ -182,9 +182,9 @@ class InstructionParser(object):
                     l += 1
                     continue
                 imd = abs(int(curr.immed)-int(prev.immed)) if (curr.immed and prev.immed) else 0
-                match1 = ((curr.dest == prev.s1 or curr.dest == prev.s2) and curr.dest is not None)
-                match2 = ((prev.dest == curr.s1 or prev.dest == curr.s2) and prev.dest is not None)
-                match3 = (prev.dest == curr.dest and prev.dest is not None)
+                #matchWAR = ((curr.dest == prev.s1 or curr.dest == prev.s2) and curr.dest is not None)
+                matchRAW = ((prev.dest == curr.s1 or prev.dest == curr.s2) and prev.dest is not None)
+                #matchRAR = (prev.dest == curr.dest and prev.dest is not None)
                 matchsw1 = ((curr.writeMem) and ((prev.writeMem and (curr.s2 == prev.s2) and (imd <= 4)))) 
                 matchsw2 = ((prev.readMem and (curr.s2 == prev.s1) and (imd <= 4)))
                 currIsJump = curr.op in ['j', 'jr', 'jal', 'jalr']
@@ -198,7 +198,8 @@ class InstructionParser(object):
                     nList[i] = self.nNOPs-dist
                     for n in range (0, nList[i]):
                         self.nopInsertsCore.append(curr.controls['coreInstr'])
-                if (match1 or match2 or match3):
+                #if (matchWAR or matchRAW or matchRAR):
+                if(matchRAW):
                     nList[i] = self.nNOPs-dist
                     for n in range (0, nList[i]):
                         self.nopInsertsCore.append(curr.controls['coreInstr'])
