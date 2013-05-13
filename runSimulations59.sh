@@ -71,10 +71,10 @@ do
 	do
 	 echo -ne "- EX "
 	done
-	echo -e "- WB "
-	echo -e "# Result \t\t Benchmark\t\t      Cycles\tNOPs\tCPI\tCore\tCoreNOPs\t% NOPs"
-	echo -e "---------------------------------------------------------------------------------------------------------------"
-	
+		echo -e "- WB "
+		echo -e "# Result \t\t Benchmark\t\t      Cycles\tNOPs\tCPI\tCore  CoreNOPs\t% NOPs\tExecution Time\tCore Execution Time"
+		echo -e "-------------------------------------------------------------------------------------------------------------------------------------------"
+		
 	# Run all benchmarks
 	for b in "${benchmarks[@]}"
 	do
