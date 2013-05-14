@@ -9,7 +9,10 @@
 # 
 # Status: Kinda redundant.
 #
-# Sample output
+# Warning: May need to change the benchmark/ directory path depending on where the script is run.
+#
+# Sample output:
+#
 #[  6 Stage Pipeline  ]:  IF - IF - ID - EX - EX - WB
 # Result                 Benchmark                    Cycles    NOPs    CPI     Core    CoreNOPs
 #-----------------------------------------------------------------------------------------------

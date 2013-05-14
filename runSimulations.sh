@@ -2,7 +2,9 @@
 # Bash script to run all toy benchmark simulations
 # To run this script, do:
 # $ chmod +x runSimulations.sh
-# $ ./runSimulations.sh
+# $ ./runSimulations.sh option
+# <option> all 5 9
+# E.g. ./runSimulations.sh all
 
 # All benchmarks
 benchmarks=(
@@ -40,12 +42,35 @@ benchmarks=(
 "./benchmark/toy/crc/crc-O3.asm"
 )
 
-rm -rf runSimulations.log
+if [ -f runSimulations.log ];
+then
+	rm -rf runSimulations.log
+fi
+
+if [ $# -lt 1 ];
+then
+	echo "Please specify number of stages: all, 5 or 9"
+	exit
+fi
+
+if [ $1 = "all" ];
+then
+	nE=( 2 3 4 )
+	nF=( 1 2 3 )
+elif [ $1 = "5" ];
+then
+	nE=( 2 )
+	nF=( 1 )
+elif [ $1 = "9" ];
+then
+	nE=( 4 )
+	nF=( 3 )
+fi
 
 {
-for E in 2 3 4
+for E in ${nE[@]}
 do
-	for F in 1 2 3 
+	for F in ${nF[@]}
 	do
 		let I=$F+1+$E+1	
 
