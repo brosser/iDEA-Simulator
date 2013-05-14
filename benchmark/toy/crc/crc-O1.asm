@@ -17,6 +17,7 @@ int main() {
    int  i;
    unsigned int DoInvert;
    
+START_CCORE  
    for (i=0; i<8; ++i)  CRC[i] = 0;                    // Init before calculation
    4:	00006021 	addu	t4,zero,zero
    8:	00005821 	addu	t3,zero,zero
@@ -43,7 +44,6 @@ int main() {
       CRC[4] = CRC[3] ^ DoInvert;
       CRC[3] = CRC[2];
 
-START_CCORE  
   34:	01203021 	addu	a2,t1,zero
       CRC[2] = CRC[1];
   38:	01004821 	addu	t1,t0,zero
@@ -107,7 +107,6 @@ const unsigned int Data[] = {1,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,1,0,1,0,1,1
 int main() {
   9c:	27a60040 	addiu	a2,sp,64
       }
-END_CCORE      
 	
 	
    for (i=0; i<8; ++i) {
@@ -128,6 +127,7 @@ END_CCORE
   c4:	03a02021 	addu	a0,sp,zero
   c8:	00001821 	addu	v1,zero,zero
   cc:	00001021 	addu	v0,zero,zero
+END_CCORE      
    // Output and self-checking             
    // printf("CRC: ");   
 

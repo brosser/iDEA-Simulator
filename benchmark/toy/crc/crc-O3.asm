@@ -91,7 +91,6 @@ START_CCORE
       }
      
 	
-END_CCORE	
    for (i=0; i<8; ++i) {
         Result[7-i] = CRC[i] ? '1' : '0'; // Convert binary to ASCII
   70:	24020031 	addiu	v0,zero,49
@@ -105,6 +104,7 @@ END_CCORE
   78:	2cc60001 	sltiu	a2,a2,1
       }
      
+END_CCORE	
 	
 	
    for (i=0; i<8; ++i) {

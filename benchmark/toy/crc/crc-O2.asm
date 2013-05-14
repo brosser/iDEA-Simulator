@@ -115,7 +115,6 @@ int main() {
       }
      
 	
-END_CCORE	
    for (i=0; i<8; ++i) {
   a4:	8c820000 	lw	v0,0(a0)
   a8:	2463fffc 	addiu	v1,v1,-4
@@ -134,6 +133,7 @@ END_CCORE
   c0:	03a02021 	addu	a0,sp,zero
   c4:	00001821 	addu	v1,zero,zero
   c8:	00001021 	addu	v0,zero,zero
+END_CCORE	
    // Output and self-checking             
    // printf("CRC: ");
    
