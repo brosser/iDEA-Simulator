@@ -3,6 +3,21 @@
 # To run this script, do:
 # $ chmod +x runSimulations.sh
 # $ ./runSimulations.sh
+# 
+# Returns just the pipeline stage and the number of CORE clock cycles.
+# CORE, computation kernels within the START and STOP tags.
+# 
+# Status: Kinda redundant.
+#
+# Sample output
+#[  6 Stage Pipeline  ]:  IF - IF - ID - EX - EX - WB
+# Result                 Benchmark                    Cycles    NOPs    CPI     Core    CoreNOPs
+#-----------------------------------------------------------------------------------------------
+#6 4358
+#6 1801
+#6 1577
+#6 1398
+#6 29678
 
 rm -rf runSimulations.log
 
