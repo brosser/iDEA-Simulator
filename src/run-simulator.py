@@ -17,6 +17,14 @@ import sys
 
 def main() :
 
+	frequencyTable = {
+                       5: 193.723,
+                       6: 257.931,
+                       7: 266.241,
+                       8: 311.818,
+                       9: 405.844
+                    }
+
 	parser = OptionParser(usage="usage: run-simulator.py [-vqpfdew] filename", version="1.0")
 	parser.add_option("-v", "--verbose", 
 					action="store_true",
@@ -162,7 +170,6 @@ def main() :
 	lines = iparser.parseLines(lines, (options.pipeline-options.ifcycles), options.ifcycles, coreInstr)
 	pipelineInfo = [options.pipeline, options.ifcycles, options.idcycles, options.excycles, options.wbcycles]
 
-	#pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose, options.quiet, pipelineInfo)
 	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, options.startAddr, oldstdout, options.verbose, options.quiet, pipelineInfo)
 	
 	if(not options.quiet):
@@ -200,7 +207,14 @@ def main() :
 				B.printCoreOnly(checker.getCoreCycles())
 			else:
 				pNOPs = str(round(float(str(float(checker.getCoreNops())/(float(checker.getCoreCycles()))))*100, 1))
-				B.printPass(args[0], [checker.getCycles(), checker.getNOPs(), checker.getCPI(), checker.getCoreCycles(), checker.getCoreNops(), pNOPs])
+				c = checker.getCycles()
+				n = checker.getNOPs()
+				cpi = checker.getCPI()
+				cc = checker.getCoreCycles()
+				cn = checker.getCoreNops()
+				ex = str(round(float(int(c) * float(1/frequencyTable.get(options.pipeline))), 8)) + "us"
+				cex = str(round(float(int(cc) * float(1/frequencyTable.get(options.pipeline))), 8)) + "us"
+				B.printPass(args[0], [c, n, cpi, cc, cn, pNOPs, ex, cex])
 		else:
 			B.printFail(args[0], "")
 
