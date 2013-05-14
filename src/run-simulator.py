@@ -1,22 +1,56 @@
 #!/usr/bin/python
-# Use to load input files and options and run the simulation
 
+##################################################################
+#
+# iDEA Simulator
+#   run-simulator.py
+#
+# Top-level program
+# 	Use to load input files and options and run the simulation
+#
+# Fredrik Brosser 2013-05-14
+#
+#
+# USAGE :
+# 
+# 	run-simulator.py [-hvcqmpfdews] filename
+#
+# OPTIONS:
+#
+# `--version` Show program's version number and exit.
+# `-h, --help` Show help message and exit.
+# `-v, --verbose` Print cycle by cycle debug information to simulaton log file.
+# `-c, --core` Show only core cycle information.
+# `-q, --quiet` Show only summary of statistics.
+# `-m, --mute` Supress all output.
+# `-p <N>` Set number of pipeline stages [N >= 4, default 5]
+# `-f <N>` Set number of Instruction Fetch (IF) cycles [default 1]
+# `-d <N>` Set number of Instruction Decode (ID) cycles [default 1]
+# `-e <N>` Set number of Execute/Memory (EX/MEM) cycles [default 2]
+# `-w <N>` Set number of Writeback (WB) stages [default 1]
+# `-s` Set execution start address [default @<main>]
+#
+##################################################################
+
+
+# Imports
 import elf32parser
 import PipelineSimulator
 import Instruction
 import InstructionParser
 import Sourceline
 import Checker
-from bcolors import bcolors
-
-from optparse import OptionParser
-
 import time
 import os
 import sys
 
+from bcolors import bcolors
+from optparse import OptionParser
+
+
 def main() :
 
+	# Hard-coded table holding clock frequency information for HW
 	frequencyTable = {
                        5: 193.723,
                        6: 257.931,
@@ -25,7 +59,10 @@ def main() :
                        9: 405.844
                     }
 
-	parser = OptionParser(usage="usage: run-simulator.py [-vqpfdew] filename", version="1.0")
+    # Create option parser
+	parser = OptionParser(usage="usage: run-simulator.py [-hvcqmpfdews] filename", version="1.0")
+
+	# Add options (self-documenting)
 	parser.add_option("-v", "--verbose", 
 					action="store_true",
 					dest="verbose",
@@ -79,8 +116,10 @@ def main() :
 
 	(options, args) = parser.parse_args()
 
-	# For automated testing output
+	# For automated coloured testing output
 	B = bcolors()
+
+	# Integer conversion
 	options.pipeline = int(options.pipeline)
 	options.ifcycles = int(options.ifcycles)
 	options.idcycles = int(options.idcycles)
@@ -113,10 +152,12 @@ def main() :
 			pipelineConfigError = True
 		options.ifcycles = remCycles
 
+	# Double check for correct pipeline configuration
 	pipelineSum = options.ifcycles + options.idcycles + options.excycles + options.wbcycles
 	if(pipelineSum != options.pipeline):
 		pipelineConfigError = True
 
+	# Give error if something is wrong
 	if(pipelineConfigError):
 		B.printError("Error: Incorrect pipeline configuration")
 		sys.exit()		
@@ -138,27 +179,32 @@ def main() :
 
 	oldstdout = sys.stdout
 
+
 	# Initialize parsers
 	iparser = InstructionParser.InstructionParser()
 	eparser = elf32parser.elf32parser()
 	
-	# Convert elf32-bigmips to simulator friendly format
+	# If custom simulation assembly file output is set
 	SimAsmFileName = args[2] if len(args) >= 3 else defaultSimASMFile
 	SimAsmFile = open(SimAsmFileName, 'w')
 	sys.stdout = SimAsmFile
 
+	# If custom data memory file output is set
 	DataMemFileName = args[4] if len(args) >= 5 else defaultDataMemFile
 
 	if(not options.quiet):
 		oldstdout.write("> Starting Parser...\n")
 
+	# Convert elf32-bigmips to simulator friendly format
 	eparser.convertToSimASM(args[0], SimAsmFileName, DataMemFileName)
+
+	# Extract statistics
 	lines = eparser.getLines()
 	datamem = eparser.getDataMem() 
 	mainAddr = eparser.getMainAddr()
 	coreInstr = eparser.getCCoreInstr()
 
-	# Parse in lines and check for dependencies
+	# IF custom preprocessing log file name is set
 	PPLogFileName = args[3] if len(args) >= 4 else defaultPreProcLogFile
 	PPLogFile = open(PPLogFileName, 'w')
 	sys.stdout = PPLogFile
@@ -166,10 +212,12 @@ def main() :
 	if(not options.quiet):
 		oldstdout.write("> Starting Assembler...\n")
 
-	# Get line by line
+	# Parse in lines, do preprocessing and check for dependencies
 	lines = iparser.parseLines(lines, (options.pipeline-options.ifcycles), options.ifcycles, coreInstr)
+
 	pipelineInfo = [options.pipeline, options.ifcycles, options.idcycles, options.excycles, options.wbcycles]
 
+	# Initialize simulator
 	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, options.startAddr, oldstdout, options.verbose, options.quiet, pipelineInfo)
 	
 	if(not options.quiet):
@@ -192,20 +240,28 @@ def main() :
 		oldstdout.write(str(elapsedTime))
 		oldstdout.write(" s")
 
+	# Close output files
 	simulationFile.close()
 	PPLogFile.close()
 
 	sys.stdout = oldstdout
 	checker = Checker.Checker(simulationFileName, options.quiet)
 	success = False
+
+	# Give output according to the settings
+
+	# Normal terminal-based single run output
 	if(not options.quiet):
 		checker.runCheck()
+
+	# Only summary and statistics output (for use in automated scripts)
 	elif(not options.mute):
 		success = checker.runCheck()
 		if(success):
 			if(options.core):
 				B.printCoreOnly(checker.getCoreCycles())
 			else:
+				# Compile statistics
 				pNOPs = str(round(float(str(float(checker.getCoreNops())/(float(checker.getCoreCycles()))))*100, 1))
 				c = checker.getCycles()
 				n = checker.getNOPs()
@@ -214,8 +270,10 @@ def main() :
 				cn = checker.getCoreNops()
 				ex = str(round(float(int(c) * float(1/frequencyTable.get(options.pipeline))), 8)) + "us"
 				cex = str(round(float(int(cc) * float(1/frequencyTable.get(options.pipeline))), 8)) + "us"
+				# Print successful test
 				B.printPass(args[0], [c, n, cpi, cc, cn, pNOPs, ex, cex])
 		else:
+			# Indicate failure
 			B.printFail(args[0], "")
 
 if __name__ == "__main__":

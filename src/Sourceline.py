@@ -1,6 +1,17 @@
-"""
-Instruction Wrapper class
-"""
+#!/usr/bin/python
+
+##################################################################
+#
+# iDEA Simulator
+#   Sourceline.py
+#
+# NOT USED!
+#   Supposed to contain debug information for instructions
+#
+# Fredrik Brosser 2013-05-14
+#
+##################################################################
+
 
 class Sourceline(object):
 

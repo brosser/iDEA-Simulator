@@ -1,7 +1,17 @@
+##################################################################
+#
+# iDEA Simulator
+#   bcolors.py
+#
 # Debug colour output formatting
-# Fredrik Brosser 2012-04-10
+# Fredrik Brosser 2013-05-14
+#
+##################################################################
+
 
 class bcolors:
+
+    ## Colour definitions
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -9,9 +19,11 @@ class bcolors:
     FAIL = '\033[91m'
     ENDC = '\033[0m'
 
+    ## Constructor
     def __init__(self):
 	   self.defaultErrorMsg = "Error"
 
+    ## Disable colour output
     def disable(self):
         self.HEADER = ''
         self.OKBLUE = ''
@@ -20,6 +32,9 @@ class bcolors:
         self.FAIL = ''
         self.ENDC = ''
 
+    ## Print information for a successful test in Green
+    #   s : Name/Filename of test
+    #   stats : Statistics displayed for the test
     def printPass(self, s, stats):
         n = 1
         i = 40
@@ -33,12 +48,20 @@ class bcolors:
         printstr += self.ENDC
         print printstr
 
+    ## Print a single statistic only (core cycles)
     def printCoreOnly(self, ccore):
         printstr = self.OKGREEN + str(ccore) + self.ENDC
         print printstr
 
+    ## Print information for a failed test in Red
+    #   s : Name/Filename of test
+    #   errorMsg : Error message to be displayed
     def printFail(self, s, errorMsg):
 	   print self.FAIL + "Failed \t|\t " + s + "\t" + errorMsg + self.ENDC
 
+    ## Print general error message
+    #   errorMsg : Error message to be displayed
     def printError(self, errorMsg):
        print self.FAIL + errorMsg + self.ENDC
+
+# END of bcolors.py

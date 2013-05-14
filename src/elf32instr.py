@@ -1,11 +1,22 @@
+##################################################################
+#
+# iDEA Simulator
+#   elf32instr.py
+#
 # Modelling elf32-bigmips instructions
-# Fredrik Brosser 2013-02-15
+# Fredrik Brosser 2013-05-14
+#
+##################################################################
 
+
+# Imports
 import sys
 import re
 
+
 class elf32instr:
 
+	## Constructor
 	def __init__(self, label, address, opcode, mnemonic, nOperands, operands, indirect):
 		self.label = label;
 		self.address = address;
@@ -17,6 +28,7 @@ class elf32instr:
 		self.indirectReg = ""
 		self.isMemInstr = False
 
+		# List of MIPS Registers
 		self.registerList = ['zero', 'at', 'v0', 'v1', 'a0', 'a1' , 'a2', 'a3',
 		            't0', 't1', 't2', 't3', 't4', 't5', 't6', 't7',
 		            's0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8',
@@ -25,6 +37,7 @@ class elf32instr:
 		            'gp', 'sp',
 		            's8', 'ra']
 		
+		# Mapping of MIPS Registers to iDEA (naming conventions only)
 		self.registerMapping = {'zero':'$r0', 'at':'$r1', 'v0':'$r2', 'v1':'$r3',
 					'a0':'$r4', 'a1':'$r5', 'a2':'$r6', 'a3':'$r7',
 		            't0':'$r8', 't1':'$r9', 't2':'$r10', 't3':'$r11',
@@ -36,13 +49,17 @@ class elf32instr:
 		            'gp':'$r28', 'sp':'$r29',
 		            's8':'$r30', 'ra':'$r31'}
 
+		# Label instruction as a memory instruction (for offset value parsing)
 		if(mnemonic == "sw" or mnemonic == "lw"):
 			self.isMemInstr = True
 		else :
 			self.isMemInstr = False
+
+		# Instruction uses an offset value
 		if(indirect is not None):
 			self.indirectReg = indirect.translate(None, '()')
 
+	# Get the instruction information as a single string
 	def getData(self):
 		labelStr = (self.label + ": ") if self.label is not '' else ""
 		printStr = (labelStr + self.address + ":\t" + self.opcode + "\t" + self.mnemonic + "\t")
@@ -54,6 +71,7 @@ class elf32instr:
 			printStr += self.indirect
 		return printStr
 
+	# Get the instruction information as a single string for execution in the simulator
 	def getSimData(self):
 		printStr = (self.mnemonic)
 		if(self.nOperands > 0):

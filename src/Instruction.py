@@ -1,23 +1,45 @@
-"""
-Instructions to support:
+##################################################################
+#
+# iDEA Simulator
+#   Instruction.py
+#
+# Modelling an iDEA instruction
+# Fredrik Brosser 2013-05-14
+# 
+# Supported Instructions:
+#
+# Pseudo: ['neg', 'negu', 'abs', 'break', 'move'],
+# R-Type: ['add', 'sub', 'and', 'or', 'jr', 'jalr', 'nor', 'slt',
+#          'addu', 'subu', 'sltu', 'xor', 'sll', 'srl', 'sra', 
+#          'sllv', 'srlv', 'srav', 'jr', 'nop', 'mult', 'multu', 
+#          'div', 'divu', 'mflo', 'mfhi', 'mtlo', 'mthi', 'mac'],
+# I-Type: ['addi', 'subi', 'ori', 'lw', 'sw', 'lh', 'lb', 'sh', 'sb', 
+#          'lhu', 'lbu', 'shu', 'sbu', 'addiu', 'slti', 'sltiu', 'andi', 
+#          'xori', 'lui', 'li', 'bne', 'beq', 'blez', 'bgtz', 'bltz', 
+#          'bgez', 'bnez', 'beqz']
+# J-Type: ['j', 'jal']
+#
+# R-Type Instructions
+# opcode(6), rs(5), rt(5), rd(5), sa(5), func(6)
+# I-Type Instructions
+# opcode(6), rs(5), rt(5), immediate(16)
+# J-Type Instructions
+# opcode(6), target(26)
+# 
+# instr - type of instruction
+# op - operation
+# rs - source register
+# rt - transition register
+# rd - destination register
+# sa (shamt) - shift amount
+# target - target address
+# func - function
+#
+##################################################################
 
-R-Type Instructions [add, sub, and, or, jr, nor, slt]
-opcode(6), rs(5), rt(5), rd(5), sa(5), func(6)
-I-Type Instructions [addi, subi, ori, bne, beq, lw, sw]
-opcode(6), rs(5), rt(5), immediate(16)
-J-Type Instructions [j]
-opcode(6), target(26)
 
-instr - type of instruction
-op - operation
-rs - source register
-rt - transition register
-rd - destination register
-sa (shamt) - shift amount
-target - target address
-func - function
-"""
-
+# Modelling an iDEA instruction
+#   **input : dict containing the initialization data for the instruction
 class Instruction(object):
     def __init__(self, **input):
         self.result = None
@@ -26,6 +48,9 @@ class Instruction(object):
         self.source2RegValue = None
         self.source3RegValue = None
         self.sourceAddr = None
+
+        # Python dict holding the register and operation information
+        # Corresponding to the bit fields of the instructions
         self.values = {
                        'op': None,
                        'dest': None,
@@ -37,6 +62,8 @@ class Instruction(object):
                        'target': None
                        
         }
+
+        # Instruction classifications
         self.controls = {'aluop'   : None,
                          'regRead' : None,
                          'regWrite': None,
@@ -45,6 +72,7 @@ class Instruction(object):
                          'branch'  : None,
                          'coreInstr': None  }
 
+        # Copy input values to instruction object
         for key in input:
             if key in self.values.keys():
                 self.values[key] = input[key]
@@ -126,6 +154,7 @@ class Instruction(object):
         """ Get this Instruction's core/kernel/loop status """
         return self.controls['coreInstr']
     
+    # Get instruction information as a nicely formatted string
     def __str__(self):
         str = "%s\t%s %s %s %s %s %s" % (self.values['op'],
                                   self.values['dest'] if self.values['dest'] else "",
@@ -140,7 +169,7 @@ class Instruction(object):
         return repr(self.values)
 
     
-        
+# Special class modelling a NOP instruction
 class Nop(Instruction):
 
     def __init__(self):

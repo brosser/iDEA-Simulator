@@ -1,7 +1,19 @@
+##################################################################
+#
+# iDEA Simulator
+#   PipelineSimulator.py
+#
+# Main pipeline simulator file
+# Fredrik Brosser 2013-05-14
+# 
+##################################################################
+
+
 from Instruction import *
 import collections 
 import ast
 import sys
+
 
 class PipelineSimulator(object): 
     alu_operations = {  'add':'+',  'addi':'+',  'sub':'-',  'subi':'-',
@@ -680,8 +692,6 @@ class ExecStage(PipelineStage):
             self.simulator.pipeline[2] = FetchStage(Instruction(op='nop', coreInstr=True), self)
 
         self.simulator.branched = True
-
-
 
     def __str__(self):
         return 'Execution/Memory\t'
