@@ -50,12 +50,15 @@ The input file uses the format elf32-bigmips.
 - `--version` Show program's version number and exit.
 - `-h, --help` Show help message and exit.
 - `-v, --verbose` Print cycle by cycle debug information to simulaton log file.
-- `-q, --quiet` Supress simulator output.
+- `-c, --core` Show only core cycle information.
+- `-q, --quiet` Show only summary of statistics.
+- `-m, --mute` Supress all output.
 - `-p <N>` Set number of pipeline stages [N >= 4, default 5]
 - `-f <N>` Set number of Instruction Fetch (IF) cycles [default 1]
 - `-d <N>` Set number of Instruction Decode (ID) cycles [default 1]
 - `-e <N>` Set number of Execute/Memory (EX/MEM) cycles [default 2]
 - `-w <N>` Set number of Writeback (WB) stages [default 1]
+- `-s` Set execution start address [default @<main>].
 
 The pipeline must contain at least 4 stages (IF-ID-EX-WB). If the pipeline is deeper than 4 stages,
 the EX/MEM stage will be allocated more cycles, up to a maximum of 4. After that, the pipeline will be padded with IF.
