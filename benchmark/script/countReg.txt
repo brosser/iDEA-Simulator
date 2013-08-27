@@ -1,0 +1,30 @@
+Bubble
+ Total:  10 | a0 a1 a2 at ra s8 sp v0 v1 zero 
+ Total:  11 | a0 a1 a2 a3 at ra sp t0 v0 v1 zero 
+ Total:  11 | a0 a1 a2 a3 at ra sp t0 v0 v1 zero 
+ Total:  11 | a0 a1 a2 a3 at ra sp t0 v0 v1 zero 
+Factorial
+ Total:  9 | a0 at gp ra s8 sp v0 v1 zero 
+ Total:  8 | a0 a1 at ra sp v0 v1 zero 
+ Total:  7 | a0 a1 at ra v0 v1 zero 
+ Total:  7 | a0 a1 at ra v0 v1 zero 
+Fib
+ Total:  17 | a0 a1 a2 a3 at ra s8 sp t0 t1 t2 t3 t4 t6 v0 v1 zero 
+ Total:  13 | a0 a1 a2 a3 at ra s8 sp t0 t6 v0 v1 zero 
+ Total:  13 | a0 a1 a2 a3 at ra s8 sp t0 t6 v0 v1 zero 
+ Total:  13 | a0 a1 a2 a3 at ra s8 sp t0 t6 v0 v1 zero 
+Fir
+ Total:  8 | a0 at ra s8 sp v0 v1 zero 
+ Total:  15 | a0 a1 a2 a3 at ra sp t0 t1 t2 t3 t4 v0 v1 zero 
+ Total:  15 | a0 a1 a2 a3 at ra sp t0 t1 t2 t3 t4 v0 v1 zero 
+ Total:  10 | a0 a1 a2 a3 at ra sp v0 v1 zero 
+Median
+ Total:  8 | a0 at ra s8 sp v0 v1 zero 
+ Total:  18 | a0 a1 a2 a3 at ra sp t0 t1 t2 t3 t4 t5 t6 t7 v0 v1 zero 
+ Total:  20 | a0 a1 a2 a3 at ra sp t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 v0 v1 zero 
+ Total:  18 | a0 a1 a2 a3 at ra sp t0 t1 t2 t3 t4 t5 t6 t7 v0 v1 zero 
+Mmult
+ Total:  10 | a0 a1 a2 at ra s8 sp v0 v1 zero 
+ Total:  17 | a0 a1 a2 a3 at ra sp t0 t1 t2 t3 t4 t5 t6 v0 v1 zero 
+ Total:  17 | a0 a1 a2 a3 at ra sp t0 t1 t2 t3 t4 t5 t6 v0 v1 zero 
+ Total:  29 | a0 a1 a2 a3 at ra s0 s1 s2 s3 s4 s5 s6 s7 s8 sp t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 v0 v1 zero 
