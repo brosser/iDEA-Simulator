@@ -2,9 +2,10 @@
 # Bash script to run all toy benchmark simulations
 # To run this script, do:
 # $ chmod +x runSimulations.sh
-# $ ./runSimulations.sh option
-# <option> all 5 9
-# E.g. ./runSimulations.sh all
+# $ ./runSimulations.sh
+
+# Instructions to check for
+instructions=( "lw" "sw" "nop" "j" "bne" "beq" "bnez" "addi" "add" "addiu" )
 
 # All benchmarks
 benchmarks=(
@@ -42,35 +43,12 @@ benchmarks=(
 "./benchmark/toy/crc/crc-O3.asm"
 )
 
-if [ -f runSimulations.log ];
-then
-	rm -rf runSimulations.log
-fi
-
-if [ $# -lt 1 ];
-then
-	echo "Please specify number of stages: all, 5 or 9"
-	exit
-fi
-
-if [ $1 = "all" ];
-then
-	nE=( 2 3 4 )
-	nF=( 1 2 3 )
-elif [ $1 = "5" ];
-then
-	nE=( 2 )
-	nF=( 1 )
-elif [ $1 = "9" ];
-then
-	nE=( 4 )
-	nF=( 3 )
-fi
+rm -rf runSimulations.log
 
 {
-for E in ${nE[@]}
+for E in 2 3 4
 do
-	for F in ${nF[@]}
+	for F in 1 2 3 
 	do
 		let I=$F+1+$E+1	
 
@@ -92,15 +70,26 @@ do
 		 echo -ne "- EX "
 		done
 		echo -e "- WB "
-		echo -e "# Result \t\t Benchmark\t\t      Cycles\tNOPs\tCPI\tCore  CoreNOPs\t% NOPs\tExecution Time\tCore Execution Time"
-		echo -e "-------------------------------------------------------------------------------------------------------------------------------------------"
-		
-		# Run all benchmarks
+
+		# Header
+		echo -e "Instruction \t Number"
+		echo -e "--------------------------------------------------"
+
+
 		for b in "${benchmarks[@]}"
 		do
 			:
-			echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 $b
+			echo -e "${txtbld}$(tput setaf 2) $b :"
+			python src/run-simulator.py -m -q -v -p $I -f $F -d 1 -e $E -w 1 $b
+			for i in "${instructions[@]}"
+			do
+			   :
+			   n=`grep $i simrun.sim | wc -l`
+			   let n/=5
+			   echo -e "$(tput sgr0) $i \t\t $n"
+			done
 		done
+
 	done
 done
 } | tee -a runSimulations.log

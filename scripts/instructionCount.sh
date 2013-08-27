@@ -2,20 +2,18 @@
 # Bash script to run all toy benchmark simulations
 # To run this script, do:
 # $ chmod +x runSimulations.sh
-# $ ./runSimulations.sh option
-# <option> all 5 9
-# E.g. ./runSimulations.sh all
+# $ ./runSimulations.sh
 
-# All benchmarks
+instructions=( "lw" "sw" "addi" "add" "addiu" )
 benchmarks=(
 "./benchmark/toy/fib/fib-O0.asm"
 "./benchmark/toy/fib/fib-O1.asm"
 "./benchmark/toy/fib/fib-O2.asm"
 "./benchmark/toy/fib/fib-O3.asm"
-"./benchmark/toy/fir/fir-O0.asm"
-"./benchmark/toy/fir/fir-O1.asm"
-"./benchmark/toy/fir/fir-O2.asm"
-"./benchmark/toy/fir/fir-O3.asm"
+"./benchmark/toy/fib/fir-O0.asm"
+"./benchmark/toy/fib/fir-O1.asm"
+"./benchmark/toy/fib/fir-O2.asm"
+"./benchmark/toy/fib/fir-O3.asm"
 "./benchmark/toy/median/median-O0.asm"
 "./benchmark/toy/median/median-O1.asm"
 "./benchmark/toy/median/median-O2.asm"
@@ -42,35 +40,12 @@ benchmarks=(
 "./benchmark/toy/crc/crc-O3.asm"
 )
 
-if [ -f runSimulations.log ];
-then
-	rm -rf runSimulations.log
-fi
-
-if [ $# -lt 1 ];
-then
-	echo "Please specify number of stages: all, 5 or 9"
-	exit
-fi
-
-if [ $1 = "all" ];
-then
-	nE=( 2 3 4 )
-	nF=( 1 2 3 )
-elif [ $1 = "5" ];
-then
-	nE=( 2 )
-	nF=( 1 )
-elif [ $1 = "9" ];
-then
-	nE=( 4 )
-	nF=( 3 )
-fi
+rm -rf runSimulations.log
 
 {
-for E in ${nE[@]}
+for E in 2 3 4
 do
-	for F in ${nF[@]}
+	for F in 1 2 3 
 	do
 		let I=$F+1+$E+1	
 
@@ -92,15 +67,24 @@ do
 		 echo -ne "- EX "
 		done
 		echo -e "- WB "
-		echo -e "# Result \t\t Benchmark\t\t      Cycles\tNOPs\tCPI\tCore  CoreNOPs\t% NOPs\tExecution Time\tCore Execution Time"
-		echo -e "-------------------------------------------------------------------------------------------------------------------------------------------"
-		
-		# Run all benchmarks
+
+		# Header
+		echo -en "Instruction \t Number \t Percentage"
+		echo -en "--------------------------------------------------"
+
+
 		for b in "${benchmarks[@]}"
 		do
 			:
-			echo -en "$I "; python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 $b
+			python src/run-simulator.py -q -p $I -f $F -d 1 -e $E -w 1 $b
+			for i in "${instructions[@]}"
+			do
+			   :
+			   let n=grep $i simrun.sim | wc -l
+			   echo -e "$i \t $n"
+			done
 		done
+
 	done
 done
 } | tee -a runSimulations.log
