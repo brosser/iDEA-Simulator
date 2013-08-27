@@ -1,9 +1,0 @@
-[  5 Stage Pipeline  ]:	 IF - ID - EX - EX - WB 
-[  6 Stage Pipeline  ]:	 IF - IF - ID - EX - EX - WB 
-[  7 Stage Pipeline  ]:	 IF - IF - IF - ID - EX - EX - WB 
-[  6 Stage Pipeline  ]:	 IF - ID - EX - EX - EX - WB 
-[  7 Stage Pipeline  ]:	 IF - IF - ID - EX - EX - EX - WB 
-[  8 Stage Pipeline  ]:	 IF - IF - IF - ID - EX - EX - EX - WB 
-[  7 Stage Pipeline  ]:	 IF - ID - EX - EX - EX - EX - WB 
-[  8 Stage Pipeline  ]:	 IF - IF - ID - EX - EX - EX - EX - WB 
-[  9 Stage Pipeline  ]:	 IF - IF - IF - ID - EX - EX - EX - EX - WB 
